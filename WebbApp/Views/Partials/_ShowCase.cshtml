@@ -1,0 +1,22 @@
+﻿@{
+    var showcase = showcaseService.GetLatestShowcase();
+}
+
+@if(showcase != null)
+{
+    <section class="showcase">
+        <div class="container">
+            <div class="content">
+                <div class="ingress">@showcase.Ingress</div>
+                <div class="title">@showcase?.Title</div>
+                @if(!string.IsNullOrEmpty(showcase?.LinkUrl) && !string.IsNullOrEmpty(showcase.LinkText))
+                {
+                    <a href="@showcase?.LinkUrl" class="btn-theme">@showcase?.LinkText</a> 
+                }
+            </div>
+            <div class="content-image">
+                <img src="@showcase?.ImageUrl" alt="@showcase?.Title">
+            </div>
+        </div>
+    </section>
+}

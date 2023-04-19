@@ -1,0 +1,36 @@
+﻿@{
+    var items = productService.GetAllSaleItems();
+}
+<section class="up-to-sell">
+    <div class="container">
+        <div class="collection-grid">
+            <div class="item-1">
+            @if (items != null)
+            {
+                <div class="grid">
+                    <partial name="/Views/Partials/_GridCollectionItem.cshtml" model="items.FirstOrDefault()" />
+                </div>
+            }                
+            </div>
+            <div class="discover">
+                <!-- collection-content start -->
+                <div class="collection-content">
+                    <div class="container">
+                        <div class="title-red">UP TO SELL</div>
+                        <div class="title">50% OFF</div>
+                        <div class="ingress">Get the Best Price</div>
+                        <div class="text">Get the best daily offer et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren no sea taki</div>
+                        <a href="#" class="link">Discover More</a>
+                    </div>
+                </div>
+                <!-- collection-content end -->
+            </div>
+            <div class="item-2">
+            @if (items != null)
+            {
+                <partial name="/Views/Partials/_GridCollectionItem.cshtml" model="items.LastOrDefault()" />
+            }                
+            </div>
+        </div>
+    </div>
+</section>
