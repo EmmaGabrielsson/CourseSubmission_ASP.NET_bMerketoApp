@@ -5,10 +5,11 @@ namespace WebbApp.Models.Entities
     public class CategoryEntity
     {
         public int Id { get; set; }
+
+        [Column(TypeName = "nvarchar(80)")]
         public string CategoryName { get; set; } = null!;
 
-        [ForeignKey(nameof(Product))]
-        public string ProductId { get; set; } = null!;
-        public ProductEntity Product { get; set; } = null!;
+        public ICollection<ProductCategoryEntity> Products { get; set; } = new HashSet<ProductCategoryEntity>();
+
     }
 }

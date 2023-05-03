@@ -1,0 +1,60 @@
+.login-form {
+    padding: 45px 0 60px 0;
+
+    @include lg {
+        padding: 75px 0;
+    }
+
+    .container {
+        margin-top: 50px;
+        border: 0px solid $color-dark-5;
+        padding: 30px;
+
+        @include md {
+            box-shadow: 0 .5rem 1rem $color-dark-5;
+        }
+
+        .title {
+            margin-bottom: 40px;
+        }
+    }
+
+    form {
+        display: grid;
+        column-gap: 20px;
+        row-gap: 10px;
+        grid-template-columns: 1fr;
+        grid-template-areas: "email" "password" "rememberMe" "button";
+
+        .email {
+            grid-area: email;
+        }
+
+        .password {
+            grid-area: password;
+        }
+
+        .remember {
+            grid-area: rememberMe;
+            font-size: smaller;
+            display: flex;
+            align-items: center;
+            justify-content: start;
+            margin-bottom: 2rem;
+
+            input {
+                width: 25px;
+                margin-right: 5px;
+            }
+        }
+
+        button {
+            grid-area: button;
+
+            @include lg {
+                display: flex;
+                justify-self: flex-start;
+            }
+        }
+    }
+}

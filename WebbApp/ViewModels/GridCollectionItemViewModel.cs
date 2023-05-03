@@ -12,16 +12,31 @@ public class GridCollectionItemViewModel
 
     public bool OnSale = false;
 
-    public static implicit operator ProductEntity(GridCollectionItemViewModel gridCollectionItemViewModel)
+    public List<string> Categories { get; set; } = null!;
+
+    public static implicit operator ProductEntity(GridCollectionItemViewModel model)
     {
         return new ProductEntity
         {
-            ArticleNumber = gridCollectionItemViewModel.Id,
-            ImageUrl = gridCollectionItemViewModel.ImageUrl,
-            Title = gridCollectionItemViewModel.Title,
-            Price = gridCollectionItemViewModel.Price,
-            OnSale = gridCollectionItemViewModel.OnSale,
-            Description = gridCollectionItemViewModel.Description
+            ArticleNumber = model.Id,
+            ImageUrl = model.ImageUrl,
+            Title = model.Title,
+            Price = model.Price,
+            OnSale = model.OnSale,
+            Description = model.Description
         };
     }
+    public static implicit operator GridCollectionItemViewModel(ProductEntity model)
+    {
+        return new GridCollectionItemViewModel
+        {
+            Id = model.ArticleNumber,
+            ImageUrl = model.ImageUrl,
+            Title = model.Title,
+            Price = model.Price,
+            OnSale = model.OnSale,
+            Description = model.Description
+        };
+    }
+
 }

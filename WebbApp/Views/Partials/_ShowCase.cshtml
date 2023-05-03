@@ -1,5 +1,5 @@
 ﻿@{
-    var showcase = showcaseService.GetLatestShowcase();
+    var showcase = await showcaseService.GetLatestShowcaseAsync();
 }
 
 @if(showcase != null)

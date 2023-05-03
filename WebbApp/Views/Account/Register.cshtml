@@ -1,2 +1,68 @@
-﻿
-<partial name="~/Views/Partials/Forms/_AccountForm.cshtml" />
+﻿@model AccountRegisterViewModel
+
+<div class="account-form">
+    <div class="container col-sm-10 col-md-8 col-lg-7">
+        <h4 class="title d-flex-inline"><span class="text-decoration-underline">Please</span> Register Your new Account</h4>
+        <form method="post" novalidate>
+            <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+            <div class="firstname">
+                <label asp-for="FirstName" class="form-label"></label>
+                <input asp-for="FirstName" class="form-control" />
+                <small><span asp-validation-for="FirstName" class="text-danger"></span></small>
+            </div>
+            <div class="lastname">
+                <label asp-for="LastName" class="form-label"></label>
+                <input asp-for="LastName" class="form-control" />
+                <small><span asp-validation-for="LastName" class="text-danger"></span></small>
+            </div>
+            <div class="streetname">
+                <label asp-for="StreetName" class="form-label"></label>
+                <input asp-for="StreetName" class="form-control" />
+                <small><span asp-validation-for="StreetName" class="text-danger"></span></small>
+            </div>
+            <div class="postalcode">
+                <label asp-for="PostalCode" class="form-label"></label>
+                <input asp-for="PostalCode" class="form-control" />
+                <small><span asp-validation-for="PostalCode" class="text-danger"></span></small>
+            </div>
+            <div class="city">
+                <label asp-for="City" class="form-label"></label>
+                <input asp-for="City" class="form-control" />
+                <small><span asp-validation-for="City" class="text-danger"></span></small>
+            </div>
+            <div class="phonenumber">
+                <label asp-for="PhoneNumber" class="form-label"></label>
+                <input asp-for="PhoneNumber" class="form-control" />
+            </div>
+            <div class="company">
+                <label asp-for="Company" class="form-label"></label>
+                <input asp-for="Company" class="form-control" />
+            </div>
+            <div class="email">
+                <label asp-for="Email" class="form-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <small><span asp-validation-for="Email" class="text-danger"></span></small>
+            </div>
+            <div class="password">
+                <label asp-for="Password" class="form-label"></label>
+                <input asp-for="Password" class="form-control" />
+                <small><span asp-validation-for="Password" class="text-danger"></span></small>
+            </div>
+            <div class="confirm-password">
+                <label asp-for="ConfirmPassword" class="form-label"></label>
+                <input asp-for="ConfirmPassword" class="form-control" />
+                <small><span asp-validation-for="ConfirmPassword" class="text-danger"></span></small>
+            </div>
+            <div class="imagefile">
+                <label asp-for="ImageFile" class="form-label"></label>
+                <input asp-for="ImageFile" class="form-control" />
+            </div>
+            <div class="terms form-checkbox-group">
+                <input asp-for="AcceptTermsAndAgreements" />
+                <label asp-for="AcceptTermsAndAgreements"></label>
+                <small><span asp-validation-for="AcceptTermsAndAgreements" class="text-danger"></span></small>
+            </div>
+            <button type="submit" class="btn-theme">Submit</button>
+        </form>
+    </div>
+</div>

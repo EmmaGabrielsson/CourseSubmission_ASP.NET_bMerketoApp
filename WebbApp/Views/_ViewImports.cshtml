@@ -1,6 +1,12 @@
 ﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @using WebbApp.ViewModels
 @using WebbApp.Services
+@using Microsoft.AspNetCore.Identity;
+
+@inject UserService userService
 @inject ShowcaseService showcaseService
 @inject ProductService productService
+@inject SubscribeService subscribeService
+@inject SignInManager<IdentityUser> signInManager
+@inject UserManager<IdentityUser> userManager
 

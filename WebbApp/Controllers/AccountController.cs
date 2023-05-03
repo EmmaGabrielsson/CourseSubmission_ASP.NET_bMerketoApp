@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using WebbApp.Services;
 using WebbApp.ViewModels;
 
@@ -14,6 +15,7 @@ public class AccountController : Controller
     }
 
     #region My Account (https://domain.com/account)
+    [Authorize]
     public IActionResult Index()
     {
         ViewData["Title"] = "My account";
@@ -73,10 +75,40 @@ public class AccountController : Controller
     #endregion
 
     #region Logout (https://domain.com/account/logout)
-    public IActionResult Logout()
+    [Authorize]
+    public async Task<IActionResult> Logout()
     {
         ViewData["Title"] = "Logout";
+        if (await _userService.LogoutAsync(User))
+            return LocalRedirect("/");
+
+        return RedirectToAction("Index");
+    }
+    #endregion
+
+    #region New Password (https://domain.com/account/password)
+    public IActionResult Password()
+    {
+        ViewData["Title"] = "New Password";
         return View();
     }
+
+    [HttpPost]
+    public async Task<IActionResult> Password(EmailViewModel model)
+    {
+        ViewData["Title"] = "New Password";
+
+        if (ModelState.IsValid)
+        {
+            bool requestedPasswordChange = true;
+            var user = await _userService.GetAsync(x => x.Email == model.Email);
+            if (user != null)
+                return RedirectToAction("Login", "Account", requestedPasswordChange);
+
+            ModelState.AddModelError("", "You have entered an incorrect email");
+        }
+        return View(model);
+    }
+
     #endregion
 }

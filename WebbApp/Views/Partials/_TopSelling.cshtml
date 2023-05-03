@@ -1,5 +1,5 @@
 ﻿@{
-    var saleItems = productService.GetTopSaleItems();
+    var saleItems = await productService.GetAllTopSaleProductsAsync();
 }
 
 @if (saleItems != null)
@@ -7,11 +7,13 @@
      <section class="top-selling">
         <div class="container-fluid">
             <h1 class="title">Top selling products in this week</h1>
-            <div class="grid">
+            <div class="container">
 
              @foreach (var item in saleItems)
              {
+                 <div class="grid">
                   <partial name="/Views/Partials/_GridCollectionItem.cshtml" model="item" />
+                </div>
              }
 
             <div class="load-more">

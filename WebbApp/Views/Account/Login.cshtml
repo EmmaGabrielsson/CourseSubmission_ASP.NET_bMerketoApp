@@ -1,23 +1,42 @@
 ﻿@model LoginViewModel
+@{
+    bool requestedPasswordChange = false;
+}
 
-<div class="d-flex justify-content-center">
-    <div class="col-6 mt-4 p-3 border">
-        <h4 class="pt-5 mb-3">Login</h4>
+<section class="login-form">
+    <div class="container col-sm-10 col-md-8 col-lg-7">
+        @if (requestedPasswordChange)
+        {
+            <h4 class="title"><span class="text-decoration-underline">Try</span> Login to Your Account again</h4>
+        }
+        else
+        {
+            <h4 class="title"><span class="text-decoration-underline">Please</span> Login to Your Account</h4>
+        }
         <form method="post" novalidate>
             <div class="text-danger" asp-validation-summary="ModelOnly"></div>
-            <div class="mb-3">
-                <label asp-for="Email" class="form-label"></label>
+            <div class="form-group">
+                <div class="d-flex flex-row">
+                    <label asp-for="Email" class="form-label"></label>
+                    <a class="link text-danger ms-4" asp-controller="account" asp-action="register">Don´t have an Account yet?</a>
+                </div>
                 <input asp-for="Email" class="form-control" />
                 <small><span asp-validation-for="Email" class="text-danger"></span></small>
             </div>
-            <div class="mb-3">
-                <label asp-for="Password" class="form-label"></label>
+            <div class="form-group">
+                <div class="d-flex flex-row justify-content-between">
+                    <label asp-for="Password" class="form-label"></label>
+                    <a class="link text-danger" asp-controller="account" asp-action="password">Forgot Your Password?</a>
+                </div>
                 <input asp-for="Password" class="form-control" />
                 <small><span asp-validation-for="Password" class="text-danger"></span></small>
             </div>
-            <div class="d-grid mb-3">
-                <button type="submit" class="btn bg-info">Login</button>
+            <div class="remember">
+                <input asp-for="RememberMe" class="custom-checkbox" />
+                <label asp-for="RememberMe"></label>
+                <span class="checkmark"></span>
             </div>
+            <button type="submit" class="btn-theme">Submit</button>
         </form>
     </div>
-</div>
+</section>

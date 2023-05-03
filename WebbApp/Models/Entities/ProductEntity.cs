@@ -7,6 +7,8 @@ public class ProductEntity
 {
     [Key]
     public string ArticleNumber { get; set; } = null!;
+
+    [Column(TypeName = "nvarchar(100)")]
     public string Title { get; set; } = null!;
     public string? Description { get; set; }
 
@@ -15,6 +17,6 @@ public class ProductEntity
     public string ImageUrl { get; set; } = null!;
     public bool OnSale { get; set; } = false;
 
-    public ICollection<CategoryEntity> Categories { get; set; } = null!;
+    public ICollection<ProductCategoryEntity> Categories { get; set; } = new HashSet<ProductCategoryEntity>();
 
 }

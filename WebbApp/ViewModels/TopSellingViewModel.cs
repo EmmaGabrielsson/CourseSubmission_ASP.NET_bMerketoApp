@@ -1,4 +1,6 @@
-﻿namespace WebbApp.ViewModels;
+﻿using WebbApp.Models.Entities;
+
+namespace WebbApp.ViewModels;
 
 public class TopSellingViewModel
 {

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace WebbApp.Models.Entities;
+namespace WebbApp.Models.Entities.Extra;
 
 public class InvoiceEntity
 {

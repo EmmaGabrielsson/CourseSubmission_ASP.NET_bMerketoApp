@@ -924,6 +924,208 @@ footer .container {
   }
 }
 
+.login-form {
+  padding: 45px 0 60px 0;
+}
+@media (min-width: 992px) {
+  .login-form {
+    padding: 75px 0;
+  }
+}
+.login-form .container {
+  margin-top: 50px;
+  border: 0px solid #E1E1E1;
+  padding: 30px;
+}
+@media (min-width: 768px) {
+  .login-form .container {
+    box-shadow: 0 0.5rem 1rem #E1E1E1;
+  }
+}
+.login-form .container .title {
+  margin-bottom: 40px;
+}
+.login-form form {
+  display: grid;
+  column-gap: 20px;
+  row-gap: 10px;
+  grid-template-columns: 1fr;
+  grid-template-areas: "email" "password" "rememberMe" "button";
+}
+.login-form form .email {
+  grid-area: email;
+}
+.login-form form .password {
+  grid-area: password;
+}
+.login-form form .remember {
+  grid-area: rememberMe;
+  font-size: smaller;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  margin-bottom: 2rem;
+}
+.login-form form .remember input {
+  width: 25px;
+  margin-right: 5px;
+}
+.login-form form button {
+  grid-area: button;
+}
+@media (min-width: 992px) {
+  .login-form form button {
+    display: flex;
+    justify-self: flex-start;
+  }
+}
+
+.account-form {
+  padding: 45px 0 60px 0;
+}
+@media (min-width: 992px) {
+  .account-form {
+    padding: 75px 0;
+  }
+}
+.account-form .container {
+  margin-top: 50px;
+  border: 0px solid #E1E1E1;
+  padding: 30px;
+}
+@media (min-width: 768px) {
+  .account-form .container {
+    box-shadow: 0 0.5rem 1rem #E1E1E1;
+  }
+}
+.account-form .container .title {
+  margin-bottom: 40px;
+}
+.account-form form {
+  display: grid;
+  column-gap: 20px;
+  row-gap: 20px;
+  grid-template-columns: 1fr;
+  grid-template-areas: "firstName" "lastName" "streetName" "postalCode" "city" "phoneNumber" "companyName" "email" "password" "confirmPassword" "imageFile" "terms" "button";
+}
+@media (min-width: 992px) {
+  .account-form form {
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas: "firstName lastName" "streetName streetName" "postalCode city" "phoneNumber companyName" "email email" "password password" "confirmPassword confirmPassword" "imageFile imageFile" "terms terms" "button button";
+  }
+}
+.account-form form .firstname {
+  grid-area: firstName;
+}
+.account-form form .lastname {
+  grid-area: lastName;
+}
+.account-form form .streetname {
+  grid-area: streetName;
+}
+.account-form form .postalcode {
+  grid-area: postalCode;
+}
+.account-form form .city {
+  grid-area: city;
+}
+.account-form form .phonenumber {
+  grid-area: phoneNumber;
+}
+.account-form form .company {
+  grid-area: companyName;
+}
+.account-form form .email {
+  grid-area: email;
+}
+.account-form form .password {
+  grid-area: password;
+}
+.account-form form .confirm-password {
+  grid-area: confirmPassword;
+}
+.account-form form .imagefile {
+  grid-area: imageFile;
+}
+.account-form form .terms {
+  grid-area: terms;
+  font-size: smaller;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  margin: 1rem 0 2rem 0;
+}
+.account-form form .terms input {
+  width: 25px;
+  margin-right: 5px;
+}
+.account-form form .terms label {
+  font-size: smaller;
+}
+.account-form form button {
+  grid-area: button;
+}
+@media (min-width: 992px) {
+  .account-form form button {
+    display: flex;
+    justify-self: flex-start;
+  }
+}
+
+.search-form {
+  padding: 55px 0 60px 0;
+}
+.search-form .container {
+  background-color: #292929;
+  color: #AEAEAE;
+}
+@media (min-width: 992px) {
+  .search-form {
+    padding: 75px 0;
+  }
+}
+
+.password-form {
+  padding: 45px 0 60px 0;
+}
+@media (min-width: 992px) {
+  .password-form {
+    padding: 75px 0;
+  }
+}
+.password-form .container {
+  margin-top: 50px;
+  border: 0px solid #E1E1E1;
+  padding: 30px;
+}
+@media (min-width: 768px) {
+  .password-form .container {
+    box-shadow: 0 0.5rem 1rem #E1E1E1;
+  }
+}
+.password-form .container .title {
+  margin-bottom: 40px;
+}
+.password-form form {
+  display: grid;
+  column-gap: 20px;
+  row-gap: 10px;
+  grid-template-columns: 1fr;
+  grid-template-areas: "email" "button";
+}
+.password-form form .email {
+  grid-area: email;
+}
+.password-form form button {
+  grid-area: button;
+}
+@media (min-width: 992px) {
+  .password-form form button {
+    display: flex;
+    justify-self: flex-start;
+  }
+}
+
 .validation-summary-errors {
   display: flex;
   justify-content: center;

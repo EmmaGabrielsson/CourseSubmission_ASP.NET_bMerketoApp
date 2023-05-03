@@ -1,4 +1,6 @@
-﻿@model GridCollectionViewModel
+﻿@{
+    var Model = productService.BestCollection;
+}
 
 @if (Model != null){
     <section class="grid-collection">

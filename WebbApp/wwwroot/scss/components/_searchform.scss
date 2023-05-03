@@ -1,0 +1,11 @@
+.search-form {
+    padding: 55px 0 60px 0;
+    .container {
+        background-color: $color-dark-2;
+        color: $color-dark-4;
+    }
+
+    @include lg {
+        padding: 75px 0;
+    }
+}

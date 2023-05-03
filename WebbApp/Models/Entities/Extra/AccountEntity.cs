@@ -2,7 +2,7 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace WebbApp.Models.Entities;
+namespace WebbApp.Models.Entities.Extra;
 
 public class AccountEntity : IdentityUser
 {
@@ -11,7 +11,7 @@ public class AccountEntity : IdentityUser
     public byte[] Password { get; private set; } = null!;
     public byte[] SecurityKey { get; private set; } = null!;
     public IFormFile? ProfileImage { get; set; }
-    public ICollection<AccountAdressEntity> Adresses { get; set; } = new HashSet<AccountAdressEntity>();
+    public ICollection<UserAdressEntity> Adresses { get; set; } = new HashSet<UserAdressEntity>();
     public ICollection<OrderEntity> Orders { get; set; } = new HashSet<OrderEntity>();
 
 
