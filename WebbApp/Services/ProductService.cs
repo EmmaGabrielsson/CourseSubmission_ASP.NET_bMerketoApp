@@ -21,6 +21,18 @@ public class ProductService
         new GridCollectionItemViewModel { Id = "12", Title = "Beauty collection", ImageUrl = "images/placeholders/369x310.svg", Price = 50, OnSale = true}
     };
 
+    public async Task<bool> CreateAsync(ProductEntity entity)
+    {
+        var _entity = await GetAsync(x => x.ArticleNumber == entity.ArticleNumber);
+        if (_entity == null)
+        {
+            await _context.Products.AddAsync(entity);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+        return false;
+    }
+
     public List<GridCollectionItemViewModel> GetAllOnSaleItems()
     {
         return _saleItems;
@@ -129,16 +141,17 @@ public class ProductService
 
         return null!;
     }
-    public async Task<IEnumerable<GridCollectionItemViewModel>> GetAllSearchedAsync(string searchText)
+
+    public async Task<SearchViewModel> GetAllSearchedAsync(SearchViewModel searchModel)
     {
         var searchedProducts = new List<GridCollectionItemViewModel>();
-        var findProducts = await _context.Products.Where(x => x.Title.Contains(searchText)).ToListAsync();
+        var findProducts = await _context.Products.Where(x => x.Title.Contains(searchModel.SearchText)).ToListAsync();
         foreach (var product in findProducts)
         {
             searchedProducts.Add(product!);
         }
 
-        return searchedProducts!;
+        return searchModel!;
     }
 
 }

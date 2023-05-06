@@ -1,19 +1,57 @@
-﻿<partial name="~/Views/Partials/_Bredcrumb.cshtml" />
-
-<section>
-    <div class="image-container">
-
+﻿@{
+    GridCollectionItemViewModel Model = new()
+    {
+                ImageUrl = "wwwroot/images/placeholders/501x430.svg",
+                Title = "Young Star Smart Shoe in Fashion",
+                Description = "Lirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
+        Price = 30,
+        Categories = new List<string>{"Table Lamp", "Light", "Electronic"}
+    };
+}
+<section class="breadcrumb">
+    <div class="container">
+        <div class="content text-center text-dark">
+            <h2>SHOP</h2>
+            <ul>
+                <li>HOME</li>
+                <li>PRODUCTS</li>
+                <li>DETAILS</li>
+            </ul>
+        </div>
     </div>
-    <div>
-        <h4>Title</h4>
-        <p>Description</p>
-        <p>$Price</p>
-        <div>
-            <input />
-            <button class="btn-theme">Add to Cart
+</section>
+
+<section class="details-container">
+    <div class="image-container">
+        <img src="Model.ImageUrl" alt="Model.Title"/>
+    </div>
+    <div class="product-details">
+        <h4 class="title">@Model.Title</h4>
+        <p class="product-description">@Model.Description</p>
+        <p class="product-price">$@Model.Price</p>
+        <div class="button-container">
+            <div class="quantity-container">
+                <button class="btn-outline-white" type="button">-</button>
+                <input type="number"  min="1" />
+                <button class="btn-outline-white" type="button">+</button>
+            </div>
+            <button class="btn-theme add-to-cart">
+                Add to Cart 
                 <i class="add-cart fa-regular fa-cart-plus"></i>
             </button>
         </div>
-        <p>catergory:</p>
+        <p class="category">Catergory: 
+            @foreach (var category in Model.Categories)
+            {                    
+                @if (Model.Categories.LastOrDefault(category) != category)
+                {
+                    <span>@category, </span>
+                }
+                else
+                {
+                    <span>@category</span>
+                }
+            }
+        </p>
     </div>
 </section>

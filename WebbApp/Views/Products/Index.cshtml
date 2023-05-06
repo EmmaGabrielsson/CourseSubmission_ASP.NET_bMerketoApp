@@ -1,21 +1,29 @@
 ﻿@{
     var products = await productService.GetAllAsync();
 }
+<section class="breadcrumb">
+    <div class="container">
+        <div class="content text-center text-dark">
+            <h2>SHOP</h2>
+            <ul>
+                <li>HOME</li>
+                <li>PRODUCTS</li>
+            </ul>
+        </div>
+    </div>
+</section>
 
-<partial name="~/Views/Partials/_Bredcrumb.cshtml" />
-
-<section class="top-selling">
+<section class="grid-collection">
     @if (products != null)
     {
-            <div class="pt-3 container">
-                <div class="grid">
+       <div class="grid">
 
-                    @foreach (var product in products)
-                    {
-                        <partial name="/Views/Partials/_GridCollectionItem.cshtml" model="product" />
-                    }
-
-                </div>
-            </div>
+       @foreach (var product in products)
+       {
+       <div class="collection-item">
+          <partial name="/Views/Partials/_GridCollectionItem.cshtml" model="product" />
+       </div>
+       }
+       </div>
     }
 </section>

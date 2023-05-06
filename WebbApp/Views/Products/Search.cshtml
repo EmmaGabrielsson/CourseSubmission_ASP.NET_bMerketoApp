@@ -1,11 +1,25 @@
-﻿@{
+﻿@model SearchViewModel
 
-}
 <section class="search-form">
     <div class="container d-flex justify-content-center bg-dark p-4 my-5">
-        <form metod="post" class="col-8 d-flex col-xl-6" novalidate>
-            <input class="mb-2 rounded-start" type="text" placeholder="search product here..." maxlength="64">
+        <form metod="post" asp-action="search" class="col-8 d-flex col-xl-6" novalidate>
+            <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+            <input class="mb-2 rounded-start" asp-for="SearchText" placeholder="search product here..." maxlength="64">
+            <small><span asp-validation-for="SearchText" class="text-danger"></span></small>
             <button type="submit" class="btn-theme rounded-end mb-2"><i class="fa-regular fa-search"></i></button>
         </form>
+    </div>
+    <div class="grid-collection">
+            @if (Model.SearchResults != null)
+            {
+                <div class="grid">
+                    @foreach (var item in Model.SearchResults)
+                    {
+                        <div class="collection-item">
+                            <partial name="/Views/Partials/_GridCollectionItem.cshtml" model="item" />
+                        </div>
+                    }
+                </div>
+            }
     </div>
 </section>

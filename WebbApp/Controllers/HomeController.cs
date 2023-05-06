@@ -26,8 +26,13 @@ public class HomeController : Controller
 
         if (ModelState.IsValid)
         {
-            var _subscribed = await _subscribeService.RegisterForSubscribeAsync(model);
-            if (_subscribed)
+            if (await _subscribeService.ExistAsync(model))
+            {
+                ModelState.AddModelError("", "You are already a subsciber for our newsletter.");
+                return View(model);
+            }
+
+            if (await _subscribeService.RegisterForSubscribeAsync(model))
                 return View(model);
 
             ModelState.AddModelError("", "You have entered an incorrect email");

@@ -14,6 +14,7 @@ public class AccountController : Controller
         _userService = userService;
     }
 
+
     #region My Account (https://domain.com/account)
     [Authorize]
     public IActionResult Index()
@@ -100,10 +101,9 @@ public class AccountController : Controller
 
         if (ModelState.IsValid)
         {
-            bool requestedPasswordChange = true;
             var user = await _userService.GetAsync(x => x.Email == model.Email);
             if (user != null)
-                return RedirectToAction("Login", "Account", requestedPasswordChange);
+                return RedirectToAction("Login", "Account");
 
             ModelState.AddModelError("", "You have entered an incorrect email");
         }

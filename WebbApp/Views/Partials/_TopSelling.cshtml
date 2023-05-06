@@ -6,19 +6,17 @@
 {
      <section class="top-selling">
         <div class="container-fluid">
-            <h1 class="title">Top selling products in this week</h1>
-            <div class="container">
-
-             @foreach (var item in saleItems)
-             {
-                 <div class="grid">
-                  <partial name="/Views/Partials/_GridCollectionItem.cshtml" model="item" />
+            <h1 class="collection-title">Top selling products in this week</h1>
+            <div class="grid">
+                @foreach (var item in saleItems)
+                {
+                <div class="collection-item">
+                    <partial name="/Views/Partials/_GridCollectionItem.cshtml" model="item" />
                 </div>
-             }
-
+                }
+            </div>
             <div class="load-more">
                 <button class="btn-outline-white">LOAD MORE <i class="fa-solid fa-rotate-right"></i></button>
-            </div>
             </div>
         </div>    
     </section>

@@ -4,7 +4,6 @@
 
 @if (Model != null){
     <section class="grid-collection">
-        <div class="container">
             @if (!string.IsNullOrEmpty(Model.Title))
             {
                 <h1 class="title">@Model.Title</h1>                
@@ -15,7 +14,9 @@
                 <ul class="categories">
                     @foreach (var category in Model.Categories)
                     {
-                        <li class="category-item">@category</li>
+                        <li class="category-item">
+                            <a href="#">@category</a>
+                        </li>
                     }
                 </ul>
             }
@@ -25,7 +26,9 @@
                 <div class="grid">
                     @foreach (var item in Model.GridItems)
                     {
+                    <div class="collection-item">
                         <partial name="/Views/Partials/_GridCollectionItem.cshtml" model="item" />
+                    </div>
                     }
                 </div>
             }
@@ -37,6 +40,5 @@
                 </div>
             }
 
-        </div>
     </section>
 }

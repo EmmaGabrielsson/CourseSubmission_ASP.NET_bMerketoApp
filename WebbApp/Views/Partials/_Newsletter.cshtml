@@ -2,11 +2,11 @@
 
 <section class="newsletter">
     <div class="container">
-        <form metod="post" novalidate>
-            <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+        <form metod="post" asp-action="index" novalidate>
             <input asp-for="Email" placeholder="subscribe mail here..." maxlength="64">
-            <small><span asp-validation-for="Email" class="text-danger"></span></small>
             <button class="btn-theme btn-rounded"><i class="fa-sharp fa-solid fa-paper-plane fa-beat"></i></button>
+            <div class="text-danger my-2" asp-validation-summary="ModelOnly"></div>
+            <small><span asp-validation-for="Email" class="text-danger my-2"></span></small>
         </form>
     </div>
 </section>

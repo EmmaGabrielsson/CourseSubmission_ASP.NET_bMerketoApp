@@ -1,0 +1,90 @@
+.details-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 2rem;
+
+    @include lg {
+        display: grid;
+        column-gap: 30px;
+        row-gap: 30px;
+        grid-template-columns: 1fr 1fr;
+        grid-template-areas: "image-container product-details"
+    }
+
+    .image-container {
+        grid-area: image-container;
+        max-width: 501px;
+        max-height: 430px;
+        margin: 3rem;
+        border: 1px solid black;
+    }
+
+    .product-details {
+        grid-area: product-details;
+        margin: 3rem;
+        text-align: center;
+
+        @include lg {
+            text-align: start;
+            margin-left: 1rem;
+        }
+
+        .title {
+            color: $color-dark-2;
+        }
+
+        .product-description {
+            border-bottom: 1px solid $color-dark-1;
+            padding-bottom: 3rem;
+            margin-bottom: 4rem;
+        }
+
+        .product-price {
+            font-weight: bolder;
+            margin: 0;
+            color: $color-dark-2;
+            font-size: 25px;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+
+            @include lg {
+                justify-content: start;
+                flex-wrap: nowrap;
+            }
+
+            .quantity-container {
+                display: flex;
+                margin: 2rem;
+                width: 190px;
+
+                @include lg {
+                    margin: 2rem 2rem 2rem 0;
+                }
+            }
+
+
+            .add-to-cart {
+                display: flex;
+                justify-content: space-between;
+                width: 200px;
+                height: 45px;
+
+                i {
+                    display: inline-block;
+                    line-height: 1.5;
+                }
+            }
+
+            .category {
+                margin-bottom: 4rem;
+            }
+        }
+    }
+}

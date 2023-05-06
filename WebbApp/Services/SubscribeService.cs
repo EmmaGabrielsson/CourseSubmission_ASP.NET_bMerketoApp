@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WebbApp.Contexts;
+using WebbApp.Models.Entities;
 using WebbApp.ViewModels;
 
 namespace WebbApp.Services;
@@ -13,22 +14,25 @@ public class SubscribeService
         _context = context;
     }
 
+    public async Task<bool> ExistAsync(EmailViewModel model)
+    {
+        var _subscriber = await _context.AspNetNewsletterSubscribers.FirstOrDefaultAsync(x => x.Email == model.Email);
+        if (_subscriber != null)
+            return true;
+
+        return false;
+    }
     public async Task<bool> RegisterForSubscribeAsync(EmailViewModel model)
     {
         try
         {
-            
-        var _subscriber = await _context.AspNetNewsletterSubscribers.FirstOrDefaultAsync(x => x.Email == model.Email);
-
-            if (_subscriber != null)
-                return false;
-
-            else
+            SubscriberEntity subscriber = new()
             {
-                _context.AspNetNewsletterSubscribers.Add(_subscriber!);
-                await _context.SaveChangesAsync();
-                return true;
-            }
+                Email = model.Email
+            };
+            _context.AspNetNewsletterSubscribers.Add(subscriber);
+            await _context.SaveChangesAsync();
+            return true;
         }
         catch
         {

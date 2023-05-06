@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Routing;
 using WebbApp.Services;
+using WebbApp.ViewModels;
 
 namespace WebbApp.Controllers
 {
@@ -22,36 +24,37 @@ namespace WebbApp.Controllers
             ViewData["Title"] = "Search for products";
             return View();
         }
-        /*
+        
         [HttpPost]
-        public async Task<IActionResult> Search(string searchText)
+        public async Task<IActionResult> Search(SearchViewModel searchModel)
         {
-            ViewData["Title"] = "Searched Products";
+            ViewData["Title"] = "Search for products";
 
             if (ModelState.IsValid)
             {
-                if (await _productService.GetAllSearchedAsync(searchText))
-                    ModelState.AddModelError("", "There is already a user with the same email address");
+                var searchedProducts = await _productService.GetAllSearchedAsync(searchModel);
+                if (searchedProducts.SearchResults == null)
+                    ModelState.AddModelError("", $"We have no products that match your search for {searchModel.SearchText}");
                 else
                 {
-                    if (await _productService.GetAllSearchedAsync(searchText))
-                        return RedirectToAction("Search", "Account");
-                    else
-                        ModelState.AddModelError("", "Something went wrong when trying to registrate user.");
+                    //return RedirectToAction("SearchedProducts", "Products");
+                    return View(searchedProducts);
                 }
             }
-            return View(searchText);
+            return View(searchModel);
         }
-        */
+        
         public IActionResult Cart()
         {
             ViewData["Title"] = "Your Cart";
             return View();
         }
-        public IActionResult Details()
+        public async Task<IActionResult> Details(string id)
         {
             ViewData["Title"] = "Details";
-            return View();
+
+            var product = await _productService.GetAsync(x => x.ArticleNumber == id);
+            return View(product);
         }
     }
 }

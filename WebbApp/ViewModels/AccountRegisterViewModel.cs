@@ -17,7 +17,7 @@ public class AccountRegisterViewModel
     [Required(ErrorMessage = "You need to enter your email adress ↑")]
     [Display(Name = "E-mail*")]
     [DataType(DataType.EmailAddress)]
-    [RegularExpression(@"^[a-öA-Ö0-9._%+-]+@[a-öA-Ö]{2,}$", ErrorMessage = "You need to enter a valid email")]
+    [RegularExpression(@"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$", ErrorMessage = "You need to enter a valid email")]
     public string Email { get; set; } = null!;
 
     [Required(ErrorMessage = "You need to enter a password ↑")]
