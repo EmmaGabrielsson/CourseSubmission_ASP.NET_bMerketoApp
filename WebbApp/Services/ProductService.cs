@@ -71,19 +71,19 @@ public class ProductService
 
         if (!await _context.Products.AnyAsync())
         {
-            await _context.AddAsync(new ProductEntity { ArticleNumber = "25695", Title = "Beauty collection", ImageUrl = "images/placeholders/270x295.svg", Price = 5, OnSale = true });
+            await _context.AddAsync(new ProductEntity { ArticleNumber = "25695", ProductName = "Beauty collection", ImageUrl = "images/placeholders/270x295.svg", Price = 5, OnSale = true });
             await _context.SaveChangesAsync();
-            await _context.AddAsync(new ProductEntity { ArticleNumber = "35685", Title = "Beauty collection", ImageUrl = "images/placeholders/270x295.svg", Price = 5, OnSale = true });
+            await _context.AddAsync(new ProductEntity { ArticleNumber = "35685", ProductName = "Beauty collection", ImageUrl = "images/placeholders/270x295.svg", Price = 5, OnSale = true });
             await _context.SaveChangesAsync();
-            await _context.AddAsync(new ProductEntity { ArticleNumber = "48952", Title = "Beauty collection", ImageUrl = "images/placeholders/270x295.svg", Price = 5, OnSale = true });
+            await _context.AddAsync(new ProductEntity { ArticleNumber = "48952", ProductName = "Beauty collection", ImageUrl = "images/placeholders/270x295.svg", Price = 5, OnSale = true });
             await _context.SaveChangesAsync();
-            await _context.AddAsync(new ProductEntity { ArticleNumber = "52365", Title = "Beauty collection", ImageUrl = "images/placeholders/270x295.svg", Price = 5, OnSale = true });
+            await _context.AddAsync(new ProductEntity { ArticleNumber = "52365", ProductName = "Beauty collection", ImageUrl = "images/placeholders/270x295.svg", Price = 5, OnSale = true });
             await _context.SaveChangesAsync();
-            await _context.AddAsync(new ProductEntity { ArticleNumber = "75214", Title = "Beauty collection", ImageUrl = "images/placeholders/270x295.svg", Price = 5, OnSale = true });
+            await _context.AddAsync(new ProductEntity { ArticleNumber = "75214", ProductName = "Beauty collection", ImageUrl = "images/placeholders/270x295.svg", Price = 5, OnSale = true });
             await _context.SaveChangesAsync();
-            await _context.AddAsync(new ProductEntity { ArticleNumber = "89652", Title = "Beauty collection", ImageUrl = "images/placeholders/270x295.svg", Price = 5, OnSale = true });
+            await _context.AddAsync(new ProductEntity { ArticleNumber = "89652", ProductName = "Beauty collection", ImageUrl = "images/placeholders/270x295.svg", Price = 5, OnSale = true });
             await _context.SaveChangesAsync();
-            await _context.AddAsync(new ProductEntity { ArticleNumber = "96174", Title = "Beauty collection", ImageUrl = "images/placeholders/270x295.svg", Price = 5, OnSale = true });
+            await _context.AddAsync(new ProductEntity { ArticleNumber = "96174", ProductName = "Beauty collection", ImageUrl = "images/placeholders/270x295.svg", Price = 5, OnSale = true });
             await _context.SaveChangesAsync();
 
             var popularCategory = await _context.Categories.FirstOrDefaultAsync(x => x.CategoryName == "popular");
@@ -145,7 +145,7 @@ public class ProductService
     public async Task<SearchViewModel> GetAllSearchedAsync(SearchViewModel searchModel)
     {
         var searchedProducts = new List<GridCollectionItemViewModel>();
-        var findProducts = await _context.Products.Where(x => x.Title.Contains(searchModel.SearchText)).ToListAsync();
+        var findProducts = await _context.Products.Where(x => x.ProductName.Contains(searchModel.SearchText)).ToListAsync();
         foreach (var product in findProducts)
         {
             searchedProducts.Add(product!);

@@ -12,8 +12,8 @@ using WebbApp.Contexts;
 namespace WebbApp.Migrations.Identity
 {
     [DbContext(typeof(IdentityContext))]
-    [Migration("20230503132725_AddedSubscribeTable")]
-    partial class AddedSubscribeTable
+    [Migration("20230510114305_ContactForm")]
+    partial class ContactForm
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -181,6 +181,40 @@ namespace WebbApp.Migrations.Identity
                     b.HasKey("Id");
 
                     b.ToTable("AspNetAdresses");
+                });
+
+            modelBuilder.Entity("WebbApp.Models.Entities.ContactFormEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CompanyName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AspNetContactFormEntities");
                 });
 
             modelBuilder.Entity("WebbApp.Models.Entities.SubscriberEntity", b =>

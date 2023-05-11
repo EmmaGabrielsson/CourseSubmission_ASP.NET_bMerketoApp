@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Runtime.CompilerServices;
 using WebbApp.Models.Entities;
 
 namespace WebbApp.ViewModels;
@@ -23,7 +22,7 @@ public class ProductRegisterViewModel
         var entity = new ProductEntity
         {
             ArticleNumber = model.ArticleNumber,
-            Title = model.Title,
+            ProductName = model.Title,
             Description = model.Description,
             ImageUrl = $"{model.ArticleNumber}_{model.Image.FileName}",
             Price = model.Price,

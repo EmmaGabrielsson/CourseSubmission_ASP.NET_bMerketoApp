@@ -2,7 +2,7 @@
 
 <section class="search-form">
     <div class="container d-flex justify-content-center bg-dark p-4 my-5">
-        <form metod="post" asp-action="search" class="col-8 d-flex col-xl-6" novalidate>
+        <form metod="post" asp-controller="Products" asp-action="search" class="col-8 d-flex col-xl-6" novalidate>
             <div class="text-danger" asp-validation-summary="ModelOnly"></div>
             <input class="mb-2 rounded-start" asp-for="SearchText" placeholder="search product here..." maxlength="64">
             <small><span asp-validation-for="SearchText" class="text-danger"></span></small>

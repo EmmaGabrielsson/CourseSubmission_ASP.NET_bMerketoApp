@@ -33,10 +33,13 @@ public class HomeController : Controller
             }
 
             if (await _subscribeService.RegisterForSubscribeAsync(model))
+            {
+                ModelState.AddModelError("", "Welcome! You are now a subscriber for our newsletter");
                 return View(model);
+            }
 
-            ModelState.AddModelError("", "You have entered an incorrect email");
         }
+        ModelState.AddModelError("", "You have entered an incorrect email");
         return View(model);
     }
 

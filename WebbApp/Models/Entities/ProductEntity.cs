@@ -9,8 +9,10 @@ public class ProductEntity
     public string ArticleNumber { get; set; } = null!;
 
     [Column(TypeName = "nvarchar(100)")]
-    public string Title { get; set; } = null!;
+    public string ProductName { get; set; } = null!;
+    public string? Ingress { get; set; }
     public string? Description { get; set; }
+    public string? VendorName { get; set; }
 
     [Column(TypeName = "money")]
     public decimal Price { get; set; }
@@ -18,5 +20,5 @@ public class ProductEntity
     public bool OnSale { get; set; } = false;
 
     public ICollection<ProductCategoryEntity> Categories { get; set; } = new HashSet<ProductCategoryEntity>();
-
+    //public ICollection<ProductReviewEntity> Reviews { get; set; } = new HashSet<ProductReviewEntity>();
 }

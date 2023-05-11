@@ -66,15 +66,21 @@ namespace WebbApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Ingress")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("OnSale")
                         .HasColumnType("bit");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("money");
 
-                    b.Property<string>("Title")
+                    b.Property<string>("ProductName")
                         .IsRequired()
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("VendorName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ArticleNumber");
 

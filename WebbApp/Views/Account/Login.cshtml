@@ -1,20 +1,10 @@
 ﻿@model LoginViewModel
-@{
-    bool requestedPasswordChange = false;
-}
 
 <section class="login-form">
     <div class="container col-sm-10 col-md-8 col-lg-7">
-        @if (requestedPasswordChange)
-        {
-            <h4 class="title"><span class="text-decoration-underline">Try</span> Login to Your Account again</h4>
-        }
-        else
-        {
-            <h4 class="title"><span class="text-decoration-underline">Please</span> Login to Your Account</h4>
-        }
+        <h4 class="title"><span class="text-decoration-underline">Please</span> Login to Your Account</h4>
+        <div class="text-danger" asp-validation-summary="ModelOnly"></div>
         <form method="post" asp-action="login" novalidate>
-            <div class="text-danger" asp-validation-summary="ModelOnly"></div>
             <div class="form-group">
                 <div class="d-flex flex-row">
                     <label asp-for="Email" class="form-label"></label>
@@ -26,7 +16,7 @@
             <div class="form-group">
                 <div class="d-flex flex-row justify-content-between">
                     <label asp-for="Password" class="form-label"></label>
-                    <a class="link text-danger" asp-controller="account" asp-action="password">Forgot Your Password?</a>
+                    <a class="link text-danger" asp-controller="account" asp-action="forgotpassword">Forgot Your Password?</a>
                 </div>
                 <input asp-for="Password" class="form-control" />
                 <small><span asp-validation-for="Password" class="text-danger"></span></small>

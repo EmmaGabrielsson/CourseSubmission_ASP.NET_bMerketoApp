@@ -1,1 +1,50 @@
-﻿
+﻿@{
+    var userInfo = await userService.GetAsync(x => x.UserName == User.Identity!.Name);
+    var adresses = await adressService.GetUserAdressAsync(userInfo);
+}
+
+<section class="breadcrumb">
+    <div class="container">
+        <div class="content text-center text-dark">
+            <h2>ACCOUNT</h2>
+            <ul>
+                <li>HOME</li>
+                <li>ACCOUNT</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<section class="p-3">
+    <div class="container">
+        <h4 class="mb-4"><span class="text-decoration-underline">Profile</span> Information</h4>
+        <p class="mb-0">First Name: <span class="fw-bold">@userInfo.FirstName</span></p>
+        <p class="mb-0">Last Name: <span class="fw-bold">@userInfo.LastName</span></p>
+        <p class ="mb-0">E-mail: <span class="fw-bold">@userInfo.Email</span></p>
+        @if (userInfo.PhoneNumber != null)
+        {
+            <p class ="mb-0">Phone Number: <span class="fw-bold">@userInfo.PhoneNumber</span></p>
+        }
+        @if (userInfo.CompanyName != null)
+        {
+            <p class="mb-0">Company: <span class="fw-bold">@userInfo.CompanyName</span></p>
+        }
+        @if (userInfo.ImageUrl != null)
+        {
+            <div class="border shadow">
+                <img src="@userInfo.ImageUrl" alt="profile-image"/>
+            </div>
+        }
+        <div>
+            @foreach (var adress in adresses)
+            {
+                <p>Adress:
+                    <span class="fw-bold">@adress.StreetName, </span>
+                    <span class="fw-bold">@adress.PostalCode </span>
+                    <span class="fw-bold">@adress.City</span>
+                </p>            
+            }
+            <a class="text-decoration-none" asp-action="updateprofile" asp-controller="account">> Update Profile here</a>
+        </div>
+    </div>
+</section>

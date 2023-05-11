@@ -12,8 +12,8 @@ using WebbApp.Contexts;
 namespace WebbApp.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230426134044_showcase-update")]
-    partial class showcaseupdate
+    [Migration("20230508101716_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -69,15 +69,21 @@ namespace WebbApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Ingress")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("OnSale")
                         .HasColumnType("bit");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("money");
 
-                    b.Property<string>("Title")
+                    b.Property<string>("ProductName")
                         .IsRequired()
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("VendorName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ArticleNumber");
 

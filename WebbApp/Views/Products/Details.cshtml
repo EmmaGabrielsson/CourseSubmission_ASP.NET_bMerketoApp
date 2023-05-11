@@ -1,5 +1,7 @@
-﻿@{
-    GridCollectionItemViewModel Model = new()
+﻿@model string 
+@{
+    var product = await productService.GetAsync(x => x.ArticleNumber == Model);
+    GridCollectionItemViewModel Modell = new()
     {
                 ImageUrl = "wwwroot/images/placeholders/501x430.svg",
                 Title = "Young Star Smart Shoe in Fashion",
@@ -23,12 +25,16 @@
 
 <section class="details-container">
     <div class="image-container">
-        <img src="Model.ImageUrl" alt="Model.Title"/>
+        <img src="@product.ImageUrl" alt="@product.ProductName"/>
     </div>
     <div class="product-details">
-        <h4 class="title">@Model.Title</h4>
-        <p class="product-description">@Model.Description</p>
-        <p class="product-price">$@Model.Price</p>
+        <h4 class="title">@product.ProductName</h4>
+        <p class="product-description">@product.Ingress</p>
+        <div>
+            <p>Rating: ***** <span>Reviews </span>
+            </p>
+        </div>
+        <p class="product-price">$@product.Price</p>
         <div class="button-container">
             <div class="quantity-container">
                 <button class="btn-outline-white" type="button">-</button>
@@ -41,9 +47,9 @@
             </button>
         </div>
         <p class="category">Catergory: 
-            @foreach (var category in Model.Categories)
+            @foreach (var category in product.Categories)
             {                    
-                @if (Model.Categories.LastOrDefault(category) != category)
+                @if (product.Categories.LastOrDefault(category) != category)
                 {
                     <span>@category, </span>
                 }
@@ -53,5 +59,8 @@
                 }
             }
         </p>
+    </div>
+    <div>
+        <p class="product-description">@product.Description</p>
     </div>
 </section>

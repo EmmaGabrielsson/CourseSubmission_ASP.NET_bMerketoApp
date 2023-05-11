@@ -23,29 +23,40 @@
         column-gap: 30px;
         row-gap: 30px;
         grid-template-columns: 1fr;
-        grid-template-areas:    "name"
-                                "email"
-                                "phoneNumber"
-                                "companyName"
-                                "message"
-                                "terms"
-                                "button";
-        
+        grid-template-areas: "name" "email" "phoneNumber" "companyName" "message" "terms" "button";
+
         @include lg {
             grid-template-columns: 1fr 1fr;
-            grid-template-areas:    "name email"
-                                    "phoneNumber companyName"
-                                    "message message"
-                                    "terms terms"
-                                    "button button";
+            grid-template-areas: "name email" "phoneNumber companyName" "message message" "terms terms" "button button";
         }
 
-        .name           { grid-area: name; }
-        .email          { grid-area: email; }
-        .phoneNumber    { grid-area: phoneNumber; }
-        .companyName    { grid-area: companyName;}
-        .terms          { grid-area: terms;  margin: 10px 0; }
-        .message        { grid-area: message; }
+        .name {
+            grid-area: name;
+        }
+
+        .email {
+            grid-area: email;
+        }
+
+        .phoneNumber {
+            grid-area: phoneNumber;
+        }
+
+        .companyName {
+            grid-area: companyName;
+        }
+
+        .contact-terms {
+            grid-area: terms;
+            display: flex;
+            align-items: center;
+            justify-content: start;
+            margin: 1rem 0 2rem 0;
+        }
+
+        .message {
+            grid-area: message;
+        }
 
         textarea {
             height: 100px;

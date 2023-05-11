@@ -1,11 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace WebbApp.Migrations
 {
     /// <inheritdoc />
-    public partial class Update : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -28,8 +29,10 @@ namespace WebbApp.Migrations
                 columns: table => new
                 {
                     ArticleNumber = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Title = table.Column<string>(type: "nvarchar(100)", nullable: false),
+                    ProductName = table.Column<string>(type: "nvarchar(100)", nullable: false),
+                    Ingress = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    VendorName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Price = table.Column<decimal>(type: "money", nullable: false),
                     ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     OnSale = table.Column<bool>(type: "bit", nullable: false)
@@ -49,7 +52,8 @@ namespace WebbApp.Migrations
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LinkText = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LinkUrl = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    LinkUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {

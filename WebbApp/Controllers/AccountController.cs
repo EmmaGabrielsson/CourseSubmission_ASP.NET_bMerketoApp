@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using WebbApp.Services;
 using WebbApp.ViewModels;
@@ -46,7 +47,7 @@ public class AccountController : Controller
                 if(await _userService.RegisterAsync(registerViewModel)) 
                     return RedirectToAction("Login", "Account");
                 else
-                    ModelState.AddModelError("", "Something went wrong when trying to registrate user.");
+                    ModelState.AddModelError("", "Something went wrong when trying to registrate a new user-account.");
             }
         }
         return View(registerViewModel);
@@ -88,14 +89,16 @@ public class AccountController : Controller
     #endregion
 
     #region New Password (https://domain.com/account/password)
-    public IActionResult Password()
+    public IActionResult ForgotPassword()
     {
         ViewData["Title"] = "New Password";
         return View();
     }
-
+    /*
     [HttpPost]
-    public async Task<IActionResult> Password(EmailViewModel model)
+    [AllowAnonymous]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> ForgotPassword(EmailViewModel model)
     {
         ViewData["Title"] = "New Password";
 
@@ -107,7 +110,42 @@ public class AccountController : Controller
 
             ModelState.AddModelError("", "You have entered an incorrect email");
         }
+        if (ModelState.IsValid)
+        {
+            // Send an email with this link
+            var user = await _userService.GetAsync(x => x.Email == model.Email);
+            var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id}, protocol: Request.Url.Scheme);
+            await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
+
+            return RedirectToAction("ForgotPasswordConfirmation", "Account");
+        }
         return View(model);
+    }
+    */
+    #endregion
+
+    #region Update Profile-Account (https://domain.com/account/updateprofile)
+    
+    [Authorize]
+    public IActionResult UpdateProfile()
+    {
+        ViewData["Title"] = "Update Profile";
+        return View();
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> UpdateProfile(UpdateAccountViewModel registerViewModel)
+    {
+        ViewData["Title"] = "Update Profile";
+
+        if (ModelState.IsValid)
+        {
+                if (await _userService.UpdateAsync(registerViewModel) != null)
+                    return RedirectToAction("index", "account");
+                else
+                    ModelState.AddModelError("", "Something went wrong when trying to registrate a new user-account.");
+        }
+        return View(registerViewModel);
     }
 
     #endregion
