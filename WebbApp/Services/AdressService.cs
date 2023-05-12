@@ -34,7 +34,6 @@ public class AdressService
 
     public async Task<bool> AddAdressAsync(AppUser user, AdressEntity adress)
     {
-        //var foundAdress = await _context.AspNetAdresses.FirstOrDefaultAsync(x => x.StreetName == adress.StreetName && x.PostalCode = adress.PostalCode && x.City == adress.City);
         UserAdressEntity newUserAdress = new()
         {
             UserId = user.Id,

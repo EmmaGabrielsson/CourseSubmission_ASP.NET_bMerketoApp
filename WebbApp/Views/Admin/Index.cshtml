@@ -27,24 +27,30 @@
                 <input asp-for="UserId"/>
                 <small><span asp-validation-for="UserId" class="text-danger"></span></small>
             </div>
-            <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                    <label class="input-group-text" asp-for="Role" for="inputGroupSelect01">Roles</label>
+                <div class="input-group form-inline align-items-center ">
+                    <div class="input-group-prepend">
+                        <label class="input-group-text" asp-for="Role">Role:</label>
+                    </div>
+                    <select name="Role" asp-for="Role" class="form-control">
+                        <option selected>Choose... <span> ↓</span></option>
+                        @foreach (var role in roles)
+                        {
+                            @if (role.Name == "admin")
+                            {
+                                <option value="@role.Name">@role.NormalizedName (have access to back-office)</option>
+                            } else
+                            {
+                                <option value="@role.Name">@role.NormalizedName</option>                                
+                            }
+                        }
+                    </select>
+                    <button class="btn-theme" type="submit">Change Role</button>
                 </div>
-                <select name="Role" asp-for="Role" class="custom-select form-control" id="inputGroupSelect01">
-                    <option selected>Choose...</option>
-                    @foreach (var role in roles)
-                    {
-                        <option value="@role.Name">@role.Name</option>                            
-                    }
-                </select>
-            </div>
-            <button class="btn-theme" type="submit">Change Role</button>
         </form>
     </div>
     <div class="m-5">
         <h4>Users:</h4>
-            <table class="table shadow">
+            <table class="table shadow mb-5">
             <thead class="table-dark">
                 <tr>
                     <th scope="col">User Id</th>
@@ -80,6 +86,10 @@
                     }
             </tbody>
         </table>
+            <div class="mb-5">
+                <a class="btn-theme text-decoration-none" asp-action="products" asp-controller="admin">Add Products</a>
+            </div>
     </div>
 </section>
 }
+

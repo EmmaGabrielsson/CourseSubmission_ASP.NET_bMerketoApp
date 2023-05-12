@@ -45,7 +45,7 @@ public class AccountController : Controller
             else
             {
                 if(await _userService.RegisterAsync(registerViewModel)) 
-                    return RedirectToAction("Login", "Account");
+                    return RedirectToAction("login", "account");
                 else
                     ModelState.AddModelError("", "Something went wrong when trying to registrate a new user-account.");
             }
@@ -68,7 +68,7 @@ public class AccountController : Controller
         if (ModelState.IsValid)
         {
             if(await _userService.LoginAsync(loginViewModel))
-                return RedirectToAction("Index", "Account");
+                return RedirectToAction("index", "account");
 
             ModelState.AddModelError("", "You have entered an incorrect password or email");
         }
@@ -84,7 +84,7 @@ public class AccountController : Controller
         if (await _userService.LogoutAsync(User))
             return LocalRedirect("/");
 
-        return RedirectToAction("Index");
+        return RedirectToAction("index");
     }
     #endregion
 

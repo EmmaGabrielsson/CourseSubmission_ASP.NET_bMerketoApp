@@ -11,7 +11,6 @@ public class UpdateRoleViewModel
     public string UserId { get; set; } = null!;
 
     [Required(ErrorMessage = "You need to enter users new role")]
-    [Display(Name = "New Role*")]
     public string Role { get; set;} = null!;
 
     public static implicit operator IdentityRole(UpdateRoleViewModel model)

@@ -38,6 +38,7 @@ public class AccountRegisterViewModel
 
     [Required(ErrorMessage = "You need to enter postalcode ↑")]
     [Display(Name = "Postal Code*")]
+    [DataType(DataType.PostalCode)]
     public string PostalCode { get; set; } = null!;
 
     [Required(ErrorMessage = "You need to enter city ↑")]

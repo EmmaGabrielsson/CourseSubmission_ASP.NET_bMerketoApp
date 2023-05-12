@@ -141,6 +141,11 @@ public class UserService
 
     public async Task<bool> UpdateUserRoleAsync(UpdateRoleViewModel model)
     {
+        var findRole = await _roleManager.FindByNameAsync(model.Role);
+
+        if (findRole == null)
+            return false;
+
         var user = await GetAsync(x => x.Id == model.UserId);
         var currentRole = await _userManager.GetRolesAsync(user);
         await _userManager.RemoveFromRoleAsync(user, currentRole.First());

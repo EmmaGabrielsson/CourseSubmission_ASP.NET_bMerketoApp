@@ -5,44 +5,41 @@ using WebbApp.Models.Identities;
 namespace WebbApp.ViewModels;
 
 public class UpdateAccountViewModel
-{
-    [Display(Name = "First Name*")]
+{    public string Email { get; set; } = null!;
+
+    [Display(Name = "First Name")]
     public string? FirstName { get; set; }
 
-    [Display(Name = "Last Name*")]
+    [Display(Name = "Last Name")]
     public string? LastName { get; set; }
 
-    [Display(Name = "E-mail*")]
-    [DataType(DataType.EmailAddress)]
-    [RegularExpression(@"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$", ErrorMessage = "You need to enter a valid email")]
-    public string? Email { get; set; }
-
-    [Display(Name = "Password*")]
+    [Display(Name = "New Password")]
     [DataType(DataType.Password)]
     [RegularExpression(@"^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[^a-zA-Z0-9]).{8,}$", ErrorMessage = "You need to enter a valid password with atleast 8 characters and both uppercase and lowercase letters.")]
-    public string? Password { get; set; }
+    public string? NewPassword { get; set; }
 
-    [Display(Name = "Confirm Password*")]
+    [Display(Name = "Confirm New Password")]
     [DataType(DataType.Password)]
-    [Compare(nameof(Password), ErrorMessage = "Password doesn't match")]
+    [Compare(nameof(NewPassword), ErrorMessage = "Password doesn't match")]
     public string? ConfirmPassword { get; set; }
 
-    [Display(Name = "Street Name*")]
+    [Display(Name = "Street Name")]
     public string? StreetName { get; set; }
 
-    [Display(Name = "Postal Code*")]
+    [Display(Name = "Postal Code")]
+    [DataType(DataType.PostalCode)]
     public string? PostalCode { get; set; }
 
-    [Display(Name = "City*")]
+    [Display(Name = "City")]
     public string? City { get; set; }
 
-    [Display(Name = "Mobile (optional)")]
+    [Display(Name = "Mobile")]
     public string? PhoneNumber { get; set; }
 
-    [Display(Name = "Company (optional)")]
+    [Display(Name = "Company")]
     public string? Company { get; set; }
 
-    [Display(Name = "Upload Profile Image (optional)")]
+    [Display(Name = "Upload Profile Image")]
     public IFormFile? ImageFile { get; set; }
 
 
@@ -61,6 +58,7 @@ public class UpdateAccountViewModel
     {
         var _userEntity = new AppUser
         {
+            UserName = registerViewModel.Email,
             FirstName = registerViewModel.FirstName,
             LastName = registerViewModel.LastName,
             PhoneNumber = registerViewModel.PhoneNumber,
