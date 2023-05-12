@@ -1,5 +1,4 @@
-﻿
-var validationElements = document.querySelectorAll('[data-val="true"]')
+﻿let validationElements = document.querySelectorAll('[data-val="true"]')
 
 for (let element of validationElements) {
     element.addEventListener("keyup", function (e) {
@@ -90,7 +89,6 @@ function footerPosition(element, scrollHeight, innerHeight) {
         _element.classList.toggle('position-bottom-fixed', !isTallerThanScreen)
     } catch { }
 }
-
 footerPosition('footer', document.body.scrollHeight, window.innerHeight)
 
 
@@ -115,4 +113,3 @@ function toggleMenu(attribute) {
     } catch { }    
 }
 toggleMenu('[data-option="toggle"]')
-
