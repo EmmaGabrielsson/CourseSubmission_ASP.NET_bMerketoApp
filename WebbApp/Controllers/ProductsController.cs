@@ -32,12 +32,8 @@ namespace WebbApp.Controllers
             if (ModelState.IsValid)
             {
                 var searchedProducts = await _productService.GetAllSearchedAsync(searchModel);
-                if (searchedProducts.SearchResults == null)
-                    ModelState.AddModelError("", $"We have no products that match your search for {searchModel.SearchText}");
-                else
-                {
+                if (searchedProducts.SearchResults != null)
                     return View(searchedProducts);
-                }
             }
             return View(searchModel);
         }
