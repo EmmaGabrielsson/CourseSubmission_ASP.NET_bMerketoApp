@@ -13,12 +13,13 @@ public class ProductEntity
     public string? Ingress { get; set; }
     public string? Description { get; set; }
     public string? VendorName { get; set; }
+    public string ImageUrl { get; set; } = null!;
 
     [Column(TypeName = "money")]
-    public decimal Price { get; set; }
-    public string ImageUrl { get; set; } = null!;
+    public decimal? Price { get; set; }
     public bool OnSale { get; set; } = false;
 
     public ICollection<ProductCategoryEntity> Categories { get; set; } = new HashSet<ProductCategoryEntity>();
-    //public ICollection<ProductReviewEntity> Reviews { get; set; } = new HashSet<ProductReviewEntity>();
+    public ICollection<ProductReviewEntity> Reviews { get; set; } = new HashSet<ProductReviewEntity>();
 }
+

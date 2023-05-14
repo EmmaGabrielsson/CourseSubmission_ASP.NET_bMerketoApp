@@ -36,7 +36,6 @@ namespace WebbApp.Controllers
                     ModelState.AddModelError("", $"We have no products that match your search for {searchModel.SearchText}");
                 else
                 {
-                    //return RedirectToAction("SearchedProducts", "Products");
                     return View(searchedProducts);
                 }
             }

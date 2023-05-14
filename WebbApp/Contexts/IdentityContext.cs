@@ -13,5 +13,5 @@ public class IdentityContext : IdentityDbContext<AppUser>
     public DbSet<AdressEntity> AspNetAdresses { get; set; }
     public DbSet<UserAdressEntity> AspNetUserAdresses { get; set; }
     public DbSet<SubscriberEntity> AspNetNewsletterSubscribers { get; set; }
-    public DbSet<ContactFormEntity> AspNetContactFormEntities { get; set; }
+    public DbSet<ContactFormEntity> AspNetContactForms { get; set; }
 }

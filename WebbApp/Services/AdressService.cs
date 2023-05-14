@@ -10,7 +10,6 @@ namespace WebbApp.Services;
 public class AdressService
 {
     private readonly IdentityContext _context;
-
     public AdressService(IdentityContext context)
     {
         _context = context;
@@ -31,7 +30,6 @@ public class AdressService
 
         return _foundAdressesList;
     }
-
     public async Task<bool> AddAdressAsync(AppUser user, AdressEntity adress)
     {
         UserAdressEntity newUserAdress = new()
@@ -61,7 +59,16 @@ public class AdressService
         await _context.SaveChangesAsync();
         return model;
     }
+    public async Task<AdressEntity> GetOrCreateAsync(AdressEntity entity)
+    {
+        var adress = await _context.AspNetAdresses.FirstOrDefaultAsync(x => x.StreetName == entity.StreetName && x.PostalCode == entity.PostalCode && x.City == entity.City);
+        if (adress != null)
+            return adress!;
 
+        await _context.AspNetAdresses.AddAsync(entity);
+        await _context.SaveChangesAsync();
+        return entity;
+    }
     public async Task<AdressEntity> GetAsync(Expression<Func<AdressEntity, bool>> predicate)
     {
         var _userEntity = await _context.AspNetAdresses.FirstOrDefaultAsync(predicate);

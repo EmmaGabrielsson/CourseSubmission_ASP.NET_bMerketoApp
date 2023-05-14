@@ -29,7 +29,4 @@ public class ContactFormViewModel
     [Required(ErrorMessage = "Message is required")]
     public string Message { get; set; } = null!;
 
-
-    [Display(Name = "Save my name, email in the this browser for the next time I comment.")]
-    public bool RememberMe { get; set; } = true;
 }

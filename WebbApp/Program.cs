@@ -15,6 +15,9 @@ builder.Services.AddDbContext<IdentityContext>(x => x.UseSqlServer(builder.Confi
 //repositories
 builder.Services.AddScoped<ContactFormRepo>();
 builder.Services.AddScoped<CategoryRepo>();
+builder.Services.AddScoped<ProductRepo>();
+builder.Services.AddScoped<StockRepo>();
+builder.Services.AddScoped<ProductReviewRepo>();
 
 //services
 builder.Services.AddScoped<ShowcaseService>();

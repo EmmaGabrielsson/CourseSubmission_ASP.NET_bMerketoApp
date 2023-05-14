@@ -1,5 +1,6 @@
 ﻿@{
     var products = await productService.GetAllAsync();
+    var categories = await categoryRepo.GetAllDataAsync();
 }
 <section class="breadcrumb">
     <div class="container">
@@ -14,6 +15,28 @@
 </section>
 
 <section class="grid-collection">
+    @if (categories!= null)
+    {
+        <div class="d-flex justify-content-center">
+            @foreach (var category in categories)
+            {
+            <ul class="categories">
+                @if (category == categories.LastOrDefault(category) || categories.Count() > 8)
+                {
+                    <li class="text-decoration-none category-item">
+                        <a class="link-secondary text-decoration-none text-capitalize" href="#">@category.CategoryName</a>
+                    </li>
+                }
+                else if (category != categories.LastOrDefault(category) && categories.Count() < 8)
+                {
+                    <li class="text-decoration-none category-item">
+                        <a class="link-secondary text-decoration-none text-capitalize" href="#">@category.CategoryName / </a>
+                    </li>
+                }
+            </ul>
+            }
+        </div>
+    }
     @if (products != null)
     {
        <div class="grid">

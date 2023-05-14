@@ -16,8 +16,8 @@
 </section>
 
 <section class="profile-info">
-    <div class=" mb-5 container d-lg-flex justify-content-center">
-        <div class="m-5">
+    <div class=" mb-5 container justify-content-center">
+        <div class="shadow p-4 m-5">
             <h4 class="mb-4"><span class="text-decoration-underline">Profile</span> Information</h4>
             <p class="mb-0">First Name: <span class="fw-bold">@userInfo.FirstName</span></p>
             <p class="mb-0">Last Name: <span class="fw-bold">@userInfo.LastName</span></p>
@@ -40,15 +40,12 @@
                     </p>            
                 }
             </div>
-        </div>
-        <div class="m-5">
             @if (userInfo.ImageUrl != null)
             {
                 <div class="border shadow">
                     <img src="@userInfo.ImageUrl" alt="profile-image"/>
                 </div>
             }
-            <a class="btn-theme mt-5" asp-action="updateprofile" asp-controller="account">> Update Profile here</a>
         </div>
     </div>
 </section>

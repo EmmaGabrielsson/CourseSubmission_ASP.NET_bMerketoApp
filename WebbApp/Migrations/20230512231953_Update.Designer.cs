@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebbApp.Contexts;
 
@@ -11,9 +12,11 @@ using WebbApp.Contexts;
 namespace WebbApp.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20230512231953_Update")]
+    partial class Update
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -36,7 +39,7 @@ namespace WebbApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("WebbApp.Models.Entities.ProductCategoryEntity", b =>
@@ -51,7 +54,7 @@ namespace WebbApp.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("ProductCategories", (string)null);
+                    b.ToTable("ProductCategories");
                 });
 
             modelBuilder.Entity("WebbApp.Models.Entities.ProductEntity", b =>
@@ -84,7 +87,7 @@ namespace WebbApp.Migrations
 
                     b.HasKey("ArticleNumber");
 
-                    b.ToTable("Products", (string)null);
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("WebbApp.Models.Entities.ProductReviewEntity", b =>
@@ -112,7 +115,7 @@ namespace WebbApp.Migrations
 
                     b.HasIndex("ProductArticleNumber");
 
-                    b.ToTable("ProductReviews", (string)null);
+                    b.ToTable("ProductReviews");
                 });
 
             modelBuilder.Entity("WebbApp.Models.Entities.ShowcaseEntity", b =>
@@ -143,7 +146,7 @@ namespace WebbApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Showcases", (string)null);
+                    b.ToTable("Showcases");
                 });
 
             modelBuilder.Entity("WebbApp.Models.Entities.StockEntity", b =>
@@ -171,7 +174,7 @@ namespace WebbApp.Migrations
 
                     b.HasIndex("ProductArticleNumber");
 
-                    b.ToTable("Stocks", (string)null);
+                    b.ToTable("Stocks");
                 });
 
             modelBuilder.Entity("WebbApp.Models.Entities.ProductCategoryEntity", b =>

@@ -20,12 +20,15 @@ public class ProductRegisterViewModel
     [Display(Name = "Vendor Name")]
     public string? VendorName { get; set; }
 
+    [Display(Name = "Currency*")]
+    public string Currency { get; set; } = null!;
+
+
     [Display(Name = "Product Image*")]
     [DataType(DataType.Upload)]
     public IFormFile Image { get; set; } = null!;
 
     [Display(Name = "Price*")]
-    [DataType(DataType.Currency)]
     public decimal Price { get; set; }
 
     [Display(Name = "Stock Quantity*")]
@@ -48,10 +51,23 @@ public class ProductRegisterViewModel
             VendorName = model.VendorName,
             Description = model.Description,
             ImageUrl = $"{model.ArticleNumber}_{model.Image.FileName}",
-            Price = model.Price,
-            OnSale = model.OnSale,
         };
 
         return entity;
     }
+
+    public static implicit operator StockEntity(ProductRegisterViewModel model)
+    {
+        var entity = new StockEntity
+        {
+            ArticleNumber = model.ArticleNumber,
+            Price = model.Price,
+            OnSale = model.OnSale,
+            Quantity = model.Quantity,
+            StandardCurrency = model.Currency
+        };
+
+        return entity;
+    }
+
 }

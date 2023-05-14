@@ -36,9 +36,9 @@ public class GridCollectionItemViewModel
             Id = model.ArticleNumber,
             ImageUrl = model.ImageUrl,
             Title = model.ProductName,
-            Price = model.Price,
-            OnSale = model.OnSale,
-            Description = model.Description
+            //Price = model.Price,
+            //OnSale = model.OnSale,
+            Description = model.Description,
         };
     }
 

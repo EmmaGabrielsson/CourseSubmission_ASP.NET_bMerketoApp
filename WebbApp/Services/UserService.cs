@@ -1,11 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Linq.Expressions;
 using System.Security.Claims;
 using WebbApp.Contexts;
-using WebbApp.Models.Entities;
 using WebbApp.Models.Identities;
 using WebbApp.ViewModels;
 
@@ -69,37 +66,6 @@ public class UserService
                 }
             }            
             return false;        
-        /*
-                 try
-        {
-            await _seedService.InitializeRoles();
-            var roleName = "user";
-
-            if (!await _userManager.Users.AnyAsync())
-                roleName = "admin";
-
-            AppUser _userEntity = registerViewModel;
-
-            var result = await _userManager.CreateAsync(_userEntity, registerViewModel.Password);           
-            
-            if (result.Succeeded)
-            {
-                await _userManager.AddToRoleAsync(_userEntity, roleName);
-                var _adressEntity = await _adressService.GetOrCreateAsync(registerViewModel);
-
-                if (_adressEntity != null)
-                {
-                    await _adressService.AddAdressAsync(_userEntity, _adressEntity);
-                    return true;
-                }
-            }            
-        }
-        catch
-        {
-            return false;        
-        }
-
-         */
     }
     public async Task<bool> LoginAsync(LoginViewModel loginViewModel)
     {
@@ -120,7 +86,6 @@ public class UserService
         await _signInManager.SignOutAsync();
         return _signInManager.IsSignedIn(user);
     }
-
     public async Task<bool> ChangePasswordAsync(AppUser user, string newPassword)
     {
         var currentPassword = user.PasswordHash!;
@@ -131,14 +96,6 @@ public class UserService
 
         return false;
     }
-
-    public async Task<AppUser> UpdateAsync(AppUser model)
-    {
-        _context.Users.Update(model);
-        await _context.SaveChangesAsync();
-        return model;
-    }
-
     public async Task<bool> UpdateUserRoleAsync(UpdateRoleViewModel model)
     {
         var findRole = await _roleManager.FindByNameAsync(model.Role);
@@ -158,7 +115,6 @@ public class UserService
 
         return false;
     }
-
     public async Task<IEnumerable<IdentityRole>> GetAllRolesAsync()
     {
         var roles = await _roleManager.Roles.ToListAsync();

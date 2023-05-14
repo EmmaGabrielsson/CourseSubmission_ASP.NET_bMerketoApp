@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using WebbApp.Services;
 using WebbApp.ViewModels;
@@ -124,29 +123,4 @@ public class AccountController : Controller
     */
     #endregion
 
-    #region Update Profile-Account (https://domain.com/account/updateprofile)
-    
-    [Authorize]
-    public IActionResult UpdateProfile()
-    {
-        ViewData["Title"] = "Update Profile";
-        return View();
-    }
-
-    [HttpPost]
-    public async Task<IActionResult> UpdateProfile(UpdateAccountViewModel registerViewModel)
-    {
-        ViewData["Title"] = "Update Profile";
-
-        if (ModelState.IsValid)
-        {
-                if (await _userService.UpdateAsync(registerViewModel) != null)
-                    return RedirectToAction("index", "account");
-                else
-                    ModelState.AddModelError("", "Something went wrong when trying to registrate a new user-account.");
-        }
-        return View(registerViewModel);
-    }
-
-    #endregion
 }

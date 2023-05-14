@@ -1,17 +1,25 @@
 ﻿@model SearchViewModel
 
 <section class="search-form">
-    <div class="container d-flex justify-content-center bg-dark p-4 my-5">
-        <form metod="post" asp-controller="Products" asp-action="search" class="col-8 d-flex col-xl-6" novalidate>
+    <div class="container d-flex justify-content-center p-4 mt-5">
+        <form metod="post" asp-controller="Products" asp-action="search" class="bg-dark col-8 d-flex col-xl-6" novalidate>
             <div class="text-danger" asp-validation-summary="ModelOnly"></div>
             <input class="mb-2 rounded-start" asp-for="SearchText" placeholder="search product here..." maxlength="64">
-            <small><span asp-validation-for="SearchText" class="text-danger"></span></small>
             <button type="submit" class="btn-theme rounded-end mb-2"><i class="fa-regular fa-search"></i></button>
         </form>
     </div>
-    <div class="grid-collection">
-            @if (Model.SearchResults != null)
+    <div class="d-flex justify-content-center text-danger mt-4">
+        <small><span asp-validation-for="SearchText" class="text-danger"></span></small>
+    </div>
+    <div class="grid-collection pt-2">
+        @if (Model != null)
+        {
+            @if (Model.SearchResults.Any())
             {
+                <div class="d-flex mx-4">
+                   <h4><span class="text-decoration-underline">Your</span> search for @Model.SearchText:</h4> 
+                </div>
+
                 <div class="grid">
                     @foreach (var item in Model.SearchResults)
                     {
@@ -21,5 +29,12 @@
                     }
                 </div>
             }
+            else
+            {
+                <div class="d-flex justify-content-center text-danger">
+                    <p>No results found for "@Model.SearchText".</p>
+                </div>
+            }
+        }
     </div>
 </section>
