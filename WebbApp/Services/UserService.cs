@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using System.Security.Claims;
 using WebbApp.Contexts;
+using WebbApp.Models.Dtos;
 using WebbApp.Models.Identities;
 using WebbApp.ViewModels;
 
@@ -16,8 +18,9 @@ public class UserService
     private readonly RoleManager<IdentityRole> _roleManager;
     private readonly SeedService _seedService;
     private readonly AdressService _adressService;
+    private readonly IWebHostEnvironment _webHostEnvironment;
 
-    public UserService(IdentityContext context, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, RoleManager<IdentityRole> roleManager, SeedService seedService, AdressService adressService)
+    public UserService(IdentityContext context, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, RoleManager<IdentityRole> roleManager, SeedService seedService, AdressService adressService, IWebHostEnvironment webHostEnvironment)
     {
         _context = context;
         _userManager = userManager;
@@ -25,6 +28,7 @@ public class UserService
         _roleManager = roleManager;
         _seedService = seedService;
         _adressService = adressService;
+        _webHostEnvironment = webHostEnvironment;
     }
 
     public async Task<bool> UserExist(Expression<Func<AppUser, bool>> predicate)
@@ -43,7 +47,7 @@ public class UserService
     {
         return await _context.Users.ToListAsync();
     }
-    public async Task<bool> RegisterAsync(AccountRegisterViewModel registerViewModel)
+    public async Task<AppUser> RegisterAsync(AccountRegisterViewModel registerViewModel)
     {
             await _seedService.InitializeRoles();
             var roleName = "user";
@@ -62,10 +66,20 @@ public class UserService
                 if (_adressEntity != null)
                 {
                     await _adressService.AddAdressAsync(_userEntity, _adressEntity);
-                    return true;
+                    return _userEntity;
                 }
             }            
-            return false;        
+            return null!;        
+    }
+    public async Task<bool> UploadImageAsync(AppUser user, IFormFile image)
+    {
+        try
+        {
+            string imagePath = $"{_webHostEnvironment.WebRootPath}/images/profiles/{user.ImageUrl}";
+            await image.CopyToAsync(new FileStream(imagePath, FileMode.Create));
+            return true;
+        }
+        catch { return false; }
     }
     public async Task<bool> LoginAsync(LoginViewModel loginViewModel)
     {

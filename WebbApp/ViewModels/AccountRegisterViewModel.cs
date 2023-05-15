@@ -80,6 +80,10 @@ public class AccountRegisterViewModel
             PhoneNumber = registerViewModel.PhoneNumber,
             CompanyName = registerViewModel.Company
         };
+
+        if (registerViewModel.ImageFile != null)
+            _userEntity.ImageUrl = $"{Guid.NewGuid()}_{registerViewModel.ImageFile.FileName}";
+
         return _userEntity;
     }
 }

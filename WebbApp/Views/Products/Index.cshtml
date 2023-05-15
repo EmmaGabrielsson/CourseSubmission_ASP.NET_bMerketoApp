@@ -1,5 +1,5 @@
 ﻿@{
-    var products = await productService.GetAllAsync();
+    var allProducts = await productService.GetAllAsync();
     var categories = await categoryRepo.GetAllDataAsync();
 }
 <section class="breadcrumb">
@@ -24,29 +24,33 @@
                 @if (category == categories.LastOrDefault(category) || categories.Count() > 8)
                 {
                     <li class="text-decoration-none category-item">
-                        <a class="link-secondary text-decoration-none text-capitalize" href="#">@category.CategoryName</a>
+                        <a class="link-secondary text-decoration-none text-capitalize" asp-controller="products" asp-action="category" asp-route-id="@category.Id">@category.CategoryName</a>
                     </li>
                 }
                 else if (category != categories.LastOrDefault(category) && categories.Count() < 8)
                 {
                     <li class="text-decoration-none category-item">
-                        <a class="link-secondary text-decoration-none text-capitalize" href="#">@category.CategoryName / </a>
+                            <a class="link-secondary text-decoration-none text-capitalize" asp-controller="products" asp-action="category" asp-route-id="@category.Id">@category.CategoryName / </a>
                     </li>
                 }
             </ul>
             }
         </div>
     }
-    @if (products != null)
+    @if (allProducts != null)
     {
-       <div class="grid">
+       <div class="grid" id="products-container">
 
-       @foreach (var product in products)
+       @foreach (var product in allProducts)
        {
        <div class="collection-item">
           <partial name="/Views/Partials/_GridCollectionItem.cshtml" model="product" />
        </div>
        }
        </div>
+       <div class="load-more">
+            <button id="load-more-button" class="btn-outline-white">LOAD MORE <i class="fa-solid fa-rotate-right"></i></button>
+       </div>
     }
 </section>
+

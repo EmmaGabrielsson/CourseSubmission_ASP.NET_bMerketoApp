@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WebbApp.Models.Dtos;
 using WebbApp.Services;
 using WebbApp.ViewModels;
 
@@ -43,8 +44,14 @@ public class AccountController : Controller
                 ModelState.AddModelError("", "There is already a user with the same email address");
             else
             {
-                if(await _userService.RegisterAsync(registerViewModel)) 
+                var user = await _userService.RegisterAsync(registerViewModel);
+                if (user != null)
+                {
+                    if (user.ImageUrl != null)
+                        await _userService.UploadImageAsync(user, registerViewModel.ImageFile!);
+
                     return RedirectToAction("login", "account");
+                }
                 else
                     ModelState.AddModelError("", "Something went wrong when trying to registrate a new user-account.");
             }

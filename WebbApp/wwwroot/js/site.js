@@ -113,3 +113,4 @@ function toggleMenu(attribute) {
     } catch { }    
 }
 toggleMenu('[data-option="toggle"]')
+

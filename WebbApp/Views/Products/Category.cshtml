@@ -1,0 +1,30 @@
+﻿@model CategoryViewModel
+
+<section class="breadcrumb">
+    <div class="container">
+        <div class="content text-center text-dark">
+            <h2>SHOP</h2>
+            <ul>
+                <li>HOME</li>
+                <li>PRODUCTS</li>
+                <li>CATEGORY</li>
+            </ul>
+        </div>
+    </div>
+</section>
+<section class="grid-collection">
+    <h4 >Products in "@Model.Category" category:</h4>
+    
+    @if (Model.Products != null)
+    {
+        <div class="grid" id="products-container">
+
+            @foreach (var product in Model.Products)
+            {
+                <div class="collection-item">
+                    <partial name="/Views/Partials/_GridCollectionItem.cshtml" model="product" />
+                </div>
+            }
+        </div>
+    }
+</section>

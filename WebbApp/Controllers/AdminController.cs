@@ -9,10 +9,11 @@ namespace WebbApp.Controllers;
 public class AdminController : Controller
 {
     private readonly UserService _userService;
-
-    public AdminController(UserService userService)
+    private readonly ProductService _productService;
+    public AdminController(UserService userService, ProductService productService)
     {
         _userService = userService;
+        _productService = productService;
     }
 
     public IActionResult Index()
@@ -51,8 +52,11 @@ public class AdminController : Controller
 
         if (ModelState.IsValid)
         {
-            //var update = await _productService.AddAsync(model);
-            //   return RedirectToAction("index", "admin");
+            var product = await _productService.CreateAsync(model);
+            if (product != null)
+            {
+                await _productService.UploadImageAsync(product, model.Image);
+            }
             ModelState.AddModelError("", "You added product succesfully!");
         }
 

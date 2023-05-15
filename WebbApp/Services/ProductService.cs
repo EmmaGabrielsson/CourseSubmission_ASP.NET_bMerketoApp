@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using WebbApp.Contexts;
+using WebbApp.Models.Dtos;
 using WebbApp.Models.Entities;
+using WebbApp.Repositories;
 using WebbApp.ViewModels;
 
 namespace WebbApp.Services;
@@ -9,10 +11,13 @@ namespace WebbApp.Services;
 public class ProductService
 {
     private readonly DataContext _context;
-
-    public ProductService(DataContext context)
+    private readonly ProductRepo _productRepo;
+    private readonly IWebHostEnvironment _webHostEnvironment;
+    public ProductService(DataContext context, ProductRepo productRepo, IWebHostEnvironment webHostEnvironment)
     {
         _context = context;
+        _productRepo = productRepo;
+        _webHostEnvironment = webHostEnvironment;
     }
 
     private readonly List<GridCollectionItemViewModel> _saleItems = new()
@@ -21,19 +26,40 @@ public class ProductService
         new GridCollectionItemViewModel { Id = "12", Title = "Beauty collection", ImageUrl = "images/placeholders/369x310.svg", Price = 50, OnSale = true}
     };
 
-    public async Task<bool> CreateAsync(ProductEntity entity)
+    //createAsync updated
+    public async Task<Product> CreateAsync(ProductEntity entity)
     {
-        var _entity = await GetAsync(x => x.ArticleNumber == entity.ArticleNumber);
+        var _entity = await _productRepo.GetDataAsync(x => x.ArticleNumber == entity.ArticleNumber);
         if (_entity == null)
         {
-            await _context.Products.AddAsync(entity);
-            await _context.SaveChangesAsync();
-            return true;
+            await _productRepo.AddDataAsync(entity);
+            if(_entity != null)
+                return _entity;
         }
-        return false;
+        return null!;
     }
 
-    public List<GridCollectionItemViewModel> GetAllOnSaleItems()
+    public async Task<ProductEntity> GetAsync(Expression<Func<ProductEntity, bool>> predicate)
+    {
+        var _entity = await _productRepo.GetDataAsync(predicate);
+        if (_entity != null)
+        {
+            return _entity!;
+        }
+        return null!;
+    }
+
+    public async Task<bool> UploadImageAsync(Product product, IFormFile image)
+    {
+        try
+        {
+            string imagePath = $"{_webHostEnvironment.WebRootPath}/images/products/{product.ImageUrl}";
+            await image.CopyToAsync(new FileStream(imagePath, FileMode.Create));
+            return true;
+        }
+        catch { return false; }
+    }
+   public List<GridCollectionItemViewModel> GetAllOnSaleItems()
     {
         return _saleItems;
         //return await _context.Products.Where(x => x.OnSale == true).ToListAsync();
@@ -81,13 +107,13 @@ public class ProductService
 
         if (!await _context.Products.AnyAsync())
         {
-            await _context.AddAsync(new ProductEntity { ArticleNumber = "25695", ProductName = "Beauty collection", ImageUrl = "images/placeholders/270x295.svg", Price = 5, OnSale = true });
-            await _context.AddAsync(new ProductEntity { ArticleNumber = "35685", ProductName = "Beauty collection", ImageUrl = "images/placeholders/270x295.svg", Price = 5, OnSale = true });
-            await _context.AddAsync(new ProductEntity { ArticleNumber = "48952", ProductName = "Beauty collection", ImageUrl = "images/placeholders/270x295.svg", Price = 5, OnSale = true });
-            await _context.AddAsync(new ProductEntity { ArticleNumber = "52365", ProductName = "Beauty collection", ImageUrl = "images/placeholders/270x295.svg", Price = 5, OnSale = true });
-            await _context.AddAsync(new ProductEntity { ArticleNumber = "75214", ProductName = "Beauty collection", ImageUrl = "images/placeholders/270x295.svg", Price = 5, OnSale = true });
-            await _context.AddAsync(new ProductEntity { ArticleNumber = "89652", ProductName = "Beauty collection", ImageUrl = "images/placeholders/270x295.svg", Price = 5, OnSale = true });
-            await _context.AddAsync(new ProductEntity { ArticleNumber = "96174", ProductName = "Beauty collection", ImageUrl = "images/placeholders/270x295.svg", Price = 5, OnSale = true });
+            await _context.AddAsync(new ProductEntity { ArticleNumber = "25695", ProductName = "Beauty collection", ImageUrl = "270x295.svg", Price = 5, OnSale = true });
+            await _context.AddAsync(new ProductEntity { ArticleNumber = "35685", ProductName = "Beauty collection", ImageUrl = "270x295.svg", Price = 5, OnSale = true });
+            await _context.AddAsync(new ProductEntity { ArticleNumber = "48952", ProductName = "Beauty collection", ImageUrl = "270x295.svg", Price = 5, OnSale = true });
+            await _context.AddAsync(new ProductEntity { ArticleNumber = "52365", ProductName = "Beauty collection", ImageUrl = "270x295.svg", Price = 5, OnSale = true });
+            await _context.AddAsync(new ProductEntity { ArticleNumber = "75214", ProductName = "Beauty collection", ImageUrl = "270x295.svg", Price = 5, OnSale = true });
+            await _context.AddAsync(new ProductEntity { ArticleNumber = "89652", ProductName = "Beauty collection", ImageUrl = "270x295.svg", Price = 5, OnSale = true });
+            await _context.AddAsync(new ProductEntity { ArticleNumber = "96174", ProductName = "Beauty collection", ImageUrl = "270x295.svg", Price = 5, OnSale = true });
             await _context.SaveChangesAsync();
 
             var popularCategory = await _context.Categories.FirstOrDefaultAsync(x => x.CategoryName == "popular");
@@ -113,6 +139,23 @@ public class ProductService
         }
         return newList;
     }
+    /*
+    public async Task<List<GridCollectionItemViewModel>> GetAllAsync(int skip, int take)
+    {
+        var products = await _context.Products
+            .OrderBy(x => x.ProductName)
+            .Skip(skip)
+            .Take(take)
+            .ToListAsync();
+
+        var newList = new List<GridCollectionItemViewModel>();
+        foreach (var item in products)
+        {
+            newList.Add(item);
+        }
+        return newList;
+    }
+    */
 
     public async Task<IEnumerable<GridCollectionItemViewModel>> GetAllTopSaleProductsAsync()
     {
@@ -129,6 +172,20 @@ public class ProductService
 
         return topSaleProducts!;
     }
+    public async Task<IEnumerable<GridCollectionItemViewModel>> GetAllCategoryProductsAsync(int categoryId)
+    {
+        var categoryProducts = new List<GridCollectionItemViewModel>();
+        var productIds = await _context.ProductCategories.Where(x => x.CategoryId == categoryId).ToListAsync();
+        foreach (var id in productIds)
+        {
+            var product = await _context.Products.FirstOrDefaultAsync(x => x.ArticleNumber == id.ProductId);
+            categoryProducts.Add(product!);
+        }
+
+        return categoryProducts!;
+    }
+
+
     /*
     public async Task<bool> CreateInitializedBestCollectionAsync()
     {
@@ -185,15 +242,6 @@ public class ProductService
         return bestCollection;
     }
     */
-    public async Task<ProductEntity> GetAsync(Expression<Func<ProductEntity, bool>> predicate)
-    {
-        var item = await _context.Products.FirstOrDefaultAsync(predicate);
-
-        if (item != null)
-            return item;
-
-        return null!;
-    }
 
     public async Task<SearchViewModel> GetAllSearchedAsync(SearchViewModel searchModel)
     {

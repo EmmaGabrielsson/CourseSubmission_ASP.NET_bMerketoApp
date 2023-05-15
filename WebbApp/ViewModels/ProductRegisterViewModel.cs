@@ -50,7 +50,7 @@ public class ProductRegisterViewModel
             Ingress = model.Ingress,
             VendorName = model.VendorName,
             Description = model.Description,
-            ImageUrl = $"{model.ArticleNumber}_{model.Image.FileName}",
+            ImageUrl = $"{Guid.NewGuid()}_{model.Image.FileName}",
         };
 
         return entity;

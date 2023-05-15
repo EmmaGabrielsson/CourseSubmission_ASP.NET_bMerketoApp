@@ -8,26 +8,13 @@ public class GridCollectionItemViewModel
     public string ImageUrl { get; set; } = null!;
     public string Title { get; set; } = null!;
     public decimal Price { get; set; }
+    public string? Ingress { get; set; }
     public string? Description { get; set; }
+
 
     public bool OnSale = false;
 
     public List<string> Categories { get; set; } = null!;
-    /*
-    public static implicit operator ProductEntity(GridCollectionItemViewModel model)
-    {
-        return new ProductEntity
-        {
-            ArticleNumber = model.Id,
-            ImageUrl = model.ImageUrl,
-            ProductName = model.Title,
-            Price = model.Price,
-            OnSale = model.OnSale,
-            Description = model.Description
-        };
-    }
-    
-    */
     
     public static implicit operator GridCollectionItemViewModel(ProductEntity model)
     {
@@ -38,6 +25,7 @@ public class GridCollectionItemViewModel
             Title = model.ProductName,
             //Price = model.Price,
             //OnSale = model.OnSale,
+            Ingress = model.Ingress,
             Description = model.Description,
         };
     }

@@ -20,7 +20,7 @@
     <div class="shadow p-4 container col-sm-12 col-md-8 col-lg-7">
         <h4 class="title d-flex-inline mb-4"><span class="text-decoration-underline">Add</span> new Product</h4>
         <div class="text-danger" asp-validation-summary="ModelOnly"></div>
-        <form method="post" asp-action="products" asp-controller="admin" novalidate>
+        <form enctype="multipart/form-data" method="post" asp-action="products" asp-controller="admin" novalidate>
             <div class="mb-3">
                 <label asp-for="ArticleNumber" class="form-label"></label>
                 <input asp-for="ArticleNumber" class="form-control" />
