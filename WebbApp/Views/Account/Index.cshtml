@@ -1,7 +1,4 @@
-﻿@{
-    var userInfo = await userService.GetAsync(x => x.UserName == User.Identity!.Name);
-    var adresses = await adressService.GetUserAdressAsync(userInfo);
-}
+﻿@model ProfileViewModel
 
 <section class="breadcrumb">
     <div class="container">
@@ -20,19 +17,18 @@
         <div class="shadow d-md-flex justify-content-between p-4 m-5">
             <div class="m-3">
                 <h4 class="mb-4"><span class="text-decoration-underline">Profile</span> Information</h4>
-                <p class="mb-0">First Name: <span class="fw-bold">@userInfo.FirstName</span></p>
-                <p class="mb-0">Last Name: <span class="fw-bold">@userInfo.LastName</span></p>
-                <p class ="mb-0">E-mail: <span class="fw-bold">@userInfo.Email</span></p>
-                @if (userInfo.PhoneNumber != null)
+                <p class="mb-0">First Name: <span class="fw-bold">@Model.FirstName</span></p>
+                <p class="mb-0">Last Name: <span class="fw-bold">@Model.LastName</span></p>
+                @if (Model.PhoneNumber != null)
                 {
-                    <p class ="mb-0">Phone Number: <span class="fw-bold">@userInfo.PhoneNumber</span></p>
+                    <p class ="mb-0">Phone Number: <span class="fw-bold">@Model.PhoneNumber</span></p>
                 }
-                @if (userInfo.CompanyName != null)
+                @if (Model.Company != null)
                 {
-                    <p class="mb-0">Company: <span class="fw-bold">@userInfo.CompanyName</span></p>
+                    <p class="mb-0">Company: <span class="fw-bold">@Model.Company</span></p>
                 }
                 <div>
-                    @foreach (var adress in adresses)
+                    @foreach (var adress in Model.Adresses)
                     {
                         <p>Adress:
                             <span class="fw-bold">@adress.StreetName, </span>
@@ -42,10 +38,10 @@
                     }
                 </div>
             </div>
-            @if (userInfo.ImageUrl != null)
+            @if (Model.ImageUrl != null)
             {
             <div class="m-3 card border shadow" style="max-width: 350px;" >
-                    <img class="profile-image" src="~/images/profiles/@userInfo.ImageUrl" alt="profile-image" />
+                    <img class="profile-image" src="~/images/profiles/@Model.ImageUrl" alt="profile-image" />
             </div>
             }
         </div>

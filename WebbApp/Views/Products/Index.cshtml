@@ -21,13 +21,13 @@
             @foreach (var category in categories)
             {
             <ul class="categories">
-                @if (category == categories.LastOrDefault(category) || categories.Count() > 8)
+                @if (category == categories.LastOrDefault(category))
                 {
                     <li class="text-decoration-none category-item">
                         <a class="link-secondary text-decoration-none text-capitalize" asp-controller="products" asp-action="category" asp-route-id="@category.Id">@category.CategoryName</a>
                     </li>
                 }
-                else if (category != categories.LastOrDefault(category) && categories.Count() < 8)
+                else
                 {
                     <li class="text-decoration-none category-item">
                             <a class="link-secondary text-decoration-none text-capitalize" asp-controller="products" asp-action="category" asp-route-id="@category.Id">@category.CategoryName / </a>

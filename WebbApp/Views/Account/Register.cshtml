@@ -4,7 +4,7 @@
     <div class="container col-sm-10 col-md-8 col-lg-7">
         <h4 class="title d-flex-inline"><span class="text-decoration-underline">Please</span> Register Your new Account</h4>
         <div class="text-danger" asp-validation-summary="ModelOnly"></div>
-        <form enctype="multipart/form-data" method="post" asp-action="register" asp-controller="Account" novalidate>
+        <form enctype="multipart/form-data" method="post" asp-action="register" novalidate>
             <div class="firstname">
                 <label asp-for="FirstName" class="form-label"></label>
                 <input asp-for="FirstName" class="form-control" />

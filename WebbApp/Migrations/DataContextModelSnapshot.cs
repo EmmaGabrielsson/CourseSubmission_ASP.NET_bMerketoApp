@@ -36,7 +36,23 @@ namespace WebbApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("WebbApp.Models.Entities.CollectionEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Collections");
                 });
 
             modelBuilder.Entity("WebbApp.Models.Entities.ProductCategoryEntity", b =>
@@ -51,7 +67,7 @@ namespace WebbApp.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("ProductCategories", (string)null);
+                    b.ToTable("ProductCategories");
                 });
 
             modelBuilder.Entity("WebbApp.Models.Entities.ProductEntity", b =>
@@ -84,7 +100,7 @@ namespace WebbApp.Migrations
 
                     b.HasKey("ArticleNumber");
 
-                    b.ToTable("Products", (string)null);
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("WebbApp.Models.Entities.ProductReviewEntity", b =>
@@ -112,7 +128,22 @@ namespace WebbApp.Migrations
 
                     b.HasIndex("ProductArticleNumber");
 
-                    b.ToTable("ProductReviews", (string)null);
+                    b.ToTable("ProductReviews");
+                });
+
+            modelBuilder.Entity("WebbApp.Models.Entities.ProductTagEntity", b =>
+                {
+                    b.Property<string>("ProductId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("TagId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProductId", "TagId");
+
+                    b.HasIndex("TagId");
+
+                    b.ToTable("ProductTags");
                 });
 
             modelBuilder.Entity("WebbApp.Models.Entities.ShowcaseEntity", b =>
@@ -143,7 +174,7 @@ namespace WebbApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Showcases", (string)null);
+                    b.ToTable("Showcases");
                 });
 
             modelBuilder.Entity("WebbApp.Models.Entities.StockEntity", b =>
@@ -171,7 +202,24 @@ namespace WebbApp.Migrations
 
                     b.HasIndex("ProductArticleNumber");
 
-                    b.ToTable("Stocks", (string)null);
+                    b.ToTable("Stocks");
+                });
+
+            modelBuilder.Entity("WebbApp.Models.Entities.TagEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("TagName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(80)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Tags");
                 });
 
             modelBuilder.Entity("WebbApp.Models.Entities.ProductCategoryEntity", b =>
@@ -204,6 +252,25 @@ namespace WebbApp.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("WebbApp.Models.Entities.ProductTagEntity", b =>
+                {
+                    b.HasOne("WebbApp.Models.Entities.ProductEntity", "Product")
+                        .WithMany("Tags")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WebbApp.Models.Entities.TagEntity", "Tag")
+                        .WithMany("Products")
+                        .HasForeignKey("TagId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("Tag");
+                });
+
             modelBuilder.Entity("WebbApp.Models.Entities.StockEntity", b =>
                 {
                     b.HasOne("WebbApp.Models.Entities.ProductEntity", "Product")
@@ -223,6 +290,13 @@ namespace WebbApp.Migrations
                     b.Navigation("Categories");
 
                     b.Navigation("Reviews");
+
+                    b.Navigation("Tags");
+                });
+
+            modelBuilder.Entity("WebbApp.Models.Entities.TagEntity", b =>
+                {
+                    b.Navigation("Products");
                 });
 #pragma warning restore 612, 618
         }

@@ -19,6 +19,7 @@ public class ProductEntity
     public decimal? Price { get; set; }
     public bool OnSale { get; set; } = false;
 
+    public ICollection<ProductTagEntity> Tags { get; set; } = new HashSet<ProductTagEntity>();
     public ICollection<ProductCategoryEntity> Categories { get; set; } = new HashSet<ProductCategoryEntity>();
     public ICollection<ProductReviewEntity> Reviews { get; set; } = new HashSet<ProductReviewEntity>();
 }

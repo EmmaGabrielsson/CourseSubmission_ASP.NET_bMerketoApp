@@ -20,13 +20,6 @@ public class ProductService
         _webHostEnvironment = webHostEnvironment;
     }
 
-    private readonly List<GridCollectionItemViewModel> _saleItems = new()
-    {
-        new GridCollectionItemViewModel { Id = "11", Title = "Apple watch collection", ImageUrl = "images/placeholders/369x310.svg", Price = 25, OnSale = true },
-        new GridCollectionItemViewModel { Id = "12", Title = "Beauty collection", ImageUrl = "images/placeholders/369x310.svg", Price = 50, OnSale = true}
-    };
-
-    //createAsync updated
     public async Task<Product> CreateAsync(ProductEntity entity)
     {
         var _entity = await _productRepo.GetDataAsync(x => x.ArticleNumber == entity.ArticleNumber);
@@ -38,7 +31,6 @@ public class ProductService
         }
         return null!;
     }
-
     public async Task<ProductEntity> GetAsync(Expression<Func<ProductEntity, bool>> predicate)
     {
         var _entity = await _productRepo.GetDataAsync(predicate);
@@ -48,7 +40,6 @@ public class ProductService
         }
         return null!;
     }
-
     public async Task<bool> UploadImageAsync(Product product, IFormFile image)
     {
         try
@@ -59,11 +50,10 @@ public class ProductService
         }
         catch { return false; }
     }
-   public List<GridCollectionItemViewModel> GetAllOnSaleItems()
+   public async Task<IEnumerable<ProductEntity>> GetAllOnSaleItems()
     {
-        return _saleItems;
-        //return await _context.Products.Where(x => x.OnSale == true).ToListAsync();
-
+        IEnumerable<ProductEntity> onSaleProducts = await _context.Products.Where(x => x.OnSale == true).ToListAsync();
+        return onSaleProducts;
     }
 
     public GridCollectionViewModel BestCollection = new()
@@ -82,14 +72,20 @@ public class ProductService
                     new GridCollectionItemViewModel { Id = "8", Title = "Apple watch collection", ImageUrl = "images/placeholders/270x295.svg\r\n", Price = 30 }
                 }
     };
-
-    public async Task CreateInitializedTopSaleProductAsync()
+    public async Task CreateInitializedDataAsync()
     {
+        if (!await _context.Tags.AnyAsync())
+        {
+            await _context.AddAsync(new TagEntity { TagName = "new" });
+            await _context.AddAsync(new TagEntity { TagName = "popular" });
+            await _context.AddAsync(new TagEntity { TagName = "featured" });
+            await _context.AddAsync(new TagEntity { TagName = "summer sale" });
+            await _context.AddAsync(new TagEntity { TagName = "outgoing" });
+            await _context.SaveChangesAsync();
+        }
+
         if (!await _context.Categories.AnyAsync())
         {
-            await _context.AddAsync(new CategoryEntity { CategoryName = "new" });
-            await _context.AddAsync(new CategoryEntity { CategoryName = "popular" });
-            await _context.AddAsync(new CategoryEntity { CategoryName = "featured" });
             await _context.AddAsync(new CategoryEntity { CategoryName = "all" });
             await _context.AddAsync(new CategoryEntity { CategoryName = "bag" });
             await _context.AddAsync(new CategoryEntity { CategoryName = "dress" });
@@ -100,35 +96,60 @@ public class ProductService
             await _context.AddAsync(new CategoryEntity { CategoryName = "mobile" });
             await _context.AddAsync(new CategoryEntity { CategoryName = "beauty" });
             await _context.AddAsync(new CategoryEntity { CategoryName = "electronics" });
-            await _context.AddAsync(new CategoryEntity { CategoryName = "light" });
-            await _context.AddAsync(new CategoryEntity { CategoryName = "summer" });
             await _context.SaveChangesAsync();
         }
 
         if (!await _context.Products.AnyAsync())
         {
-            await _context.AddAsync(new ProductEntity { ArticleNumber = "25695", ProductName = "Beauty collection", ImageUrl = "270x295.svg", Price = 5, OnSale = true });
-            await _context.AddAsync(new ProductEntity { ArticleNumber = "35685", ProductName = "Beauty collection", ImageUrl = "270x295.svg", Price = 5, OnSale = true });
-            await _context.AddAsync(new ProductEntity { ArticleNumber = "48952", ProductName = "Beauty collection", ImageUrl = "270x295.svg", Price = 5, OnSale = true });
-            await _context.AddAsync(new ProductEntity { ArticleNumber = "52365", ProductName = "Beauty collection", ImageUrl = "270x295.svg", Price = 5, OnSale = true });
-            await _context.AddAsync(new ProductEntity { ArticleNumber = "75214", ProductName = "Beauty collection", ImageUrl = "270x295.svg", Price = 5, OnSale = true });
-            await _context.AddAsync(new ProductEntity { ArticleNumber = "89652", ProductName = "Beauty collection", ImageUrl = "270x295.svg", Price = 5, OnSale = true });
-            await _context.AddAsync(new ProductEntity { ArticleNumber = "96174", ProductName = "Beauty collection", ImageUrl = "270x295.svg", Price = 5, OnSale = true });
+            await _context.AddAsync(new ProductEntity { ArticleNumber = "S1132", ProductName = "Apple watch collection", ImageUrl = "369x310.svg", Price = 25, OnSale = true });
+            await _context.AddAsync(new ProductEntity { ArticleNumber = "S8812", ProductName = "Apple watch collection", ImageUrl = "369x310.svg", Price = 50, OnSale = true });
+            await _context.AddAsync(new ProductEntity { ArticleNumber = "25695", ProductName = "Beauty collection", ImageUrl = "270x295.svg", Price = 5, OnSale = false, Ingress = "Discover our exquisite beauty collection, where elegance meets innovation. Unleash your radiance with our curated selection of high-quality products that elevate your skincare and makeup routine. From luxurious serums to captivating cosmetics, each item is designed to enhance your natural beauty. Explore our range and embark on a transformative journey to reveal your inner glow. Indulge in our carefully crafted collection and experience the power of self-care. Shop now and embrace the beauty that lies within you." });
+            await _context.AddAsync(new ProductEntity { ArticleNumber = "35685", ProductName = "Beauty collection", ImageUrl = "270x295.svg", Price = 5, OnSale = false, Ingress = "Discover our exquisite beauty collection, where elegance meets innovation. Unleash your radiance with our curated selection of high-quality products that elevate your skincare and makeup routine. From luxurious serums to captivating cosmetics, each item is designed to enhance your natural beauty. Explore our range and embark on a transformative journey to reveal your inner glow. Indulge in our carefully crafted collection and experience the power of self-care. Shop now and embrace the beauty that lies within you." });
+            await _context.AddAsync(new ProductEntity { ArticleNumber = "48952", ProductName = "Beauty collection", ImageUrl = "270x295.svg", Price = 5, OnSale = false, Ingress = "Discover our exquisite beauty collection, where elegance meets innovation. Unleash your radiance with our curated selection of high-quality products that elevate your skincare and makeup routine. From luxurious serums to captivating cosmetics, each item is designed to enhance your natural beauty. Explore our range and embark on a transformative journey to reveal your inner glow. Indulge in our carefully crafted collection and experience the power of self-care. Shop now and embrace the beauty that lies within you." });
+            await _context.AddAsync(new ProductEntity { ArticleNumber = "52365", ProductName = "Beauty collection", ImageUrl = "270x295.svg", Price = 5, OnSale = false, Ingress = "Discover our exquisite beauty collection, where elegance meets innovation. Unleash your radiance with our curated selection of high-quality products that elevate your skincare and makeup routine. From luxurious serums to captivating cosmetics, each item is designed to enhance your natural beauty. Explore our range and embark on a transformative journey to reveal your inner glow. Indulge in our carefully crafted collection and experience the power of self-care. Shop now and embrace the beauty that lies within you." });
+            await _context.AddAsync(new ProductEntity { ArticleNumber = "75214", ProductName = "Beauty collection", ImageUrl = "270x295.svg", Price = 5, OnSale = false, Ingress = "Discover our exquisite beauty collection, where elegance meets innovation. Unleash your radiance with our curated selection of high-quality products that elevate your skincare and makeup routine. From luxurious serums to captivating cosmetics, each item is designed to enhance your natural beauty. Explore our range and embark on a transformative journey to reveal your inner glow. Indulge in our carefully crafted collection and experience the power of self-care. Shop now and embrace the beauty that lies within you." });
+            await _context.AddAsync(new ProductEntity { ArticleNumber = "89652", ProductName = "Beauty collection", ImageUrl = "270x295.svg", Price = 5, OnSale = false, Ingress = "Discover our exquisite beauty collection, where elegance meets innovation. Unleash your radiance with our curated selection of high-quality products that elevate your skincare and makeup routine. From luxurious serums to captivating cosmetics, each item is designed to enhance your natural beauty. Explore our range and embark on a transformative journey to reveal your inner glow. Indulge in our carefully crafted collection and experience the power of self-care. Shop now and embrace the beauty that lies within you." });
+            await _context.AddAsync(new ProductEntity { ArticleNumber = "96174", ProductName = "Beauty collection", ImageUrl = "270x295.svg", Price = 5, OnSale = false, Ingress = "Discover our exquisite beauty collection, where elegance meets innovation. Unleash your radiance with our curated selection of high-quality products that elevate your skincare and makeup routine. From luxurious serums to captivating cosmetics, each item is designed to enhance your natural beauty. Explore our range and embark on a transformative journey to reveal your inner glow. Indulge in our carefully crafted collection and experience the power of self-care. Shop now and embrace the beauty that lies within you." });
             await _context.SaveChangesAsync();
 
-            var popularCategory = await _context.Categories.FirstOrDefaultAsync(x => x.CategoryName == "popular");
+            var popularTag = await _context.Tags.FirstOrDefaultAsync(x => x.TagName == "popular");
+            var summerSaleTag = await _context.Tags.FirstOrDefaultAsync(x => x.TagName == "summer sale");
+            var allCategory = await _context.Categories.FirstOrDefaultAsync(x => x.CategoryName == "all");
+            var beautyCategory = await _context.Categories.FirstOrDefaultAsync(x => x.CategoryName == "beauty");
 
-            await _context.AddAsync(new ProductCategoryEntity { CategoryId = popularCategory!.Id, ProductId = "25695" });
-            await _context.AddAsync(new ProductCategoryEntity { CategoryId = popularCategory!.Id, ProductId = "35685" });
-            await _context.AddAsync(new ProductCategoryEntity { CategoryId = popularCategory!.Id, ProductId = "48952" });
-            await _context.AddAsync(new ProductCategoryEntity { CategoryId = popularCategory!.Id, ProductId = "52365" });
-            await _context.AddAsync(new ProductCategoryEntity { CategoryId = popularCategory!.Id, ProductId = "75214" });
-            await _context.AddAsync(new ProductCategoryEntity { CategoryId = popularCategory!.Id, ProductId = "89652" });
-            await _context.AddAsync(new ProductCategoryEntity { CategoryId = popularCategory!.Id, ProductId = "96174" });
+            await _context.AddAsync(new ProductTagEntity { TagId = popularTag!.Id, ProductId = "25695" });
+            await _context.AddAsync(new ProductTagEntity { TagId = popularTag!.Id, ProductId = "35685" });
+            await _context.AddAsync(new ProductTagEntity { TagId = popularTag!.Id, ProductId = "48952" });
+            await _context.AddAsync(new ProductTagEntity { TagId = popularTag!.Id, ProductId = "52365" });
+            await _context.AddAsync(new ProductTagEntity { TagId = popularTag!.Id, ProductId = "75214" });
+            await _context.AddAsync(new ProductTagEntity { TagId = popularTag!.Id, ProductId = "89652" });
+            await _context.AddAsync(new ProductTagEntity { TagId = popularTag!.Id, ProductId = "96174" });
+            await _context.AddAsync(new ProductTagEntity { TagId = summerSaleTag!.Id, ProductId = "S1132" });
+            await _context.AddAsync(new ProductTagEntity { TagId = summerSaleTag!.Id, ProductId = "S8812" });
+            await _context.SaveChangesAsync();
+
+            await _context.AddAsync(new ProductCategoryEntity { CategoryId = beautyCategory!.Id, ProductId = "S8812" });
+            await _context.AddAsync(new ProductCategoryEntity { CategoryId = beautyCategory!.Id, ProductId = "S1132" });
+            await _context.AddAsync(new ProductCategoryEntity { CategoryId = beautyCategory!.Id, ProductId = "96174" });
+            await _context.AddAsync(new ProductCategoryEntity { CategoryId = beautyCategory!.Id, ProductId = "89652" });
+            await _context.AddAsync(new ProductCategoryEntity { CategoryId = beautyCategory!.Id, ProductId = "75214" });
+            await _context.AddAsync(new ProductCategoryEntity { CategoryId = beautyCategory!.Id, ProductId = "52365" });
+            await _context.AddAsync(new ProductCategoryEntity { CategoryId = beautyCategory!.Id, ProductId = "48952" });
+            await _context.AddAsync(new ProductCategoryEntity { CategoryId = beautyCategory!.Id, ProductId = "35685" });
+            await _context.AddAsync(new ProductCategoryEntity { CategoryId = beautyCategory!.Id, ProductId = "25695" });
+            
+            await _context.AddAsync(new ProductCategoryEntity { CategoryId = allCategory!.Id, ProductId = "S8812" });
+            await _context.AddAsync(new ProductCategoryEntity { CategoryId = allCategory!.Id, ProductId = "S1132" });
+            await _context.AddAsync(new ProductCategoryEntity { CategoryId = allCategory!.Id, ProductId = "96174" });
+            await _context.AddAsync(new ProductCategoryEntity { CategoryId = allCategory!.Id, ProductId = "89652" });
+            await _context.AddAsync(new ProductCategoryEntity { CategoryId = allCategory!.Id, ProductId = "75214" });
+            await _context.AddAsync(new ProductCategoryEntity { CategoryId = allCategory!.Id, ProductId = "52365" });
+            await _context.AddAsync(new ProductCategoryEntity { CategoryId = allCategory!.Id, ProductId = "48952" });
+            await _context.AddAsync(new ProductCategoryEntity { CategoryId = allCategory!.Id, ProductId = "35685" });
+            await _context.AddAsync(new ProductCategoryEntity { CategoryId = allCategory!.Id, ProductId = "25695" });
             await _context.SaveChangesAsync();
         }
     }
-
     public async Task<IEnumerable<GridCollectionItemViewModel>> GetAllAsync()
     {
         var products = await _context.Products.ToListAsync();
@@ -159,10 +180,10 @@ public class ProductService
 
     public async Task<IEnumerable<GridCollectionItemViewModel>> GetAllTopSaleProductsAsync()
     {
-        await CreateInitializedTopSaleProductAsync();
+        await CreateInitializedDataAsync();
         var topSaleProducts = new List<GridCollectionItemViewModel>();
-        var popularCategory = await _context.Categories.FirstOrDefaultAsync(x => x.CategoryName == "popular");
-        var topSaleIds = await _context.ProductCategories.Where(x => x.CategoryId == popularCategory!.Id).ToListAsync();
+        var popularTag = await _context.Tags.FirstOrDefaultAsync(x => x.TagName == "popular");
+        var topSaleIds = await _context.ProductTags.Where(x => x.TagId == popularTag!.Id).ToListAsync();
         foreach (var id in topSaleIds)
         {
             var product = await _context.Products.FirstOrDefaultAsync(x => x.ArticleNumber == id.ProductId);

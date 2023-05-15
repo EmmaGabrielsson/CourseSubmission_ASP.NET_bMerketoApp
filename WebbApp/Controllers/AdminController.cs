@@ -54,10 +54,10 @@ public class AdminController : Controller
         {
             var product = await _productService.CreateAsync(model);
             if (product != null)
-            {
                 await _productService.UploadImageAsync(product, model.Image);
-            }
+
             ModelState.AddModelError("", "You added product succesfully!");
+            return View();
         }
 
         ModelState.AddModelError("", "Something went wrong when trying to add product.");

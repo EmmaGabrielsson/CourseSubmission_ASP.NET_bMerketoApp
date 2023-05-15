@@ -1,5 +1,6 @@
 ﻿@{
     var Model = productService.BestCollection;
+    var categories = await categoryRepo.GetAllDataAsync();
 }
 
 @if (Model != null){
@@ -9,13 +10,13 @@
                 <h1 class="title">@Model.Title</h1>                
             }
 
-            @if (Model.Categories != null)
+            @if (categories != null)
             {
                 <ul class="categories">
-                    @foreach (var category in Model.Categories)
+                    @foreach (var category in categories)
                     {
                     <li class="text-decoration-none category-item">
-                            <a class="link-secondary text-decoration-none text-capitalize" href="#">@category</a>
+                        <a class="link-secondary text-decoration-none text-capitalize" asp-controller="products" asp-action="category" asp-route-id="@category.Id">@category.CategoryName</a>
                     </li>
                     }
                 </ul>

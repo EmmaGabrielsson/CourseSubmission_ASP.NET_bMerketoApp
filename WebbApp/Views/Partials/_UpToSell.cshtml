@@ -1,5 +1,11 @@
 ﻿@{
-    var items = productService.GetAllOnSaleItems();
+    //var items = productService.GetAllOnSaleItems();
+    List<GridCollectionItemViewModel> items = new()
+    {
+        new GridCollectionItemViewModel { Id = "11", Title = "Apple watch collection", ImageUrl = "images/placeholders/369x310.svg", Price = 25, OnSale = true },
+        new GridCollectionItemViewModel { Id = "12", Title = "Beauty collection", ImageUrl = "images/placeholders/369x310.svg", Price = 50, OnSale = true}
+    };
+
 }
 <section class="up-to-sell">
     <div class="container">

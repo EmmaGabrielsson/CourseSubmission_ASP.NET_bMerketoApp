@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using WebbApp.Models.Dtos;
 using WebbApp.Services;
 using WebbApp.ViewModels;
 
@@ -9,19 +8,34 @@ namespace WebbApp.Controllers;
 public class AccountController : Controller
 {
     private readonly UserService _userService;
-
-    public AccountController(UserService userService)
+    private readonly AdressService _adressService;
+    public AccountController(UserService userService, AdressService adressService)
     {
         _userService = userService;
+        _adressService = adressService;
     }
 
 
     #region My Account (https://domain.com/account)
     [Authorize]
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
         ViewData["Title"] = "My account";
-        return View();
+
+        var userInfo = await _userService.GetAsync(x => x.UserName == User.Identity!.Name);
+        var adresses = await _adressService.GetUserAdressAsync(userInfo);
+
+        var profileView = new ProfileViewModel
+        {
+            FirstName = userInfo.FirstName,
+            LastName = userInfo.LastName,
+            PhoneNumber = userInfo.PhoneNumber,
+            Company = userInfo.CompanyName,
+            ImageUrl = userInfo.ImageUrl,
+            Adresses = adresses,
+        };
+
+        return View(profileView);
     }
     #endregion
 
