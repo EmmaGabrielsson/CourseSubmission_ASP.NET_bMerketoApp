@@ -1,21 +1,18 @@
-﻿@{
-    var showcase = await showcaseService.GetLatestShowcaseAsync();
-}
-
-@if(showcase != null)
+﻿
+@if (ViewBag.LatestShowcase != null)
 {
     <section class="showcase">
         <div class="container">
             <div class="content">
-                <div class="ingress">@showcase.Ingress</div>
-                <div class="title">@showcase?.Title</div>
-                @if(!string.IsNullOrEmpty(showcase?.LinkUrl) && !string.IsNullOrEmpty(showcase.LinkText))
+                <div class="ingress">@ViewBag.LatestShowcase.Ingress</div>
+                <div class="title">@ViewBag.LatestShowcase.Title</div>
+                @if(!string.IsNullOrEmpty(ViewBag.LatestShowcase.LinkUrl) && !string.IsNullOrEmpty(ViewBag.LatestShowcase.LinkText))
                 {
-                    <a href="@showcase?.LinkUrl" class="btn-theme">@showcase?.LinkText</a> 
+                    <a href="@ViewBag.LatestShowcase.LinkUrl" class="btn-theme">@ViewBag.LatestShowcase.LinkText</a> 
                 }
             </div>
             <div class="content-image">
-                <img src="@showcase?.ImageUrl" alt="@showcase?.Title">
+                <img src="@ViewBag.LatestShowcase.ImageUrl" alt="@ViewBag.LatestShowcase.Title">
             </div>
         </div>
     </section>

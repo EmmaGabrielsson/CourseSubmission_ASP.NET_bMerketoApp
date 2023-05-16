@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using WebbApp.Repositories;
 using WebbApp.Services;
 using WebbApp.ViewModels;
 
@@ -7,15 +8,39 @@ namespace WebbApp.Controllers;
 public class HomeController : Controller
 {
     private readonly SubscribeService _subscribeService;
+    private readonly ProductService _productService;
+    private readonly CategoryRepo _categoryRepo;
 
-    public HomeController(SubscribeService subscribeService)
+    public HomeController(SubscribeService subscribeService, ProductService productService, CategoryRepo categoryRepo)
     {
         _subscribeService = subscribeService;
+        _productService = productService;
+        _categoryRepo = categoryRepo;
     }
 
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
         ViewData["Title"] = "Home";
+        await _productService.CreateInitializedDataAsync();
+
+        var latestShowcase = await _productService.GetLatestShowcaseAsync();
+        ViewBag.LatestShowcase = latestShowcase;
+
+        var categories = await _categoryRepo.GetAllDataAsync();
+        ViewBag.Categories = categories;
+
+        var bestCollection = await _productService.GetBestCollectionAsync();
+        if(bestCollection != null)
+            ViewBag.BestCollection = bestCollection;
+
+        var onSaleItems = await _productService.GetAllOnSaleItemsAsync();
+        Random random = new();
+        GridCollectionItemViewModel randomItem = onSaleItems[random.Next(onSaleItems.Count)];
+        ViewBag.RandomItem = randomItem;
+
+        var topSaleItemsList = await _productService.GetAllTopSaleProductsAsync();
+        ViewBag.TopSaleItemsList = topSaleItemsList;
+
         return View();
     }
 

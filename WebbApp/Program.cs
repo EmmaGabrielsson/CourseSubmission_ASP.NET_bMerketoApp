@@ -18,9 +18,10 @@ builder.Services.AddScoped<CategoryRepo>();
 builder.Services.AddScoped<ProductRepo>();
 builder.Services.AddScoped<StockRepo>();
 builder.Services.AddScoped<ProductReviewRepo>();
+builder.Services.AddScoped<TagRepo>();
+builder.Services.AddScoped<ShowcaseRepo>();
 
 //services
-builder.Services.AddScoped<ShowcaseService>();
 builder.Services.AddScoped<SeedService>();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<ProductService>();

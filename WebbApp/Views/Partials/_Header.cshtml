@@ -1,5 +1,5 @@
 ﻿@{
-    var displayFullName = "";
+    string displayFullName = "";
     var user = await userService.GetAsync(x => x.UserName == User.Identity!.Name);
     if (user != null)
     {

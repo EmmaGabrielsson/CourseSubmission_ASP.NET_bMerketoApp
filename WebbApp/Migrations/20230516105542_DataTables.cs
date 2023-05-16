@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace WebbApp.Migrations
 {
     /// <inheritdoc />
-    public partial class AddTables : Migration
+    public partial class DataTables : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -46,9 +46,7 @@ namespace WebbApp.Migrations
                     Ingress = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     VendorName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Price = table.Column<decimal>(type: "money", nullable: true),
-                    OnSale = table.Column<bool>(type: "bit", nullable: false)
+                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -114,8 +112,8 @@ namespace WebbApp.Migrations
                 name: "ProductReviews",
                 columns: table => new
                 {
-                    ArticleNumber = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Rating = table.Column<int>(type: "int", nullable: false),
                     Comment = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -123,7 +121,7 @@ namespace WebbApp.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProductReviews", x => x.ArticleNumber);
+                    table.PrimaryKey("PK_ProductReviews", x => x.Id);
                     table.ForeignKey(
                         name: "FK_ProductReviews_Products_ProductArticleNumber",
                         column: x => x.ProductArticleNumber,
@@ -158,11 +156,17 @@ namespace WebbApp.Migrations
                 columns: table => new
                 {
                     ProductId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    TagId = table.Column<int>(type: "int", nullable: false)
+                    TagId = table.Column<int>(type: "int", nullable: false),
+                    CollectionEntityId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ProductTags", x => new { x.ProductId, x.TagId });
+                    table.ForeignKey(
+                        name: "FK_ProductTags_Collections_CollectionEntityId",
+                        column: x => x.CollectionEntityId,
+                        principalTable: "Collections",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_ProductTags_Products_ProductId",
                         column: x => x.ProductId,
@@ -188,6 +192,11 @@ namespace WebbApp.Migrations
                 column: "ProductArticleNumber");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ProductTags_CollectionEntityId",
+                table: "ProductTags",
+                column: "CollectionEntityId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ProductTags_TagId",
                 table: "ProductTags",
                 column: "TagId");
@@ -201,9 +210,6 @@ namespace WebbApp.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "Collections");
-
             migrationBuilder.DropTable(
                 name: "ProductCategories");
 
@@ -221,6 +227,9 @@ namespace WebbApp.Migrations
 
             migrationBuilder.DropTable(
                 name: "Categories");
+
+            migrationBuilder.DropTable(
+                name: "Collections");
 
             migrationBuilder.DropTable(
                 name: "Tags");

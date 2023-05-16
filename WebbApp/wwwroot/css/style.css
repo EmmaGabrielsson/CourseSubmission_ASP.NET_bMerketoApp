@@ -461,6 +461,7 @@ footer {
   padding: 30px;
   background-color: #292929;
   color: #AEAEAE;
+  position: relative;
 }
 footer .container {
   display: flex;
@@ -649,6 +650,10 @@ footer .container {
     grid-template-columns: repeat(4, 1fr);
   }
 }
+.grid-collection .grid .collection-item .body .title {
+  font-size: 14px;
+  font-weight: 500;
+}
 .grid-collection .load-more {
   margin-top: 40px;
   text-align: center;
@@ -750,30 +755,33 @@ footer .container {
 }
 
 .details-container {
+  font-family: "Poppins", sans-serif;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  margin: 2rem;
+  margin: 3rem 4rem 2rem 4rem;
 }
 @media (min-width: 992px) {
   .details-container {
     display: grid;
-    column-gap: 30px;
-    row-gap: 30px;
     grid-template-columns: 1fr 1fr;
     grid-template-areas: "image-container product-details";
+  }
+}
+@media (min-width: 1200px) {
+  .details-container {
+    padding: 0 5rem;
   }
 }
 .details-container .image-container {
   grid-area: image-container;
   max-width: 501px;
   max-height: 430px;
-  margin: 3rem;
-  border: 1px solid black;
+  margin: 1rem;
 }
 .details-container .product-details {
   grid-area: product-details;
-  margin: 3rem;
+  margin: 1rem;
   text-align: center;
 }
 @media (min-width: 992px) {
@@ -831,6 +839,23 @@ footer .container {
 }
 .details-container .product-details .button-container .category {
   margin-bottom: 4rem;
+}
+.details-container .more-details-container {
+  width: 100%;
+}
+.details-container .more-details-container .btn-container button {
+  width: 100%;
+  border: 1px solid #202020;
+  padding: 12px 20px;
+}
+.details-container .more-details-container .btn-container button:hover {
+  border: 1px solid #FA3150;
+  background-color: #FA3150;
+  color: #FFFFFF;
+  transition: all 0.25s ease-in-out;
+}
+.details-container .more-details-container .view-review-container {
+  display: none;
 }
 
 .top-selling {
@@ -987,9 +1012,12 @@ footer .container {
 .contact-form form .companyName {
   grid-area: companyName;
 }
-.contact-form form .terms {
+.contact-form form .contact-terms {
   grid-area: terms;
-  margin: 10px 0;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  margin: 1rem 0 2rem 0;
 }
 .contact-form form .message {
   grid-area: message;

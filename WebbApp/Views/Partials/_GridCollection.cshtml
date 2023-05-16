@@ -1,19 +1,15 @@
-﻿@{
-    var Model = productService.BestCollection;
-    var categories = await categoryRepo.GetAllDataAsync();
-}
-
-@if (Model != null){
+﻿
+@if (ViewBag.BestCollection != null){
     <section class="grid-collection">
-            @if (!string.IsNullOrEmpty(Model.Title))
+            @if (!string.IsNullOrEmpty(ViewBag.BestCollection.Title))
             {
-                <h1 class="title">@Model.Title</h1>                
+                <h1 class="title text-capitalize">@ViewBag.BestCollection.Title</h1>                
             }
 
-            @if (categories != null)
+            @if (ViewBag.Categories != null)
             {
                 <ul class="categories">
-                    @foreach (var category in categories)
+                    @foreach (var category in ViewBag.Categories)
                     {
                     <li class="text-decoration-none category-item">
                         <a class="link-secondary text-decoration-none text-capitalize" asp-controller="products" asp-action="category" asp-route-id="@category.Id">@category.CategoryName</a>
@@ -22,10 +18,10 @@
                 </ul>
             }
 
-            @if (Model.GridItems != null)
+            @if (ViewBag.BestCollection.GridItems != null)
             {
                 <div class="grid">
-                    @foreach (var item in Model.GridItems)
+                    @foreach (var item in ViewBag.BestCollection.GridItems)
                     {
                     <div class="collection-item">
                         <partial name="/Views/Partials/_GridCollectionItem.cshtml" model="item" />
@@ -34,7 +30,7 @@
                 </div>
             }
 
-            @if (Model.LoadMore)
+            @if (ViewBag.BestCollection.LoadMore)
             {
                 <div class="load-more">
                     <button class="btn-outline-white">LOAD MORE <i class="fa-solid fa-rotate-right"></i></button>

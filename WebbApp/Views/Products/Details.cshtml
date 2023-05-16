@@ -1,5 +1,27 @@
 ﻿@model Product
 
+@{
+    int rating = 0;
+    foreach (var rate in Model.Reviews)
+    {
+        rating += rate.Rating;
+    }
+    if(Model.Reviews != null)
+    {
+        rating = rating / Model.Reviews.Count;        
+    }
+
+    string stars = "";
+    string emptyStars = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-star-fill\" viewBox=\"0 0 16 16\"><path d=\"M2.866 14.85c - .078.444.36.791.746.593l4.39 - 2.256 4.389 2.256c.386.198.824 - .149.746 - .592l - .83 - 4.73 3.522 - 3.356c.33 - .314.16 - .888 - .282 - .95l - 4.898 - .696L8.465.792a.513.513 0 0 0 - .927 0L5.354 5.12l - 4.898.696c - .441.062 - .612.636 - .283.95l3.523 3.356 - .83 4.73zm4.905 - 2.767 - 3.686 1.894.694 - 3.957a.565.565 0 0 0 - .163 - .505L1.71 6.745l4.052 - .576a.525.525 0 0 0 .393 - .288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575 - 2.906 2.77a.565.565 0 0 0 - .163.506l.694 3.957 - 3.686 - 1.894a.503.503 0 0 0 - .461 0z\" /></svg> ";
+    emptyStars += 5;
+
+    for (int i = 0; i < rating; i++)
+    {
+        stars += "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"yellow\" class=\"bi bi-star-fill\" viewBox=\"0 0 16 16\"><path d=\"M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z\" /></svg> ";
+    }
+
+}
+
 <section class="breadcrumb">
     <div class="container">
         <div class="content text-center text-dark">
@@ -14,16 +36,29 @@
 </section>
 
 <section class="details-container">
-    <div class="image-container">
-        <img src="Model.ImageUrl" alt="@Model.ProductName"/>            
+    <div class="image-container d-flex justify-content-center">
+        <img src="~/images/products/@Model.ImageUrl" alt="@Model.ProductName"/>            
     </div>
     <div class="product-details">
         <h4 class="title">@Model.ProductName</h4>
         <p class="product-description">@Model.Ingress</p>
-        <div>
-            <p>Rating: ***** <span>Reviews </span>
-            </p>
-        </div>
+        @if (Model.Reviews != null)
+        {
+            <div>
+                <p>
+                    @Html.Raw(stars)
+                    <span class="small ms-2">@Model.Reviews.Count Reviews</span>
+                </p>
+            </div>
+        } else
+        {
+            <div class="d-flex justify-content-center align-items-center">
+                <p>
+                    @Html.Raw(emptyStars)
+                    <span class="small ms-2">(0) Reviews </span>
+                </p>
+            </div>
+        }
         <p class="product-price">$@Model.Price</p>
         <div class="button-container">
             <div class="quantity-container">
@@ -36,21 +71,86 @@
                 <i class="add-cart fa-regular fa-cart-plus"></i>
             </button>
         </div>
-        <p class="category">Catergory: 
-            @foreach (var category in Model.Categories)
-            {                    
-                @if (Model.Categories.LastOrDefault(category) != category)
-                {
-                    <span>@category, </span>
-                }
-                else
-                {
-                    <span>@category</span>
-                }
+        <div>
+            @if (Model.StockQuantity < 1)
+            {
+                <p class="text-danger">
+                    <span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="red" class="bi bi-circle-fill" viewBox="0 0 16 16">
+                            <circle cx="8" cy="8" r="8" />
+                        </svg>
+                    </span>
+                    Out of Stock
+                </p>
+            }else if (Model.StockQuantity < 30)
+            {
+                <p class="text-warning">
+                    <span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="yellow" class="bi bi-circle-fill" viewBox="0 0 16 16">
+                            <circle cx="8" cy="8" r="8" />
+                        </svg>
+                    </span>
+                    Limited Stock
+                </p>
+            } else
+            {
+                <p class="text-success">
+                    <span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="green" class="bi bi-circle-fill" viewBox="0 0 16 16">
+                            <circle cx="8" cy="8" r="8" />
+                        </svg>
+                    </span>
+                     In Stock
+                </p>
             }
-        </p>
+        </div>
+        @if (Model.Categories != null)
+        {
+            <p class="category">Catergory: 
+                @foreach (var category in Model.Categories)
+                {                    
+                    @if (Model.Categories.LastOrDefault(category) != category)
+                    {
+                        <span>@category, </span>
+                    }
+                    else
+                    {
+                        <span>@category</span>
+                    }
+                }
+            </p>            
+        }
     </div>
-    <div>
-        <p class="product-description">@Model.Description</p>
+    <div class="more-details-container">
+        <div class="btn-container d-flex justify-content-center">
+            @if(Model.Description != null)
+            {
+                <button onclick="ViewDescription()" aria-pressed="true" class=" btn text-uppercase" type="button">Description</button>
+            } else
+            {
+                <button disabled aria-pressed="true" class=" btn text-uppercase" type="button">Description</button>
+            }
+            @if(Model.Reviews != null)
+            {
+                <button onclick="ViewReviews()" class="btn text-uppercase" type="button">Reviews (@Model.Reviews.Count)</button>
+            }
+            else
+            {
+                <button disabled class="btn text-uppercase" type="button">Reviews (0)</button>
+            }
+            
+        </div>
+        <div class="view-description-container my-3 d-flex justify-content-center content">
+            @Model.Description
+        </div>
+        <div class="view-review-container p-3">
+            @foreach (var review in Model.Reviews!)
+            {
+                <div class="border p-2 mb-2">
+                    <p class="my-1 text-decoration-underline fw-bold">Rating: @review.Rating, @review.Created </p>
+                    <p class="small">@review.Comment</p>
+                </div>
+            }
+        </div>
     </div>
 </section>

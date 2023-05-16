@@ -15,9 +15,6 @@ public class ProductEntity
     public string? VendorName { get; set; }
     public string ImageUrl { get; set; } = null!;
 
-    [Column(TypeName = "money")]
-    public decimal? Price { get; set; }
-    public bool OnSale { get; set; } = false;
 
     public ICollection<ProductTagEntity> Tags { get; set; } = new HashSet<ProductTagEntity>();
     public ICollection<ProductCategoryEntity> Categories { get; set; } = new HashSet<ProductCategoryEntity>();

@@ -114,3 +114,17 @@ function toggleMenu(attribute) {
 }
 toggleMenu('[data-option="toggle"]')
 
+
+function ViewReviews() {
+    const descriptionContainer = document.querySelector(".view-description-container")
+    descriptionContainer.style.display = "none"
+    const reviewContainer = document.querySelector(".view-review-container")
+    reviewContainer.style.display = "flex"
+}
+
+function ViewDescription() {
+    const reviewContainer = document.querySelector(".view-review-container")
+    reviewContainer.style.display = "none"
+    const descriptionContainer = document.querySelector(".view-description-container")
+    descriptionContainer.style.display = "flex"
+}

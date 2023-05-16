@@ -4,17 +4,20 @@ namespace WebbApp.Models.Dtos;
 
 public class Product
 {
-    public string ArticleNumber { get; set; } = null!;
-    public string ProductName { get; set; } = null!;
+    public string? ArticleNumber { get; set; }
+    public string? ProductName { get; set; }
     public string? Ingress { get; set; }
     public string? Description { get; set; }
     public string? VendorName { get; set; }
-    public string ImageUrl { get; set; } = null!;
+    public string? ImageUrl { get; set; }
     public decimal? Price { get; set; }
-    public bool OnSale { get; set; } = false;
+    public bool? OnSale { get; set; }
+    public int? StockQuantity { get; set; }
+    public string? StandardCurrency { get; set; }
 
-    public ICollection<ProductCategoryEntity> Categories { get; set; } = new HashSet<ProductCategoryEntity>();
-    public ICollection<ProductReviewEntity> Reviews { get; set; } = new HashSet<ProductReviewEntity>();
+    public List<CategoryEntity> Categories { get; set; } = new List<CategoryEntity>();
+    public List<ProductReviewEntity> Reviews { get; set; } = new List<ProductReviewEntity>();
+
 
     public static implicit operator Product(ProductEntity entity)
     {
@@ -27,9 +30,6 @@ public class Product
             Description = entity.Description,
             ImageUrl = entity.ImageUrl,
         };
-
         return product;
     }
-
-
 }

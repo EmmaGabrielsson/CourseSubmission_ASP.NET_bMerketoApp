@@ -1,10 +1,8 @@
-﻿using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using System.Security.Claims;
 using WebbApp.Contexts;
-using WebbApp.Models.Dtos;
 using WebbApp.Models.Identities;
 using WebbApp.ViewModels;
 

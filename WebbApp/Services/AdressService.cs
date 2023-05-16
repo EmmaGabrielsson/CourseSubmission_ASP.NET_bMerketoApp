@@ -32,17 +32,15 @@ public class AdressService
     }
     public async Task<bool> AddAdressAsync(AppUser user, AdressEntity adress)
     {
-        UserAdressEntity newUserAdress = new()
+        var findUser = await _context.Users.FindAsync(user.Id);
+        if(findUser != null)
         {
-            UserId = user.Id,
-            AdressId = adress.Id
-        };
-
-        if (newUserAdress != null)
-        {
+            UserAdressEntity newUserAdress = new()
+            {
+                UserId = findUser.Id,
+                AdressId = adress.Id
+            };
             await _context.AspNetUserAdresses.AddAsync(newUserAdress);
-            await _context.SaveChangesAsync();
-            _context.Users.Update(user);
             await _context.SaveChangesAsync();
             return true;
         }

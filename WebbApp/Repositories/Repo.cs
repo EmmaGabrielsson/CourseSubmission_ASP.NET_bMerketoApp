@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using WebbApp.Contexts;
+using WebbApp.Models.Entities;
 
 namespace WebbApp.Repositories
 {

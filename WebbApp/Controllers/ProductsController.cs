@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using WebbApp.Models.Dtos;
 using WebbApp.Repositories;
 using WebbApp.Services;
 using WebbApp.ViewModels;
@@ -9,10 +10,12 @@ namespace WebbApp.Controllers
     {
         private readonly ProductService _productService;
         private readonly CategoryRepo _categoryRepo;
-        public ProductsController(ProductService productService, CategoryRepo categoryRepo)
+        private readonly StockRepo _stockRepo;
+        public ProductsController(ProductService productService, CategoryRepo categoryRepo, StockRepo stockRepo)
         {
             _productService = productService;
             _categoryRepo = categoryRepo;
+            _stockRepo = stockRepo;
         }
 
         public IActionResult Index()
@@ -55,20 +58,31 @@ namespace WebbApp.Controllers
             }
             return View(searchModel);
         }
-        
-        public IActionResult Cart()
-        {
-            ViewData["Title"] = "Your Cart";
-            return View();
-        }
 
         public async Task<IActionResult> Details(string id)
         {
             ViewData["Title"] = "Details";
 
-            var product = await _productService.GetAsync(x => x.ArticleNumber == id);
+            Product product = await _productService.GetAsync(x => x.ArticleNumber == id);
+            var productStock = await _stockRepo.GetDataAsync(x => x.ArticleNumber == product.ArticleNumber);
+
+            if (productStock != null)
+            {
+                product.OnSale = productStock.OnSale;
+                product.Price = productStock.Price;
+                product.StandardCurrency = productStock.StandardCurrency;
+                product.StockQuantity = productStock.Quantity;
+            }
+
+            product.Reviews = await _productService.GetReviewsAsync(product.ArticleNumber!);
+            product.Categories = await _productService.GetProductCategoriesListAsync(product.ArticleNumber!);
 
             return View(product);
+        }
+        public IActionResult Cart()
+        {
+            ViewData["Title"] = "Your Cart";
+            return View();
         }
     }
 }
