@@ -854,6 +854,9 @@ footer .container {
   color: #FFFFFF;
   transition: all 0.25s ease-in-out;
 }
+.details-container .more-details-container .view-description-container {
+  display: none;
+}
 .details-container .more-details-container .view-review-container {
   display: none;
 }

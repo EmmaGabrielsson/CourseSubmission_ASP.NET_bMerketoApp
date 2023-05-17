@@ -82,7 +82,7 @@ public class ProductService
             {
                 Ingress = "WELCOME TO BMERKETO SHOP",
                 Title = "Exclusive Chair gold Collection.",
-                ImageUrl = "images/placeholders/625x647.svg",
+                ImageUrl = "625x647.svg",
                 LinkText = "SHOP NOW",
                 LinkUrl = "/products"
             });
@@ -197,11 +197,11 @@ public class ProductService
 
             if (!await _context.Stocks.AnyAsync())
             {
-                await _context.AddAsync(new StockEntity { ArticleNumber = "f-25695", Price = 30, OnSale = false, Quantity = 50, StandardCurrency = "USD" });
-                await _context.AddAsync(new StockEntity { ArticleNumber = "f-35685", Price = 30, OnSale = false, Quantity = 50, StandardCurrency = "USD" });
-                await _context.AddAsync(new StockEntity { ArticleNumber = "f-52365", Price = 30, OnSale = false, Quantity = 50, StandardCurrency = "USD" });
-                await _context.AddAsync(new StockEntity { ArticleNumber = "f-75214", Price = 30, OnSale = false, Quantity = 50, StandardCurrency = "USD" });
-                await _context.AddAsync(new StockEntity { ArticleNumber = "f-89652", Price = 30, OnSale = false, Quantity = 50, StandardCurrency = "USD" });
+                await _context.AddAsync(new StockEntity { ArticleNumber = "f-25695", Price = 30, OnSale = false, Quantity = 0, StandardCurrency = "USD" });
+                await _context.AddAsync(new StockEntity { ArticleNumber = "f-35685", Price = 30, OnSale = false, Quantity = 0, StandardCurrency = "USD" });
+                await _context.AddAsync(new StockEntity { ArticleNumber = "f-52365", Price = 30, OnSale = false, Quantity = 0, StandardCurrency = "USD" });
+                await _context.AddAsync(new StockEntity { ArticleNumber = "f-75214", Price = 30, OnSale = false, Quantity = 25, StandardCurrency = "USD" });
+                await _context.AddAsync(new StockEntity { ArticleNumber = "f-89652", Price = 30, OnSale = false, Quantity = 25, StandardCurrency = "USD" });
                 await _context.AddAsync(new StockEntity { ArticleNumber = "f-96174", Price = 30, OnSale = false, Quantity = 50, StandardCurrency = "USD" });
                 await _context.AddAsync(new StockEntity { ArticleNumber = "f-06174", Price = 30, OnSale = false, Quantity = 50, StandardCurrency = "USD" });
                 await _context.AddAsync(new StockEntity { ArticleNumber = "f-48952", Price = 30, OnSale = false, Quantity = 50, StandardCurrency = "USD" });
@@ -210,9 +210,9 @@ public class ProductService
                 await _context.AddAsync(new StockEntity { ArticleNumber = "25695", Price = 30, OnSale = false, Quantity = 125, StandardCurrency = "USD" });
                 await _context.AddAsync(new StockEntity { ArticleNumber = "35685", Price = 30, OnSale = false, Quantity = 125, StandardCurrency = "USD" });
                 await _context.AddAsync(new StockEntity { ArticleNumber = "48952", Price = 30, OnSale = false, Quantity = 125, StandardCurrency = "USD" });
-                await _context.AddAsync(new StockEntity { ArticleNumber = "52365", Price = 30, OnSale = false, Quantity = 125, StandardCurrency = "USD" });
-                await _context.AddAsync(new StockEntity { ArticleNumber = "75214", Price = 30, OnSale = false, Quantity = 125, StandardCurrency = "USD" });
-                await _context.AddAsync(new StockEntity { ArticleNumber = "89652", Price = 30, OnSale = false, Quantity = 125, StandardCurrency = "USD" });
+                await _context.AddAsync(new StockEntity { ArticleNumber = "52365", Price = 30, OnSale = false, Quantity = 105, StandardCurrency = "USD" });
+                await _context.AddAsync(new StockEntity { ArticleNumber = "75214", Price = 30, OnSale = false, Quantity = 105, StandardCurrency = "USD" });
+                await _context.AddAsync(new StockEntity { ArticleNumber = "89652", Price = 30, OnSale = false, Quantity = 105, StandardCurrency = "USD" });
                 await _context.AddAsync(new StockEntity { ArticleNumber = "96174", Price = 30, OnSale = false, Quantity = 125, StandardCurrency = "USD" });
                 await _context.SaveChangesAsync();
             }

@@ -119,12 +119,22 @@ function ViewReviews() {
     const descriptionContainer = document.querySelector(".view-description-container")
     descriptionContainer.style.display = "none"
     const reviewContainer = document.querySelector(".view-review-container")
-    reviewContainer.style.display = "flex"
+
+    if (reviewContainer.style.display === "flex") {
+        reviewContainer.style.display = "none";
+    } else {
+        reviewContainer.style.display = "flex";
+    }
 }
 
 function ViewDescription() {
     const reviewContainer = document.querySelector(".view-review-container")
     reviewContainer.style.display = "none"
     const descriptionContainer = document.querySelector(".view-description-container")
-    descriptionContainer.style.display = "flex"
+
+    if (descriptionContainer.style.display === "flex") {
+        descriptionContainer.style.display = "none";
+    } else {
+        descriptionContainer.style.display = "flex";
+    }
 }

@@ -13,9 +13,9 @@
     </div>
 </section>
 <section class="grid-collection">
-    <h4>Products in <span class="text-decoration-underline text-capitalize">@Model.Category</span> category:</h4>
+    <h4 class="d-flex justify-content-center">Products in <span class="text-decoration-underline text-capitalize mx-2"> @Model.Category </span> category:</h4>
     
-    @if (Model.Products != null)
+    @if (Model.Products.Any())
     {
         <div class="grid" id="products-container">
 
@@ -25,6 +25,12 @@
                     <partial name="/Views/Partials/_GridCollectionItem.cshtml" model="product" />
                 </div>
             }
+        </div>
+    }
+    else
+    {
+        <div class="d-flex justify-content-center mt-5">
+            <p>No products available in this category.</p>
         </div>
     }
 </section>
