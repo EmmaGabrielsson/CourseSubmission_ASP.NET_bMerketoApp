@@ -3,7 +3,6 @@ using System.Linq.Expressions;
 using WebbApp.Contexts;
 using WebbApp.Models.Entities;
 using WebbApp.Models.Identities;
-using WebbApp.ViewModels;
 
 namespace WebbApp.Services;
 
@@ -35,27 +34,20 @@ public class AdressService
         var findUser = await _context.Users.FindAsync(user.Id);
         if(findUser != null)
         {
-            UserAdressEntity newUserAdress = new()
-            {
-                UserId = findUser.Id,
-                AdressId = adress.Id
-            };
-            await _context.AspNetUserAdresses.AddAsync(newUserAdress);
-            await _context.SaveChangesAsync();
-            return true;
+            var findAdress = await _context.AspNetAdresses.FirstOrDefaultAsync(x => x.StreetName == adress.StreetName & x.PostalCode == adress.PostalCode && x.City == adress.City );
+            if (findAdress != null){
+                UserAdressEntity newUserAdress = new()
+                {
+                    UserId = findUser.Id,
+                    AdressId = findAdress.Id
+                };
+                await _context.AspNetUserAdresses.AddAsync(newUserAdress);
+                await _context.SaveChangesAsync();
+                return true;
+            }
         }
 
         return false;
-    }
-    public async Task<AdressEntity> GetOrCreateAsync(AccountRegisterViewModel model)
-    {
-        var adress = await _context.AspNetAdresses.FirstOrDefaultAsync(x => x.StreetName == model.StreetName && x.PostalCode == model.PostalCode && x.City == model.City);
-        if (adress != null)
-            return adress!;
-
-        await _context.AspNetAdresses.AddAsync(model);
-        await _context.SaveChangesAsync();
-        return model;
     }
     public async Task<AdressEntity> GetOrCreateAsync(AdressEntity entity)
     {

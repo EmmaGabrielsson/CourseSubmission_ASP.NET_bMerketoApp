@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using WebbApp.Contexts;
-using WebbApp.Models.Entities;
 
 namespace WebbApp.Repositories
 {
@@ -21,34 +20,52 @@ namespace WebbApp.Repositories
         #region Tasks for DataContext
         public virtual async Task<Entity> AddDataAsync(Entity entity)
         {
-            await _dataContext.Set<Entity>().AddAsync(entity);
-            await _dataContext.SaveChangesAsync();
-            return entity;
+            try {
+                await _dataContext.Set<Entity>().AddAsync(entity);
+                await _dataContext.SaveChangesAsync();
+                return entity;
+            }
+            catch { return null!; }
         }
         public virtual async Task<Entity> GetDataAsync(Expression<Func<Entity, bool>> expression)
         {
-            var entity = await _dataContext.Set<Entity>().FirstOrDefaultAsync(expression);
-            return entity!;
+            try { 
+                var entity = await _dataContext.Set<Entity>().FirstOrDefaultAsync(expression);
+                return entity!;
+            }
+            catch { return null!; }
         }
         public virtual async Task<IEnumerable<Entity>> GetAllDataAsync()
         {
-            return await _dataContext.Set<Entity>().ToListAsync();
+            try { 
+                return await _dataContext.Set<Entity>().ToListAsync();
+            }
+            catch { return null!; }
+
         }
         public virtual async Task<IEnumerable<Entity>> GetAllDataAsync(Expression<Func<Entity, bool>> expression)
         {
-            return await _dataContext.Set<Entity>().Where(expression).ToListAsync();
+            try { 
+                return await _dataContext.Set<Entity>().Where(expression).ToListAsync();
+            }
+            catch { return null!; }
         }
         public virtual async Task<Entity> UpdateDataAsync(Entity entity)
         {
-            _dataContext.Set<Entity>().Update(entity);
-            await _dataContext.SaveChangesAsync();
-            return entity;
+            try { 
+                _dataContext.Set<Entity>().Update(entity);
+                await _dataContext.SaveChangesAsync();
+                return entity;
+            }
+            catch { return null!; }
         }
-        public virtual async Task<Entity> RemoveDataAsync(Entity entity)
+        public virtual async Task<bool> RemoveDataAsync(Entity entity)
         {
-            _dataContext.Set<Entity>().Remove(entity);
-            await _dataContext.SaveChangesAsync();
-            return entity;
+            try {
+                _dataContext.Set<Entity>().Remove(entity);
+                await _dataContext.SaveChangesAsync();
+                return true;
+            } catch { return false; }
         }
 
         #endregion
@@ -56,34 +73,53 @@ namespace WebbApp.Repositories
         #region Tasks for IdentityContext
         public virtual async Task<Entity> AddIdentityAsync(Entity entity)
         {
-            await _identityContext.Set<Entity>().AddAsync(entity);
-            await _identityContext.SaveChangesAsync();
-            return entity;
+            try { 
+                await _identityContext.Set<Entity>().AddAsync(entity);
+                await _identityContext.SaveChangesAsync();
+                return entity;
+            }
+            catch { return null!; }
         }
         public virtual async Task<Entity> GetIdentityAsync(Expression<Func<Entity, bool>> expression)
         {
-            var entity = await _identityContext.Set<Entity>().FirstOrDefaultAsync(expression);
-            return entity!;
+            try { 
+                var entity = await _identityContext.Set<Entity>().FirstOrDefaultAsync(expression);
+                return entity!;
+            }
+            catch { return null!; }
         }
         public virtual async Task<IEnumerable<Entity>> GetAllIdentityAsync()
         {
-            return await _identityContext.Set<Entity>().ToListAsync();
+            try {
+                return await _identityContext.Set<Entity>().ToListAsync();
+            }
+            catch { return null!; }
         }
         public virtual async Task<IEnumerable<Entity>> GetAllIdentityAsync(Expression<Func<Entity, bool>> expression)
         {
-            return await _identityContext.Set<Entity>().Where(expression).ToListAsync();         
+            try {
+                return await _identityContext.Set<Entity>().Where(expression).ToListAsync();
+            }
+            catch { return null!; }         
         }
         public virtual async Task<Entity> UpdateIdentityAsync(Entity entity)
         {
-            _identityContext.Set<Entity>().Update(entity);
-            await _identityContext.SaveChangesAsync();
-            return entity;
+            try { 
+                _identityContext.Set<Entity>().Update(entity);
+                await _identityContext.SaveChangesAsync();
+                return entity;
+            }
+            catch { return null!; }
         }
-        public virtual async Task<Entity> RemoveIdentityAsync(Entity entity)
+        public virtual async Task<bool> RemoveIdentityAsync(Entity entity)
         {
-            _identityContext.Set<Entity>().Remove(entity);
-            await _identityContext.SaveChangesAsync();
-            return entity;
+            try
+            {
+                _identityContext.Set<Entity>().Remove(entity);
+                await _identityContext.SaveChangesAsync();
+                return true;
+
+            } catch { return false; }
         }
 
         #endregion

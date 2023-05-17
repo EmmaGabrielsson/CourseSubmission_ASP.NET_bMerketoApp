@@ -765,7 +765,7 @@ footer .container {
   .details-container {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-template-areas: "image-container product-details";
+    grid-template-areas: "image-container product-details" "more-details-container more-details-container";
   }
 }
 @media (min-width: 1200px) {
@@ -795,8 +795,8 @@ footer .container {
 }
 .details-container .product-details .product-description {
   border-bottom: 1px solid #202020;
-  padding-bottom: 3rem;
-  margin-bottom: 4rem;
+  padding-bottom: 2rem;
+  margin-bottom: 2rem;
 }
 .details-container .product-details .product-price {
   font-weight: bolder;
@@ -809,10 +809,11 @@ footer .container {
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 }
 @media (min-width: 992px) {
   .details-container .product-details .button-container {
+    margin-bottom: 0;
     justify-content: start;
     flex-wrap: nowrap;
   }
@@ -841,6 +842,7 @@ footer .container {
   margin-bottom: 4rem;
 }
 .details-container .more-details-container {
+  grid-area: more-details-container;
   width: 100%;
 }
 .details-container .more-details-container .btn-container button {
@@ -856,9 +858,18 @@ footer .container {
 }
 .details-container .more-details-container .view-description-container {
   display: none;
+  padding: 1.5rem 2rem;
+  background-color: #F3F2F2;
 }
 .details-container .more-details-container .view-review-container {
   display: none;
+  background-color: #F3F2F2;
+}
+.details-container .more-details-container .view-review-container .review {
+  margin: 1.5rem;
+  padding: 1rem;
+  border: 1px solid #202020;
+  background-color: white;
 }
 
 .top-selling {

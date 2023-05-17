@@ -1,5 +1,4 @@
 ﻿@{
-    var allProducts = await productService.GetAllAsync();
     var categories = await categoryRepo.GetAllDataAsync();
 }
 <section class="breadcrumb">
@@ -37,11 +36,11 @@
             }
         </div>
     }
-    @if (allProducts != null)
+    @if (ViewBag.AllProducts != null)
     {
        <div class="grid" id="products-container">
 
-       @foreach (var product in allProducts)
+            @foreach (var product in ViewBag.AllProducts)
        {
        <div class="collection-item">
           <partial name="/Views/Partials/_GridCollectionItem.cshtml" model="product" />

@@ -1,4 +1,7 @@
 ﻿@model GridCollectionItemViewModel
+@{
+    var stock = await stockRepo.GetDataAsync(x => x.ArticleNumber == Model.Id);
+}
 
 <a asp-controller="products" asp-action="details" asp-route-id="@Model.Id" class="collection-item">
     <img src="~/images/products/@Model.ImageUrl" alt="@Model.Title">
@@ -6,7 +9,9 @@
     <div class="body">
         <div class="title">@Model.Title</div>
         <div class="info">
-            <div class="price">$@Model.Price</div>
+        <div class="price">
+            $@(((double)stock.Price).ToString(stock.Price % 1 == 0 ? "F0" : "F2"))
+        </div>
             <i class="add-cart fa-regular fa-cart-plus"></i>
         </div>
     </div>

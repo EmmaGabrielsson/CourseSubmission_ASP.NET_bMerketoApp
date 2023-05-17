@@ -29,10 +29,9 @@
             </div>
                 <div class="input-group form-inline align-items-center ">
                     <div class="input-group-prepend">
-                        <label class="input-group-text" asp-for="Role">Role:</label>
+                        <label class="input-group-text" asp-for="Role">Choose Role:</label>
                     </div>
                     <select name="Role" asp-for="Role" class="form-control">
-                        <option selected>Choose... <span> ↓</span></option>
                         @foreach (var role in roles)
                         {
                             @if (role.Name == "admin")

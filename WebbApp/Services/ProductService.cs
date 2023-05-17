@@ -1,8 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Linq.Expressions;
 using WebbApp.Contexts;
-using WebbApp.Models.Dtos;
 using WebbApp.Models.Entities;
 using WebbApp.Repositories;
 using WebbApp.ViewModels;
@@ -14,35 +14,50 @@ public class ProductService
     private readonly DataContext _context;
     private readonly ProductRepo _productRepo;
     private readonly IWebHostEnvironment _webHostEnvironment;
+    private readonly TagRepo _tagRepo;
+    private readonly CategoryRepo _categoryRepo;
+    private readonly ProductCategoryRepo _productCategoryRepo;
+    private readonly ProductTagRepo _productTagRepo;
+    private readonly StockRepo _stockRepo;
 
-    public ProductService(DataContext context, ProductRepo productRepo, IWebHostEnvironment webHostEnvironment)
+    public ProductService(DataContext context, ProductRepo productRepo, IWebHostEnvironment webHostEnvironment, TagRepo tagRepo, CategoryRepo categoryRepo, ProductCategoryRepo productCategoryRepo, ProductTagRepo productTagRepo, StockRepo stockRepo)
     {
         _context = context;
         _productRepo = productRepo;
         _webHostEnvironment = webHostEnvironment;
+        _tagRepo = tagRepo;
+        _categoryRepo = categoryRepo;
+        _productCategoryRepo = productCategoryRepo;
+        _productTagRepo = productTagRepo;
+        _stockRepo = stockRepo;
     }
 
-    public async Task<Product> CreateAsync(ProductEntity entity)
+    public async Task<ProductEntity> CreateAsync(ProductRegisterViewModel model)
     {
-        var _entity = await _productRepo.GetDataAsync(x => x.ArticleNumber == entity.ArticleNumber);
+        var _entity = await _productRepo.GetDataAsync(x => x.ArticleNumber == model.ArticleNumber);
         if (_entity == null)
         {
-            await _productRepo.AddDataAsync(entity);
-            if (_entity != null)
-                return _entity;
+            var product = await _productRepo.AddDataAsync(model);
+            if (product != null)
+            {
+                var stock = await _stockRepo.AddDataAsync(model);
+                if(stock != null)
+                    return product;
+            }
         }
         return null!;
     }
     public async Task<ProductEntity> GetAsync(Expression<Func<ProductEntity, bool>> predicate)
     {
-        var _entity = await _productRepo.GetDataAsync(predicate);
-        if (_entity != null)
+        try 
         {
-            return _entity!;
-        }
+            var _entity = await _productRepo.GetDataAsync(predicate);
+            if (_entity != null)
+                return _entity!;        
+        } catch { return null!; }
         return null!;
     }
-    public async Task<bool> UploadImageAsync(Product product, IFormFile image)
+    public async Task<bool> UploadImageAsync(ProductEntity product, IFormFile image)
     {
         try
         {
@@ -166,14 +181,14 @@ public class ProductService
 
             if (!await _context.Collections.AnyAsync())
             {
-                await _context.AddAsync(new ProductEntity { ArticleNumber = "f-25695", ProductName = "Apple watch collection", ImageUrl = "270x295.svg", Ingress = "Discover the Apple Watch Collection – a fusion of innovation and style. Stay connected, track your fitness, stream music, make payments, and more, all from your wrist. Personalize your watch with a variety of bands and enjoy a stunning Retina display. Seamlessly integrated with your iPhone, the Apple Watch Collection is the ultimate accessory for convenience and fashion-forward individuals. Elevate your wrist today." });
-                await _context.AddAsync(new ProductEntity { ArticleNumber = "f-35685", ProductName = "Apple watch collection", ImageUrl = "270x295.svg", Ingress = "Discover the Apple Watch Collection – a fusion of innovation and style. Stay connected, track your fitness, stream music, make payments, and more, all from your wrist. Personalize your watch with a variety of bands and enjoy a stunning Retina display. Seamlessly integrated with your iPhone, the Apple Watch Collection is the ultimate accessory for convenience and fashion-forward individuals. Elevate your wrist today." });
-                await _context.AddAsync(new ProductEntity { ArticleNumber = "f-48952", ProductName = "Apple watch collection", ImageUrl = "270x295.svg", Ingress = "Discover the Apple Watch Collection – a fusion of innovation and style. Stay connected, track your fitness, stream music, make payments, and more, all from your wrist. Personalize your watch with a variety of bands and enjoy a stunning Retina display. Seamlessly integrated with your iPhone, the Apple Watch Collection is the ultimate accessory for convenience and fashion-forward individuals. Elevate your wrist today." });
-                await _context.AddAsync(new ProductEntity { ArticleNumber = "f-52365", ProductName = "Apple watch collection", ImageUrl = "270x295.svg", Ingress = "Discover the Apple Watch Collection – a fusion of innovation and style. Stay connected, track your fitness, stream music, make payments, and more, all from your wrist. Personalize your watch with a variety of bands and enjoy a stunning Retina display. Seamlessly integrated with your iPhone, the Apple Watch Collection is the ultimate accessory for convenience and fashion-forward individuals. Elevate your wrist today." });
-                await _context.AddAsync(new ProductEntity { ArticleNumber = "f-75214", ProductName = "Apple watch collection", ImageUrl = "270x295.svg", Ingress = "Discover the Apple Watch Collection – a fusion of innovation and style. Stay connected, track your fitness, stream music, make payments, and more, all from your wrist. Personalize your watch with a variety of bands and enjoy a stunning Retina display. Seamlessly integrated with your iPhone, the Apple Watch Collection is the ultimate accessory for convenience and fashion-forward individuals. Elevate your wrist today." });
-                await _context.AddAsync(new ProductEntity { ArticleNumber = "f-89652", ProductName = "Apple watch collection", ImageUrl = "270x295.svg", Ingress = "Discover the Apple Watch Collection – a fusion of innovation and style. Stay connected, track your fitness, stream music, make payments, and more, all from your wrist. Personalize your watch with a variety of bands and enjoy a stunning Retina display. Seamlessly integrated with your iPhone, the Apple Watch Collection is the ultimate accessory for convenience and fashion-forward individuals. Elevate your wrist today." });
-                await _context.AddAsync(new ProductEntity { ArticleNumber = "f-96174", ProductName = "Apple watch collection", ImageUrl = "270x295.svg", Ingress = "Discover the Apple Watch Collection – a fusion of innovation and style. Stay connected, track your fitness, stream music, make payments, and more, all from your wrist. Personalize your watch with a variety of bands and enjoy a stunning Retina display. Seamlessly integrated with your iPhone, the Apple Watch Collection is the ultimate accessory for convenience and fashion-forward individuals. Elevate your wrist today." });
-                await _context.AddAsync(new ProductEntity { ArticleNumber = "f-06174", ProductName = "Apple watch collection", ImageUrl = "270x295.svg", Ingress = "Discover the Apple Watch Collection – a fusion of innovation and style. Stay connected, track your fitness, stream music, make payments, and more, all from your wrist. Personalize your watch with a variety of bands and enjoy a stunning Retina display. Seamlessly integrated with your iPhone, the Apple Watch Collection is the ultimate accessory for convenience and fashion-forward individuals. Elevate your wrist today." });
+                await _context.AddAsync(new ProductEntity { ArticleNumber = "f-25695", ProductName = "Apple watch collection", ImageUrl = "270x295.svg", Ingress = "Discover the Apple Watch Collection – a fusion of innovation and style. Stay connected, track your fitness, stream music, make payments, and more, all from your wrist. Personalize your watch with a variety of bands and enjoy a stunning Retina display. Seamlessly integrated with your iPhone, the Apple Watch Collection is the ultimate accessory for convenience and fashion-forward individuals. Elevate your wrist today.", Description = "Discover the Apple Watch Collection—a range of smartwatches that blend technology and style flawlessly. From the flagship Series 7 with its advanced features, to the fashion-forward Apple Watch Hermès and the sporty Apple Watch Nike, there's a perfect fit for everyone. Seamlessly integrated with your iPhone, these watches keep you connected, organized, and empowered. With a wide selection of interchangeable bands and customizable features, personalize your Apple Watch to reflect your unique style and personality. Elevate your daily life with the Apple Watch Collection." });
+                await _context.AddAsync(new ProductEntity { ArticleNumber = "f-35685", ProductName = "Apple watch collection", ImageUrl = "270x295.svg", Ingress = "Discover the Apple Watch Collection – a fusion of innovation and style. Stay connected, track your fitness, stream music, make payments, and more, all from your wrist. Personalize your watch with a variety of bands and enjoy a stunning Retina display. Seamlessly integrated with your iPhone, the Apple Watch Collection is the ultimate accessory for convenience and fashion-forward individuals. Elevate your wrist today.", Description = "Discover the Apple Watch Collection—a range of smartwatches that blend technology and style flawlessly. From the flagship Series 7 with its advanced features, to the fashion-forward Apple Watch Hermès and the sporty Apple Watch Nike, there's a perfect fit for everyone. Seamlessly integrated with your iPhone, these watches keep you connected, organized, and empowered. With a wide selection of interchangeable bands and customizable features, personalize your Apple Watch to reflect your unique style and personality. Elevate your daily life with the Apple Watch Collection." });
+                await _context.AddAsync(new ProductEntity { ArticleNumber = "f-48952", ProductName = "Apple watch collection", ImageUrl = "270x295.svg", Ingress = "Discover the Apple Watch Collection – a fusion of innovation and style. Stay connected, track your fitness, stream music, make payments, and more, all from your wrist. Personalize your watch with a variety of bands and enjoy a stunning Retina display. Seamlessly integrated with your iPhone, the Apple Watch Collection is the ultimate accessory for convenience and fashion-forward individuals. Elevate your wrist today.", Description = "Discover the Apple Watch Collection—a range of smartwatches that blend technology and style flawlessly. From the flagship Series 7 with its advanced features, to the fashion-forward Apple Watch Hermès and the sporty Apple Watch Nike, there's a perfect fit for everyone. Seamlessly integrated with your iPhone, these watches keep you connected, organized, and empowered. With a wide selection of interchangeable bands and customizable features, personalize your Apple Watch to reflect your unique style and personality. Elevate your daily life with the Apple Watch Collection." });
+                await _context.AddAsync(new ProductEntity { ArticleNumber = "f-52365", ProductName = "Apple watch collection", ImageUrl = "270x295.svg", Ingress = "Discover the Apple Watch Collection – a fusion of innovation and style. Stay connected, track your fitness, stream music, make payments, and more, all from your wrist. Personalize your watch with a variety of bands and enjoy a stunning Retina display. Seamlessly integrated with your iPhone, the Apple Watch Collection is the ultimate accessory for convenience and fashion-forward individuals. Elevate your wrist today.", Description = "Discover the Apple Watch Collection—a range of smartwatches that blend technology and style flawlessly. From the flagship Series 7 with its advanced features, to the fashion-forward Apple Watch Hermès and the sporty Apple Watch Nike, there's a perfect fit for everyone. Seamlessly integrated with your iPhone, these watches keep you connected, organized, and empowered. With a wide selection of interchangeable bands and customizable features, personalize your Apple Watch to reflect your unique style and personality. Elevate your daily life with the Apple Watch Collection." });
+                await _context.AddAsync(new ProductEntity { ArticleNumber = "f-75214", ProductName = "Apple watch collection", ImageUrl = "270x295.svg", Ingress = "Discover the Apple Watch Collection – a fusion of innovation and style. Stay connected, track your fitness, stream music, make payments, and more, all from your wrist. Personalize your watch with a variety of bands and enjoy a stunning Retina display. Seamlessly integrated with your iPhone, the Apple Watch Collection is the ultimate accessory for convenience and fashion-forward individuals. Elevate your wrist today.", Description = "Discover the Apple Watch Collection—a range of smartwatches that blend technology and style flawlessly. From the flagship Series 7 with its advanced features, to the fashion-forward Apple Watch Hermès and the sporty Apple Watch Nike, there's a perfect fit for everyone. Seamlessly integrated with your iPhone, these watches keep you connected, organized, and empowered. With a wide selection of interchangeable bands and customizable features, personalize your Apple Watch to reflect your unique style and personality. Elevate your daily life with the Apple Watch Collection." });
+                await _context.AddAsync(new ProductEntity { ArticleNumber = "f-89652", ProductName = "Apple watch collection", ImageUrl = "270x295.svg", Ingress = "Discover the Apple Watch Collection – a fusion of innovation and style. Stay connected, track your fitness, stream music, make payments, and more, all from your wrist. Personalize your watch with a variety of bands and enjoy a stunning Retina display. Seamlessly integrated with your iPhone, the Apple Watch Collection is the ultimate accessory for convenience and fashion-forward individuals. Elevate your wrist today.", Description = "Discover the Apple Watch Collection—a range of smartwatches that blend technology and style flawlessly. From the flagship Series 7 with its advanced features, to the fashion-forward Apple Watch Hermès and the sporty Apple Watch Nike, there's a perfect fit for everyone. Seamlessly integrated with your iPhone, these watches keep you connected, organized, and empowered. With a wide selection of interchangeable bands and customizable features, personalize your Apple Watch to reflect your unique style and personality. Elevate your daily life with the Apple Watch Collection." });
+                await _context.AddAsync(new ProductEntity { ArticleNumber = "f-96174", ProductName = "Apple watch collection", ImageUrl = "270x295.svg", Ingress = "Discover the Apple Watch Collection – a fusion of innovation and style. Stay connected, track your fitness, stream music, make payments, and more, all from your wrist. Personalize your watch with a variety of bands and enjoy a stunning Retina display. Seamlessly integrated with your iPhone, the Apple Watch Collection is the ultimate accessory for convenience and fashion-forward individuals. Elevate your wrist today.", Description = "Discover the Apple Watch Collection—a range of smartwatches that blend technology and style flawlessly. From the flagship Series 7 with its advanced features, to the fashion-forward Apple Watch Hermès and the sporty Apple Watch Nike, there's a perfect fit for everyone. Seamlessly integrated with your iPhone, these watches keep you connected, organized, and empowered. With a wide selection of interchangeable bands and customizable features, personalize your Apple Watch to reflect your unique style and personality. Elevate your daily life with the Apple Watch Collection." });
+                await _context.AddAsync(new ProductEntity { ArticleNumber = "f-06174", ProductName = "Apple watch collection", ImageUrl = "270x295.svg", Ingress = "Discover the Apple Watch Collection – a fusion of innovation and style. Stay connected, track your fitness, stream music, make payments, and more, all from your wrist. Personalize your watch with a variety of bands and enjoy a stunning Retina display. Seamlessly integrated with your iPhone, the Apple Watch Collection is the ultimate accessory for convenience and fashion-forward individuals. Elevate your wrist today.", Description = "Discover the Apple Watch Collection—a range of smartwatches that blend technology and style flawlessly. From the flagship Series 7 with its advanced features, to the fashion-forward Apple Watch Hermès and the sporty Apple Watch Nike, there's a perfect fit for everyone. Seamlessly integrated with your iPhone, these watches keep you connected, organized, and empowered. With a wide selection of interchangeable bands and customizable features, personalize your Apple Watch to reflect your unique style and personality. Elevate your daily life with the Apple Watch Collection." });
                 await _context.SaveChangesAsync();
 
                 var featuredTag = await _context.Tags.FirstOrDefaultAsync(x => x.TagName == "featured");
@@ -282,7 +297,8 @@ public class ProductService
         foreach (var id in productIds)
         {
             var category = await _context.Categories.FirstOrDefaultAsync(x => x.Id == id.CategoryId);
-            categories.Add(category!);
+            if (category != null)
+                categories.Add(category);
         }
 
         if(!categories.IsNullOrEmpty())
@@ -290,6 +306,23 @@ public class ProductService
 
         return null!;
     }
+    public async Task<List<TagEntity>> GetProductTagsListAsync(string articleNumber)
+    {
+        var tags = new List<TagEntity>();
+        var productIds = await _context.ProductTags.Where(x => x.ProductId == articleNumber).ToListAsync();
+        foreach (var id in productIds)
+        {
+            var tag = await _context.Tags.FirstOrDefaultAsync(x => x.Id == id.TagId);
+            if (tag != null)
+                tags.Add(tag);
+        }
+
+        if (!tags.IsNullOrEmpty())
+            return tags;
+
+        return null!;
+    }
+
     public async Task<GridCollectionViewModel> GetBestCollectionAsync()
     {
         var bestCollection = await _context.Collections.FirstOrDefaultAsync(x => x.Title == "best collection");
@@ -320,6 +353,87 @@ public class ProductService
         }
         searchModel.SearchResults = searchedProducts;
         return searchModel!;
+    }
+
+    public async Task<List<SelectListItem>> GetTagsAsync()
+    {
+        var tags = new List<SelectListItem>();
+
+        foreach (var tag in await _tagRepo.GetAllDataAsync())
+        {
+            tags.Add(new SelectListItem
+            {
+                Value = tag.Id.ToString(),
+                Text = tag.TagName,
+            });
+        }
+        return tags;
+    }
+    public async Task<List<SelectListItem>> GetTagsAsync(string[] selectedTags)
+    {
+        var tags = new List<SelectListItem>();
+
+        foreach (var tag in await _tagRepo.GetAllDataAsync())
+        {
+            tags.Add(new SelectListItem{
+                Value = tag.Id.ToString(),
+                Text = tag.TagName,
+                Selected = selectedTags.Contains(tag.Id.ToString())
+            });
+        }
+        return tags;
+    }
+    public async Task<List<SelectListItem>> GetCategoriesAsync()
+    {
+        var categories = new List<SelectListItem>();
+
+        foreach (var category in await _categoryRepo.GetAllDataAsync())
+        {
+            categories.Add(new SelectListItem
+            {
+                Value = category.Id.ToString(),
+                Text = category.CategoryName,
+            });
+        }
+        return categories;
+    }
+    public async Task<List<SelectListItem>> GetCategoriesAsync(string[] selectedTags)
+    {
+        var categories = new List<SelectListItem>();
+
+        foreach (var category in await _categoryRepo.GetAllDataAsync())
+        {
+            categories.Add(new SelectListItem
+            {
+                Value = category.Id.ToString(),
+                Text = category.CategoryName,
+                Selected = selectedTags.Contains(category.Id.ToString())
+            });
+        }
+        return categories;
+    }
+
+    public async Task AddProductTagsAsync(ProductEntity product, string[] tags)
+    {
+        foreach (var tag in tags)
+        {
+            await _productTagRepo.AddDataAsync(new ProductTagEntity
+            {
+                ProductId = product.ArticleNumber,
+                TagId = int.Parse(tag)
+            });
+        }
+    }
+    public async Task AddProductCategoriesAsync(ProductEntity product, string[] categories)
+    {
+        foreach (var category in categories)
+        {
+            await _productCategoryRepo.AddDataAsync(new ProductCategoryEntity
+            {
+                ProductId = product.ArticleNumber,
+                CategoryId = int.Parse(category)
+            });
+        }
     }
 
 }

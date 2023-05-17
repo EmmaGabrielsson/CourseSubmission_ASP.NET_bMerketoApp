@@ -39,28 +39,45 @@ public class AdminController : Controller
         return View(model);
     }
 
-    public IActionResult Products()
+    public async Task<IActionResult> Products()
     {
         ViewData["Title"] = "Admin - Add Products";
+        ViewBag.Tags = await _productService.GetTagsAsync();
+        ViewBag.Categories = await _productService.GetCategoriesAsync();
+
         return View();
     }
 
     [HttpPost]
-    public async Task<IActionResult> Products(ProductRegisterViewModel model)
+    public async Task<IActionResult> Products(ProductRegisterViewModel model, string[] tags, string[] categories)
     {
         ViewData["Title"] = "Admin - Add Products";
+        ViewBag.Tags = await _productService.GetTagsAsync(tags);
+        ViewBag.Categories = await _productService.GetCategoriesAsync(categories);
 
         if (ModelState.IsValid)
         {
             var product = await _productService.CreateAsync(model);
             if (product != null)
-                await _productService.UploadImageAsync(product, model.Image);
+            {
+                if (await _productService.UploadImageAsync(product, model.Image))
+                {
+                    if (tags.Any())
+                        await _productService.AddProductTagsAsync(product, tags);
 
-            ModelState.AddModelError("", "You added product succesfully!");
-            return View();
+                    if (categories.Any())
+                        await _productService.AddProductCategoriesAsync(product, categories);
+
+                    return RedirectToAction("Products");
+
+                }
+                ModelState.AddModelError("", "Could not upload product-image.");
+                return View(model);
+            }
+            ModelState.AddModelError("", "Something went wrong when trying to add product.");
+            return View(model);
         }
-
-        ModelState.AddModelError("", "Something went wrong when trying to add product.");
+        ModelState.AddModelError("", "You have not entered valid input in all requiered fields.");
         return View(model);
     }
 

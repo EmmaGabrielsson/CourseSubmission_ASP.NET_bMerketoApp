@@ -38,8 +38,6 @@ public class ProductRegisterViewModel
     [Display(Name = "On Sale")]
     public bool OnSale { get; set; } = false;
 
-    public ICollection<int> CategoryIds { get; set; } = null!;
-
 
     public static implicit operator ProductEntity(ProductRegisterViewModel model)
     {

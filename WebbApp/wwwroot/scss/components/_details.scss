@@ -8,7 +8,7 @@
     @include lg {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        grid-template-areas: "image-container product-details"
+        grid-template-areas: "image-container product-details" "more-details-container more-details-container";
     }
 
     @include xl {
@@ -38,8 +38,8 @@
 
         .product-description {
             border-bottom: 1px solid $color-dark-1;
-            padding-bottom: 3rem;
-            margin-bottom: 4rem;
+            padding-bottom: 2rem;
+            margin-bottom: 2rem;
         }
 
         .product-price {
@@ -54,9 +54,10 @@
             justify-content: center;
             align-items: center;
             flex-wrap: wrap;
-            margin-bottom: 2rem;
+            margin-bottom: 1rem;
 
             @include lg {
+                margin-bottom: 0;
                 justify-content: start;
                 flex-wrap: nowrap;
             }
@@ -91,6 +92,7 @@
     }
 
     .more-details-container {
+        grid-area: more-details-container;
         width: 100%;
 
         .btn-container {
@@ -110,10 +112,20 @@
 
         .view-description-container {
             display: none;
+            padding: 1.5rem 2rem;
+            background-color: $color-theme-3;
         }
 
         .view-review-container {
             display: none;
+            background-color: $color-theme-3;
+
+            .review {
+                margin: 1.5rem;
+                padding: 1rem;
+                border: 1px solid $color-dark-1;
+                background-color: white;
+            }
         }
     }
 }

@@ -120,10 +120,10 @@ function ViewReviews() {
     descriptionContainer.style.display = "none"
     const reviewContainer = document.querySelector(".view-review-container")
 
-    if (reviewContainer.style.display === "flex") {
+    if (reviewContainer.style.display === "block") {
         reviewContainer.style.display = "none";
     } else {
-        reviewContainer.style.display = "flex";
+        reviewContainer.style.display = "block";
     }
 }
 
@@ -132,9 +132,9 @@ function ViewDescription() {
     reviewContainer.style.display = "none"
     const descriptionContainer = document.querySelector(".view-description-container")
 
-    if (descriptionContainer.style.display === "flex") {
+    if (descriptionContainer.style.display === "block") {
         descriptionContainer.style.display = "none";
     } else {
-        descriptionContainer.style.display = "flex";
+        descriptionContainer.style.display = "block";
     }
 }

@@ -29,7 +29,7 @@ public class UserService
         _webHostEnvironment = webHostEnvironment;
     }
 
-    public async Task<bool> UserExist(Expression<Func<AppUser, bool>> predicate)
+    public async Task<bool> UserExsist(Expression<Func<AppUser, bool>> predicate)
     {
         if (await _context.Users.AnyAsync(predicate))
             return true;

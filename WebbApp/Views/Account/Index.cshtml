@@ -19,6 +19,7 @@
                 <h4 class="mb-4"><span class="text-decoration-underline">Profile</span> Information</h4>
                 <p class="mb-0">First Name: <span class="fw-bold">@Model.FirstName</span></p>
                 <p class="mb-0">Last Name: <span class="fw-bold">@Model.LastName</span></p>
+                <p class="mb-0">E-mail: <span class="fw-bold">@Model.Email</span></p>
                 @if (Model.PhoneNumber != null)
                 {
                     <p class ="mb-0">Phone Number: <span class="fw-bold">@Model.PhoneNumber</span></p>
@@ -40,9 +41,15 @@
             </div>
             @if (Model.ImageUrl != null)
             {
-            <div class="m-3 card border shadow" style="max-width: 350px;" >
+                <div class="m-3 card border shadow" style="max-width: 350px;" >
                     <img class="profile-image" src="~/images/profiles/@Model.ImageUrl" alt="profile-image" />
-            </div>
+                </div>
+            }
+            else
+            {
+                <div class="m-3 card border shadow" style="max-width: 350px;">
+                    <img class="profile-image" src="~/images/profiles/no-profile-img.png" alt="no-profile-image" />
+                </div>
             }
         </div>
     </div>

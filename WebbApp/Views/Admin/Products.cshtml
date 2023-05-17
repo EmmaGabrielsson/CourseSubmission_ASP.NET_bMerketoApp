@@ -1,7 +1,6 @@
 ﻿@model ProductRegisterViewModel
 @{
     Layout = "_BackofficeLayout";
-    var categories = await categoryRepo.GetAllDataAsync();
 }
 
 <section class="breadcrumb">
@@ -35,6 +34,12 @@
                 <input asp-for="Price" class="form-control" />
                 <small><span asp-validation-for="Price" class="text-danger"></span></small>
             </div>
+            <div class="mb-3">
+                <label asp-for="Currency" class="form-label"></label>
+                <input asp-for="Currency" class="form-control" />
+                <small><span asp-validation-for="Currency" class="text-danger"></span></small>
+            </div>
+
             <div class="mb-3 form-check form-check-inline">
                 <input class="form-check-input me-2" asp-for="OnSale" type="checkbox" />
                 <label class="form-check-label" asp-for="OnSale">On Sale</label>
@@ -62,17 +67,31 @@
                 <label asp-for="VendorName" class="form-label"></label>
                 <input asp-for="VendorName" class="form-control" />
             </div>
-            <div class="mb-3">
-                <label>Select Categories:</label>
-                @foreach (var category in categories)
-                {
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input m-2" type="checkbox" name="CategoryIds" value="@category.Id">
-                        <label class="form-check-label p-1" >@category.CategoryName</label>
-                        <span class="checkmark"></span>
-                    </div>
-                }
+            <div class="d-flex ">
+                <div class="mb-3 border p-3 w-100">
+                    <label class="text-decoration-underline pb-2">Select Categories:</label>
+                    @foreach (SelectListItem category in ViewBag.Categories)
+                    {
+                        <div class="form-check form-check-inline d-flex">
+                            <input class="form-check-input" type="checkbox" id="category-@category.Text-@category.Value" name="Categories" value="@category.Value" checked="@category.Selected">
+                            <label for="category-@category.Text-@category.Value" class="form-check-label ms-2 text-capitalize">@category.Text</label>
+                            <span class="checkmark"></span>
+                        </div>
+                    }
+                </div>
+                <div class="mb-3 border p-3 w-100">
+                    <label class="text-decoration-underline pb-2">Select Tags:</label>
+                    @foreach (SelectListItem tag in ViewBag.Tags)
+                    {
+                        <div class="form-check form-check-inline d-flex">
+                            <input class="form-check-input " type="checkbox" id="tag-@tag.Text-@tag.Value" name="Tags" value="@tag.Value" checked="@tag.Selected">
+                            <label for="tag-@tag.Text-@tag.Value" class="form-check-label ms-2 text-capitalize">@tag.Text</label>
+                            <span class="checkmark"></span>
+                        </div>
+                    }
+                </div>
             </div>
+
             <button type="submit" class="btn-theme mb-3">Add Product</button>
         </form>
     </div>

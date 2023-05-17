@@ -10,6 +10,19 @@ public class ProfileViewModel
     public string? PhoneNumber { get; set; } 
     public string? Company { get; set; }
     public string? ImageUrl { get; set; }
-    public ICollection<AdressEntity> Adresses { get; set; } = new HashSet<AdressEntity>();
+    public string Email { get; set; } = null!;
+    public List<AdressEntity> Adresses { get; set; } = new List<AdressEntity>();
 
+    public static implicit operator ProfileViewModel(AppUser user)
+    {
+        return new ProfileViewModel
+        {
+            FirstName = user.FirstName,
+            LastName = user.LastName,
+            PhoneNumber = user.PhoneNumber,
+            Company = user.CompanyName,
+            ImageUrl = user.ImageUrl,
+            Email = user.Email!
+        };
+    }
 }

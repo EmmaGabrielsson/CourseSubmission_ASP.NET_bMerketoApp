@@ -15,10 +15,12 @@ builder.Services.AddDbContext<IdentityContext>(x => x.UseSqlServer(builder.Confi
 //repositories
 builder.Services.AddScoped<ContactFormRepo>();
 builder.Services.AddScoped<CategoryRepo>();
+builder.Services.AddScoped<ProductCategoryRepo>();
 builder.Services.AddScoped<ProductRepo>();
 builder.Services.AddScoped<StockRepo>();
 builder.Services.AddScoped<ProductReviewRepo>();
 builder.Services.AddScoped<TagRepo>();
+builder.Services.AddScoped<ProductTagRepo>();
 builder.Services.AddScoped<ShowcaseRepo>();
 
 //services

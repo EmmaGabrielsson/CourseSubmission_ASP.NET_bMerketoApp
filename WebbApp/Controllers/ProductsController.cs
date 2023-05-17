@@ -18,9 +18,11 @@ namespace WebbApp.Controllers
             _stockRepo = stockRepo;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             ViewData["Title"] = "All Products";
+            ViewBag.AllProducts = await _productService.GetAllAsync();
+
             return View();
         }
 
@@ -76,6 +78,7 @@ namespace WebbApp.Controllers
 
             product.Reviews = await _productService.GetReviewsAsync(product.ArticleNumber!);
             product.Categories = await _productService.GetProductCategoriesListAsync(product.ArticleNumber!);
+            product.Tags = await _productService.GetProductTagsListAsync(product.ArticleNumber!);
 
             return View(product);
         }

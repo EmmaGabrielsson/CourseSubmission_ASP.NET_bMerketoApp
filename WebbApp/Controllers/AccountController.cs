@@ -25,15 +25,8 @@ public class AccountController : Controller
         var userInfo = await _userService.GetAsync(x => x.UserName == User.Identity!.Name);
         var adresses = await _adressService.GetUserAdressAsync(userInfo);
 
-        var profileView = new ProfileViewModel
-        {
-            FirstName = userInfo.FirstName,
-            LastName = userInfo.LastName,
-            PhoneNumber = userInfo.PhoneNumber,
-            Company = userInfo.CompanyName,
-            ImageUrl = userInfo.ImageUrl,
-            Adresses = adresses,
-        };
+        ProfileViewModel profileView = userInfo;
+        profileView.Adresses = adresses;
 
         return View(profileView);
     }
@@ -54,7 +47,7 @@ public class AccountController : Controller
 
         if (ModelState.IsValid)
         {
-            if(await _userService.UserExist(x => x.Email == registerViewModel.Email ))
+            if(await _userService.UserExsist(x => x.Email == registerViewModel.Email ))
                 ModelState.AddModelError("", "There is already a user with the same email address");
             else
             {

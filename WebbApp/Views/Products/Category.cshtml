@@ -13,11 +13,11 @@
     </div>
 </section>
 <section class="grid-collection">
-    <h4 class="d-flex justify-content-center">Products in <span class="text-decoration-underline text-capitalize mx-2"> @Model.Category </span> category:</h4>
     
     @if (Model.Products.Any())
     {
-        <div class="grid" id="products-container">
+    <h4 class="d-flex px-4">Products in <span class="text-decoration-underline text-capitalize mx-2"> @Model.Category </span> category:</h4>
+        <div class="grid mx-4" id="products-container">
 
             @foreach (var product in Model.Products)
             {
@@ -29,7 +29,8 @@
     }
     else
     {
-        <div class="d-flex justify-content-center mt-5">
+        <h4 class="d-flex justify-content-center">Products in <span class="text-decoration-underline text-capitalize mx-2"> @Model.Category </span> category:</h4>
+        <div class="d-flex m-4 justify-content-center">
             <p>No products available in this category.</p>
         </div>
     }
