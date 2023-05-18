@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 using System.Security.Claims;
 using WebbApp.Contexts;
 using WebbApp.Models.Identities;
-using WebbApp.ViewModels;
+using WebbApp.Models.ViewModels;
 
 namespace WebbApp.Services;
 
@@ -31,22 +31,35 @@ public class UserService
 
     public async Task<bool> UserExsist(Expression<Func<AppUser, bool>> predicate)
     {
+        try
+        {
         if (await _context.Users.AnyAsync(predicate))
             return true;
 
         return false;
+        } catch { return false; }
     }
     public async Task<AppUser> GetAsync(Expression<Func<AppUser, bool>> predicate)
     {
-        var _userEntity = await _context.Users.FirstOrDefaultAsync(predicate);
-        return _userEntity!;
+        try
+        {
+            var _userEntity = await _context.Users.FirstOrDefaultAsync(predicate);
+            return _userEntity!;
+        }
+        catch { return null!; }
     }
     public async Task<IEnumerable<AppUser>> GetAllAsync()
     {
-        return await _context.Users.ToListAsync();
+        try
+        {
+            return await _context.Users.ToListAsync();
+        }
+        catch { return null!; }
     }
     public async Task<AppUser> RegisterAsync(AccountRegisterViewModel registerViewModel)
     {
+        try
+        {
             await _seedService.InitializeRoles();
             var roleName = "user";
 
@@ -68,6 +81,7 @@ public class UserService
                 }
             }            
             return null!;        
+        } catch { return null!; }
     }
     public async Task<bool> UploadImageAsync(AppUser user, IFormFile image)
     {
@@ -95,9 +109,45 @@ public class UserService
     }
     public async Task<bool> LogoutAsync(ClaimsPrincipal user)
     {
-        await _signInManager.SignOutAsync();
-        return _signInManager.IsSignedIn(user);
+        try
+        {
+            await _signInManager.SignOutAsync();
+            return _signInManager.IsSignedIn(user);
+        } catch { return false; }
     }
+    public async Task<bool> UpdateUserRoleAsync(UpdateRoleViewModel model)
+    {
+        try
+        {
+            var findRole = await _roleManager.FindByNameAsync(model.Role);
+
+            if (findRole == null)
+                return false;
+
+            var user = await GetAsync(x => x.Id == model.UserId);
+            var currentRole = await _userManager.GetRolesAsync(user);
+            await _userManager.RemoveFromRoleAsync(user, currentRole.First());
+            await _context.SaveChangesAsync();
+            var result = await _userManager.AddToRoleAsync(user, model.Role);
+            await _context.SaveChangesAsync();
+
+            if (result.Succeeded)
+                return true;
+
+        }
+        catch { return false; }
+
+        return false;
+    }
+    public async Task<IEnumerable<IdentityRole>> GetAllRolesAsync()
+    {
+        try
+        {
+            var roles = await _roleManager.Roles.ToListAsync();
+            return roles;
+        } catch { return null!; }
+    }
+    /*
     public async Task<bool> ChangePasswordAsync(AppUser user, string newPassword)
     {
         var currentPassword = user.PasswordHash!;
@@ -108,30 +158,7 @@ public class UserService
 
         return false;
     }
-    public async Task<bool> UpdateUserRoleAsync(UpdateRoleViewModel model)
-    {
-        var findRole = await _roleManager.FindByNameAsync(model.Role);
-
-        if (findRole == null)
-            return false;
-
-        var user = await GetAsync(x => x.Id == model.UserId);
-        var currentRole = await _userManager.GetRolesAsync(user);
-        await _userManager.RemoveFromRoleAsync(user, currentRole.First());
-        await _context.SaveChangesAsync();
-        var result = await _userManager.AddToRoleAsync(user, model.Role);
-        await _context.SaveChangesAsync();
-
-        if (result.Succeeded)
-            return true;
-
-        return false;
-    }
-    public async Task<IEnumerable<IdentityRole>> GetAllRolesAsync()
-    {
-        var roles = await _roleManager.Roles.ToListAsync();
-        return roles;
-    }
+    */
 }
 
 

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using WebbApp.Models.Entities;
 
-namespace WebbApp.ViewModels;
+namespace WebbApp.Models.ViewModels;
 
 public class ProductRegisterViewModel
 {

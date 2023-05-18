@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebbApp.Models.Dtos;
+using WebbApp.Models.ViewModels;
 using WebbApp.Repositories;
 using WebbApp.Services;
-using WebbApp.ViewModels;
 
 namespace WebbApp.Controllers
 {

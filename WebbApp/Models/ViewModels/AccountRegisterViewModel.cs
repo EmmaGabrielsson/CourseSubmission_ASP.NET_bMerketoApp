@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using WebbApp.Models.Entities;
 using WebbApp.Models.Identities;
 
-namespace WebbApp.ViewModels;
+namespace WebbApp.Models.ViewModels;
 
 public class AccountRegisterViewModel
 {

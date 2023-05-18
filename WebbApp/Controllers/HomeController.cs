@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using WebbApp.Models.ViewModels;
 using WebbApp.Repositories;
 using WebbApp.Services;
-using WebbApp.ViewModels;
 
 namespace WebbApp.Controllers;
 
@@ -51,7 +51,7 @@ public class HomeController : Controller
 
         if (ModelState.IsValid)
         {
-            if (await _subscribeService.ExistAsync(model))
+            if (await _subscribeService.ExsistAsync(model))
             {
                 ModelState.AddModelError("", "You are already a subsciber for our newsletter.");
                 return View(model);

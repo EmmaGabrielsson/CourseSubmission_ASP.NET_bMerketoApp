@@ -170,7 +170,7 @@
                 @foreach (var review in Model.Reviews!)
                 {
                     <div class="review ">
-                        <p class="my-1 text-decoration-underline fw-bold">Rating: @review.Rating/5, @review.Created </p>
+                        <p class="my-1 text-decoration-underline fw-bold">Rating: @review.Rating/5, @review.Created.ToShortDateString() </p>
                         <p class="small">@review.Comment</p>
                     </div>
                 }

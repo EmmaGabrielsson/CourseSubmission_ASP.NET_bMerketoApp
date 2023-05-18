@@ -4,8 +4,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.Linq.Expressions;
 using WebbApp.Contexts;
 using WebbApp.Models.Entities;
+using WebbApp.Models.ViewModels;
 using WebbApp.Repositories;
-using WebbApp.ViewModels;
 
 namespace WebbApp.Services;
 
@@ -32,63 +32,6 @@ public class ProductService
         _stockRepo = stockRepo;
     }
 
-    public async Task<ProductEntity> CreateAsync(ProductRegisterViewModel model)
-    {
-        var _entity = await _productRepo.GetDataAsync(x => x.ArticleNumber == model.ArticleNumber);
-        if (_entity == null)
-        {
-            var product = await _productRepo.AddDataAsync(model);
-            if (product != null)
-            {
-                var stock = await _stockRepo.AddDataAsync(model);
-                if(stock != null)
-                    return product;
-            }
-        }
-        return null!;
-    }
-    public async Task<ProductEntity> GetAsync(Expression<Func<ProductEntity, bool>> predicate)
-    {
-        try 
-        {
-            var _entity = await _productRepo.GetDataAsync(predicate);
-            if (_entity != null)
-                return _entity!;        
-        } catch { return null!; }
-        return null!;
-    }
-    public async Task<bool> UploadImageAsync(ProductEntity product, IFormFile image)
-    {
-        try
-        {
-            string imagePath = $"{_webHostEnvironment.WebRootPath}/images/products/{product.ImageUrl}";
-            await image.CopyToAsync(new FileStream(imagePath, FileMode.Create));
-            return true;
-        }
-        catch { return false; }
-    }
-    public async Task<List<ProductEntity>> GetAllOnSaleItemsAsync()
-    {
-        List<StockEntity> onSaleProducts = await _context.Stocks.Where(x => x.OnSale == true).ToListAsync();
-        var list = new List<ProductEntity>();
-
-        foreach (var item in onSaleProducts)
-        {
-            var product = await _productRepo.GetDataAsync(x => x.ArticleNumber == item.ArticleNumber);
-            list.Add(product);
-        }
-
-        return list;
-    }
-    public async Task<ShowcaseEntity> GetLatestShowcaseAsync()
-    {
-        var showcases = await _context.Showcases.OrderByDescending(x => x.CreatedDate).ToListAsync();
-
-        if (showcases != null)
-            return showcases.FirstOrDefault()!;
-
-        return null!;
-    }
     public async Task CreateInitializedDataAsync()
     {
         if (!await _context.Showcases.AnyAsync())
@@ -246,29 +189,94 @@ public class ProductService
             }
         }
     }
+    public async Task<ProductEntity> CreateAsync(ProductRegisterViewModel model)
+    {
+        var _entity = await _productRepo.GetDataAsync(x => x.ArticleNumber == model.ArticleNumber);
+        if (_entity == null)
+        {
+            var product = await _productRepo.AddDataAsync(model);
+            if (product != null)
+            {
+                var stock = await _stockRepo.AddDataAsync(model);
+                if(stock != null)
+                    return product;
+            }
+        }
+        return null!;
+    }
+    public async Task<ProductEntity> GetAsync(Expression<Func<ProductEntity, bool>> predicate)
+    {
+        try 
+        {
+            var _entity = await _productRepo.GetDataAsync(predicate);
+            if (_entity != null)
+                return _entity!;        
+        } catch { return null!; }
+        return null!;
+    }
+    public async Task<bool> UploadImageAsync(ProductEntity product, IFormFile image)
+    {
+        try
+        {
+            string imagePath = $"{_webHostEnvironment.WebRootPath}/images/products/{product.ImageUrl}";
+            await image.CopyToAsync(new FileStream(imagePath, FileMode.Create));
+            return true;
+        }
+        catch { return false; }
+    }
+    public async Task<List<ProductEntity>> GetAllOnSaleItemsAsync()
+    {
+        List<StockEntity> onSaleProducts = await _context.Stocks.Where(x => x.OnSale == true).ToListAsync();
+        var list = new List<ProductEntity>();
+
+        foreach (var item in onSaleProducts)
+        {
+            var product = await _productRepo.GetDataAsync(x => x.ArticleNumber == item.ArticleNumber);
+            list.Add(product);
+        }
+
+        return list;
+    }
+    public async Task<ShowcaseEntity> GetLatestShowcaseAsync()
+    {
+        try
+        {
+            var showcases = await _context.Showcases.OrderByDescending(x => x.CreatedDate).ToListAsync();
+
+            if (showcases != null)
+                return showcases.FirstOrDefault()!;
+
+        } catch { return null!; }
+
+        return null!;
+    }
     public async Task<IEnumerable<GridCollectionItemViewModel>> GetAllAsync()
     {
-        var products = await _context.Products.ToListAsync();
-        var newList = new List<GridCollectionItemViewModel>();
-        foreach (var item in products)
+        try
         {
-            newList.Add(item);
-        }
-        return newList;
+            var products = await _context.Products.ToListAsync();
+            var newList = new List<GridCollectionItemViewModel>();
+            foreach (var item in products)
+                newList.Add(item);
+
+            return newList;
+        } catch { return null!; }
     }
     public async Task<IEnumerable<GridCollectionItemViewModel>> GetAllTopSaleProductsAsync()
     {
-        var topSaleProducts = new List<GridCollectionItemViewModel>();
-        var popularTag = await _context.Tags.FirstOrDefaultAsync(x => x.TagName == "popular");
-        var topSaleIds = await _context.ProductTags.Where(x => x.TagId == popularTag!.Id).ToListAsync();
-        foreach (var id in topSaleIds)
+        try
         {
-            var product = await _context.Products.FirstOrDefaultAsync(x => x.ArticleNumber == id.ProductId);
-            topSaleProducts.Add(product!);
+            var topSaleProducts = new List<GridCollectionItemViewModel>();
+            var popularTag = await _context.Tags.FirstOrDefaultAsync(x => x.TagName == "popular");
+            var topSaleIds = await _context.ProductTags.Where(x => x.TagId == popularTag!.Id).ToListAsync();
+            foreach (var id in topSaleIds)
+            {
+                var product = await _context.Products.FirstOrDefaultAsync(x => x.ArticleNumber == id.ProductId);
+                topSaleProducts.Add(product!);
+            }
+            return topSaleProducts!;
 
-        }
-
-        return topSaleProducts!;
+        }catch { return null!; }
     }
     public async Task<IEnumerable<GridCollectionItemViewModel>> GetAllCategoryProductsAsync(int categoryId)
     {
@@ -284,77 +292,91 @@ public class ProductService
     }
     public async Task<List<ProductReviewEntity>> GetReviewsAsync(string articleNumber)
     {
-        var reviews = await _context.ProductReviews.Where(x => x.ProductArticleNumber == articleNumber).ToListAsync();
-        if (reviews != null)
-            return reviews;
-
+        try
+        {
+            var reviews = await _context.ProductReviews.Where(x => x.ProductArticleNumber == articleNumber).ToListAsync();
+            if (reviews != null)
+                return reviews;
+        } catch { return null!; }
         return null!;
     }
     public async Task<List<CategoryEntity>> GetProductCategoriesListAsync(string articleNumber)
     {
-        var categories = new List<CategoryEntity>();
-        var productIds = await _context.ProductCategories.Where(x => x.ProductId == articleNumber).ToListAsync();
-        foreach (var id in productIds)
+        try
         {
-            var category = await _context.Categories.FirstOrDefaultAsync(x => x.Id == id.CategoryId);
-            if (category != null)
-                categories.Add(category);
-        }
+            var categories = new List<CategoryEntity>();
+            var productIds = await _context.ProductCategories.Where(x => x.ProductId == articleNumber).ToListAsync();
+            foreach (var id in productIds)
+            {
+                var category = await _context.Categories.FirstOrDefaultAsync(x => x.Id == id.CategoryId);
+                if (category != null)
+                    categories.Add(category);
+            }
 
-        if(!categories.IsNullOrEmpty())
-            return categories;
+            if(!categories.IsNullOrEmpty())
+                return categories;
+        }
+        catch {  return null!; }
 
         return null!;
     }
     public async Task<List<TagEntity>> GetProductTagsListAsync(string articleNumber)
     {
-        var tags = new List<TagEntity>();
-        var productIds = await _context.ProductTags.Where(x => x.ProductId == articleNumber).ToListAsync();
-        foreach (var id in productIds)
+        try
         {
-            var tag = await _context.Tags.FirstOrDefaultAsync(x => x.Id == id.TagId);
-            if (tag != null)
-                tags.Add(tag);
-        }
+            var tags = new List<TagEntity>();
+            var productIds = await _context.ProductTags.Where(x => x.ProductId == articleNumber).ToListAsync();
+            foreach (var id in productIds)
+            {
+                var tag = await _context.Tags.FirstOrDefaultAsync(x => x.Id == id.TagId);
+                if (tag != null)
+                    tags.Add(tag);
+            }
 
-        if (!tags.IsNullOrEmpty())
-            return tags;
+            if (!tags.IsNullOrEmpty())
+                return tags;
+        } catch { return null!; }
 
         return null!;
     }
-
     public async Task<GridCollectionViewModel> GetBestCollectionAsync()
     {
-        var bestCollection = await _context.Collections.FirstOrDefaultAsync(x => x.Title == "best collection");
-        var collection = new GridCollectionViewModel();
-        if (bestCollection != null)
+        try
         {
-            collection.Title = bestCollection.Title!;
-            var featured = await _context.Tags.Where(x => x.TagName == "featured").FirstOrDefaultAsync();
-            var productIds = await _context.ProductTags.Where(x => x.TagId == featured!.Id).ToListAsync();
-
-            foreach(var item in productIds)
+            var bestCollection = await _context.Collections.FirstOrDefaultAsync(x => x.Title == "best collection");
+            var collection = new GridCollectionViewModel();
+            if (bestCollection != null)
             {
-                var product = await _productRepo.GetDataAsync(x => x.ArticleNumber == item.ProductId);
-                collection.GridItems!.Add(product);
-            }
+                collection.Title = bestCollection.Title!;
+                var featured = await _context.Tags.Where(x => x.TagName == "featured").FirstOrDefaultAsync();
+                var productIds = await _context.ProductTags.Where(x => x.TagId == featured!.Id).ToListAsync();
+
+                foreach(var item in productIds)
+                {
+                    var product = await _productRepo.GetDataAsync(x => x.ArticleNumber == item.ProductId);
+                    collection.GridItems!.Add(product);
+                }
             
-            return collection!;
-        }
+                return collection!;
+            }
+        } catch { return null!; }
         return null!;
     }
     public async Task<SearchViewModel> GetAllSearchedAsync(SearchViewModel searchModel)
     {
-        var searchedProducts = new List<GridCollectionItemViewModel>();
-        var findProducts = await _context.Products.Where(x => x.ProductName.Contains(searchModel.SearchText)).ToListAsync();
-        foreach (var product in findProducts)
+        try
         {
-            searchedProducts.Add(product!);
-        }
-        searchModel.SearchResults = searchedProducts;
-        return searchModel!;
-    }
+            var searchedProducts = new List<GridCollectionItemViewModel>();
+            var findProducts = await _context.Products.Where(x => x.ProductName.Contains(searchModel.SearchText)).ToListAsync();
+            foreach (var product in findProducts)
+            {
+                searchedProducts.Add(product!);
+            }
+            searchModel.SearchResults = searchedProducts;
+            return searchModel!;
 
+        } catch { return null!; }
+    }
     public async Task<List<SelectListItem>> GetTagsAsync()
     {
         var tags = new List<SelectListItem>();
@@ -412,28 +434,37 @@ public class ProductService
         }
         return categories;
     }
-
-    public async Task AddProductTagsAsync(ProductEntity product, string[] tags)
+    public async Task<bool> AddProductTagsAsync(ProductEntity product, string[] tags)
     {
-        foreach (var tag in tags)
+        try
         {
-            await _productTagRepo.AddDataAsync(new ProductTagEntity
+            foreach (var tag in tags)
             {
-                ProductId = product.ArticleNumber,
-                TagId = int.Parse(tag)
-            });
+                await _productTagRepo.AddDataAsync(new ProductTagEntity
+                {
+                    ProductId = product.ArticleNumber,
+                    TagId = int.Parse(tag)
+                });
+            }
+            return true;
         }
+        catch { return false; }
     }
-    public async Task AddProductCategoriesAsync(ProductEntity product, string[] categories)
+    public async Task<bool> AddProductCategoriesAsync(ProductEntity product, string[] categories)
     {
-        foreach (var category in categories)
+        try
         {
-            await _productCategoryRepo.AddDataAsync(new ProductCategoryEntity
+            foreach (var category in categories)
             {
-                ProductId = product.ArticleNumber,
-                CategoryId = int.Parse(category)
-            });
+                await _productCategoryRepo.AddDataAsync(new ProductCategoryEntity
+                {
+                    ProductId = product.ArticleNumber,
+                    CategoryId = int.Parse(category)
+                });
+            }
+            return true;
         }
+        catch { return false; }
     }
 
 }

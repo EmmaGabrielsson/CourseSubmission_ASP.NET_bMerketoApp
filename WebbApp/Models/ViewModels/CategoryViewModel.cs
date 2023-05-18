@@ -1,4 +1,4 @@
-﻿namespace WebbApp.ViewModels;
+﻿namespace WebbApp.Models.ViewModels;
 
 public class CategoryViewModel
 {
