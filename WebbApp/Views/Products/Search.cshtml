@@ -1,8 +1,8 @@
 ﻿@model SearchViewModel
 
 <section class="search-form">
-    <div class="container d-flex justify-content-center p-4 mt-5">
-        <form metod="post" asp-controller="Products" asp-action="search" class="bg-dark col-8 d-flex col-xl-6" novalidate>
+    <div class="container bg-dark w-100 d-flex justify-content-center p-4 mt-5">
+        <form metod="post" asp-action="search" class=" d-flex w-75 px-3" novalidate>
             <div class="text-danger" asp-validation-summary="ModelOnly"></div>
             <input class="mb-2 rounded-start" asp-for="SearchText" placeholder="search product here..." maxlength="64">
             <button type="submit" class="btn-theme rounded-end mb-2"><i class="fa-regular fa-search"></i></button>
@@ -16,11 +16,11 @@
         {
             @if (Model.SearchResults.Any())
             {
-                <div class="d-flex mx-4">
-                   <h4><span class="text-decoration-underline">Your</span> search for @Model.SearchText:</h4> 
+                <div class="d-flex justify-content-center mx-4">
+                   <h4><span class="text-decoration-underline ms-2">Your</span> search for @Model.SearchText:</h4> 
                 </div>
 
-                <div class="grid">
+                <div class="grid justify-content-center mx-4">
                     @foreach (var item in Model.SearchResults)
                     {
                         <div class="collection-item">
