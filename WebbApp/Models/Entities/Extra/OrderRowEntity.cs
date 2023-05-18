@@ -3,16 +3,16 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebbApp.Models.Entities.Extra;
 
-[PrimaryKey(nameof(OrderId), nameof(ItemId))]
+[PrimaryKey(nameof(OrderId), nameof(ProductArticleNumber))]
 public class OrderRowEntity
 {
     [ForeignKey(nameof(Order))]
-    public int OrderId { get; set; }
-    public string ItemId { get; set; } = null!;
+    public Guid OrderId { get; set; }
+    public string ProductArticleNumber { get; set; } = null!;
     public int Quantity { get; set; }
 
     [Column(TypeName = "money")]
-    public decimal ItemPrice { get; set; }
+    public decimal ProductPrice { get; set; }
     public OrderEntity Order { get; set; } = null!;
 
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using WebbApp.Models.Entities;
 using WebbApp.Models.ViewModels;
 using WebbApp.Repositories;
 using WebbApp.Services;
@@ -7,21 +8,24 @@ namespace WebbApp.Controllers;
 
 public class HomeController : Controller
 {
-    private readonly SubscribeService _subscribeService;
+    #region Constructors & Private Fields
     private readonly ProductService _productService;
     private readonly CategoryRepo _categoryRepo;
+    private readonly SubscribeRepo _subscribeRepo;
+    private readonly SeedService _seedService;
 
-    public HomeController(SubscribeService subscribeService, ProductService productService, CategoryRepo categoryRepo)
+    public HomeController(ProductService productService, CategoryRepo categoryRepo, SubscribeRepo subscribeRepo, SeedService seedService)
     {
-        _subscribeService = subscribeService;
         _productService = productService;
         _categoryRepo = categoryRepo;
+        _subscribeRepo = subscribeRepo;
+        _seedService = seedService;
     }
-
+    #endregion
     public async Task<IActionResult> Index()
     {
         ViewData["Title"] = "Home";
-        await _productService.CreateInitializedDataAsync();
+        await _seedService.CreateInitializedDataAsync();
 
         var latestShowcase = await _productService.GetLatestShowcaseAsync();
         ViewBag.LatestShowcase = latestShowcase;
@@ -51,13 +55,16 @@ public class HomeController : Controller
 
         if (ModelState.IsValid)
         {
-            if (await _subscribeService.ExsistAsync(model))
+            if (await _subscribeRepo.GetDataAsync(x => x.Email == model.Email) != null)
             {
                 ModelState.AddModelError("", "You are already a subsciber for our newsletter.");
                 return View(model);
             }
-
-            if (await _subscribeService.RegisterForSubscribeAsync(model))
+            SubscriberEntity subscriber = new()
+            {
+                Email = model.Email
+            };
+            if (await _subscribeRepo.AddDataAsync(subscriber) != null)
             {
                 ModelState.AddModelError("", "Welcome! You are now a subscriber for our newsletter");
                 return View(model);

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Server.Kestrel.Core;
+using System.ComponentModel.DataAnnotations;
 using WebbApp.Models.Entities;
 
 namespace WebbApp.Models.ViewModels;
@@ -32,6 +33,7 @@ public class ProductRegisterViewModel
     public decimal Price { get; set; }
 
     [Display(Name = "Stock Quantity*")]
+    [Required(ErrorMessage = "The Quantity value is invalid.")]
     public int Quantity { get; set; }
 
 

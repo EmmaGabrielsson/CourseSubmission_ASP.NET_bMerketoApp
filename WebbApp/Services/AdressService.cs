@@ -1,29 +1,36 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
-using WebbApp.Contexts;
+﻿using Microsoft.AspNetCore.Identity;
 using WebbApp.Models.Entities;
 using WebbApp.Models.Identities;
+using WebbApp.Repositories;
 
 namespace WebbApp.Services;
 
 public class AdressService
 {
-    private readonly IdentityContext _context;
-    public AdressService(IdentityContext context)
-    {
-        _context = context;
-    }
+    #region Constructors & Private Fields
+        private readonly AdressRepo _adressRepo;
+        private readonly UserAdressRepo _userAdressRepo;
+        private readonly UserManager<AppUser> _userManager;
+        public AdressService(AdressRepo adressRepo, UserAdressRepo userAdressRepo, UserManager<AppUser> userManager)
+        {
+            _adressRepo = adressRepo;
+            _userAdressRepo = userAdressRepo;
+            _userManager = userManager;
+        }
+    #endregion
 
     public async Task<List<AdressEntity>> GetUserAdressAsync(AppUser user)
     {
         try
         {
-            var _adresses = await _context.AspNetUserAdresses.Where(x => x.UserId == user.Id).ToListAsync();
+            var _adresses = await _userAdressRepo.GetAllIdentityAsync(x => x.UserId == user.Id);
+            if (!_adresses.Any())
+                return null!;
 
             var _foundAdressesList = new List<AdressEntity>();
             foreach (var adress in _adresses)
             {
-                var _foundAdress = await _context.AspNetAdresses.FirstOrDefaultAsync(x => x.Id == adress.AdressId);
+                var _foundAdress = await _adressRepo.GetIdentityAsync(x => x.Id == adress.AdressId);
             
                 if (_foundAdress != null)
                     _foundAdressesList.Add(_foundAdress);
@@ -37,45 +44,35 @@ public class AdressService
     {
         try
         {
-            var findUser = await _context.Users.FindAsync(user.Id);
+            var findUser = await _userManager.FindByIdAsync(user.Id);
             if(findUser != null)
             {
-                var findAdress = await _context.AspNetAdresses.FirstOrDefaultAsync(x => x.StreetName == adress.StreetName & x.PostalCode == adress.PostalCode && x.City == adress.City );
+                var findAdress = await _adressRepo.GetIdentityAsync(x => x.StreetName == adress.StreetName & x.PostalCode == adress.PostalCode && x.City == adress.City );
                 if (findAdress != null){
                     UserAdressEntity newUserAdress = new()
                     {
                         UserId = findUser.Id,
                         AdressId = findAdress.Id
                     };
-                    await _context.AspNetUserAdresses.AddAsync(newUserAdress);
-                    await _context.SaveChangesAsync();
-                    return true;
+                    
+                    if(await _userAdressRepo.AddIdentityAsync(newUserAdress) != null)
+                        return true;
                 }
             }
+            return false;
 
         }catch { return false; }
-
-        return false;
     }
     public async Task<AdressEntity> GetOrCreateAsync(AdressEntity entity)
     {
         try
         {
-            var adress = await _context.AspNetAdresses.FirstOrDefaultAsync(x => x.StreetName == entity.StreetName && x.PostalCode == entity.PostalCode && x.City == entity.City);
+            var adress = await _adressRepo.GetIdentityAsync(x => x.Id == entity.Id);
             if (adress != null)
-                return adress!;
+                return adress;
 
-            await _context.AspNetAdresses.AddAsync(entity);
-            await _context.SaveChangesAsync();
+            await _adressRepo.AddIdentityAsync(entity);
             return entity;
-        } catch { return null!; }
-    }
-    public async Task<AdressEntity> GetAsync(Expression<Func<AdressEntity, bool>> predicate)
-    {
-        try
-        {
-            var _userEntity = await _context.AspNetAdresses.FirstOrDefaultAsync(predicate);
-            return _userEntity!;
         } catch { return null!; }
     }
 

@@ -7,13 +7,15 @@ namespace WebbApp.Controllers
 {
     public class ContactsController : Controller
     {
+        #region Constructors & Private Fields
+
         private readonly ContactFormRepo _contactRepo;
 
         public ContactsController(ContactFormRepo contactRepo)
         {
             _contactRepo = contactRepo;
         }
-
+        #endregion
         public IActionResult Index()
         {
             ViewData["Title"] = "Contact Us";

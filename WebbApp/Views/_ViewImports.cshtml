@@ -8,12 +8,8 @@
 @using Microsoft.AspNetCore.Identity;
 
 @inject UserService userService
-@inject AdressService adressService
-@inject ProductService productService
-@inject SubscribeService subscribeService
+@inject UserRepo userRepo
 @inject SignInManager<AppUser> signInManager
 @inject UserManager<AppUser> userManager
-@inject ContactFormRepo contactFormRepo
 @inject CategoryRepo categoryRepo
-@inject TagRepo tagRepo
 @inject StockRepo stockRepo

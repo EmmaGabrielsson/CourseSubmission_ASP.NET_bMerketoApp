@@ -1,10 +1,8 @@
 ﻿@{
     string displayFullName = "";
-    var user = await userService.GetAsync(x => x.UserName == User.Identity!.Name);
+    var user = await userRepo.GetIdentityAsync(x => x.UserName == User.Identity!.Name); 
     if (user != null)
-    {
         displayFullName = $"{user.FirstName} {user.LastName}";        
-    }
 }
 
 <header>

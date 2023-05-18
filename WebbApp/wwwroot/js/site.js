@@ -58,11 +58,11 @@ function checkboxValidator(target) {
     if (!target.checked)
         document.querySelector(`[data-valmsg-for="${target.id}"]`).innerHTML = `${target.id} must be checked`
     else 
-        document.querySelector(`[data-valmsg-for="${target.id}"]`).innerHTML = `${target.id} is checked`
+        document.querySelector(`[data-valmsg-for="${target.id}"]`).innerHTML = ``
 }
 
 function numberValidator(target) {
-    if (isNaN(target.value) || target.value === "")
+    if (isNaN(target.value) || target.value === "" || target.value < 0)
         document.querySelector(`[data-valmsg-for="${target.id}"]`).innerHTML = `${target.id} is invalid`
     else
         document.querySelector(`[data-valmsg-for="${target.id}"]`).innerHTML = ``
@@ -77,7 +77,7 @@ function fileValidator(target) {
     if (!fileExtensions.includes(fileExtension))
         document.querySelector(`[data-valmsg-for="${target.id}"]`).innerHTML = `${target.id} must be a valid image file: "jpg", "jpeg", "png" or "gif"`
     else 
-        document.querySelector(`[data-valmsg-for="${target.id}"]`).innerHTML = `Great ${target.id}!`
+        document.querySelector(`[data-valmsg-for="${target.id}"]`).innerHTML = ``
 }
 
 
@@ -136,5 +136,18 @@ function ViewDescription() {
         descriptionContainer.style.display = "none";
     } else {
         descriptionContainer.style.display = "block";
+    }
+}
+
+
+function ChangeProductQuantityValue(id) {
+    let increase = document.getElementById(`${id}`)
+    let decrease = document.qetElemetById(`${id}`)
+    let quantityInput = document.querySelector(`#${id}-quantity`)
+    console.log(increase)
+
+    if (EventTarget.target == increase) {
+    }
+    else if (EventTarget.element == decrease) {
     }
 }

@@ -8,6 +8,8 @@ namespace WebbApp.Controllers;
 [Authorize(Roles = "admin")]
 public class AdminController : Controller
 {
+    #region Constructors & Private Fields
+
     private readonly UserService _userService;
     private readonly ProductService _productService;
     public AdminController(UserService userService, ProductService productService)
@@ -15,7 +17,7 @@ public class AdminController : Controller
         _userService = userService;
         _productService = productService;
     }
-
+    #endregion
     public IActionResult Index()
     {
         ViewData["Title"] = "Admin - Dashboard";

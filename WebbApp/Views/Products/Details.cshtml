@@ -70,9 +70,9 @@
         </p>
         <div class="button-container">
             <div class="quantity-container">
-                <button class="btn-outline-white" type="button">-</button>
-                <input type="number"  min="1" />
-                <button class="btn-outline-white" type="button">+</button>
+                <button title="decrease amount" onclick="ChangeProductQuantityValue(@Model.ArticleNumber-decrease)" id="@Model.ArticleNumber-decrease" class="btn-outline-white" type="button">-</button>
+                <input id="@Model.ArticleNumber-quantity" value="1" type="number" min="1" max="@Model.StockQuantity" />
+                <button title="increase amount" onclick="ChangeProductQuantityValue(@Model.ArticleNumber-increase)" id="@Model.ArticleNumber-increase" class="btn-outline-white" type="button">+</button>
             </div>
             <button class="btn-theme add-to-cart">
                 Add to Cart 

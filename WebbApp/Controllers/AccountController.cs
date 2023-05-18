@@ -1,20 +1,25 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebbApp.Models.ViewModels;
+using WebbApp.Repositories;
 using WebbApp.Services;
 
 namespace WebbApp.Controllers;
 
 public class AccountController : Controller
 {
+    #region Constructors & Private Fields
+
     private readonly UserService _userService;
     private readonly AdressService _adressService;
-    public AccountController(UserService userService, AdressService adressService)
+    private readonly UserRepo _userRepo;
+    public AccountController(UserService userService, AdressService adressService, UserRepo userRepo)
     {
         _userService = userService;
         _adressService = adressService;
+        _userRepo = userRepo;
     }
-
+    #endregion
 
     #region My Account (https://domain.com/account)
     [Authorize]
@@ -22,7 +27,7 @@ public class AccountController : Controller
     {
         ViewData["Title"] = "My account";
 
-        var userInfo = await _userService.GetAsync(x => x.UserName == User.Identity!.Name);
+        var userInfo = await _userRepo.GetIdentityAsync(x => x.UserName == User.Identity!.Name);
         var adresses = await _adressService.GetUserAdressAsync(userInfo);
 
         ProfileViewModel profileView = userInfo;
@@ -47,7 +52,7 @@ public class AccountController : Controller
 
         if (ModelState.IsValid)
         {
-            if(await _userService.UserExsist(x => x.Email == registerViewModel.Email ))
+            if(await _userService.UserExsist(registerViewModel.Email ))
                 ModelState.AddModelError("", "There is already a user with the same email address");
             else
             {

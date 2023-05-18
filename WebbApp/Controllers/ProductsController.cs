@@ -8,6 +8,7 @@ namespace WebbApp.Controllers
 {
     public class ProductsController : Controller
     {
+        #region Constructors & Private Fields
         private readonly ProductService _productService;
         private readonly CategoryRepo _categoryRepo;
         private readonly StockRepo _stockRepo;
@@ -17,7 +18,7 @@ namespace WebbApp.Controllers
             _categoryRepo = categoryRepo;
             _stockRepo = stockRepo;
         }
-
+        #endregion
         public async Task<IActionResult> Index()
         {
             ViewData["Title"] = "All Products";
