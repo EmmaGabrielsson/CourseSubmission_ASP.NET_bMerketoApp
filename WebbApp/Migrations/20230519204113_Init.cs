@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace WebbApp.Migrations
 {
     /// <inheritdoc />
-    public partial class DataTables : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -157,14 +157,14 @@ namespace WebbApp.Migrations
                 {
                     ProductId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     TagId = table.Column<int>(type: "int", nullable: false),
-                    CollectionEntityId = table.Column<int>(type: "int", nullable: true)
+                    CollectionId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ProductTags", x => new { x.ProductId, x.TagId });
                     table.ForeignKey(
-                        name: "FK_ProductTags_Collections_CollectionEntityId",
-                        column: x => x.CollectionEntityId,
+                        name: "FK_ProductTags_Collections_CollectionId",
+                        column: x => x.CollectionId,
                         principalTable: "Collections",
                         principalColumn: "Id");
                     table.ForeignKey(
@@ -192,9 +192,9 @@ namespace WebbApp.Migrations
                 column: "ProductArticleNumber");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductTags_CollectionEntityId",
+                name: "IX_ProductTags_CollectionId",
                 table: "ProductTags",
-                column: "CollectionEntityId");
+                column: "CollectionId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProductTags_TagId",

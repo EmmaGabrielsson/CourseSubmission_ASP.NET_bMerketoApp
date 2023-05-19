@@ -9,5 +9,7 @@ public class TagEntity
 
     [Column(TypeName = "nvarchar(80)")]
     public string TagName { get; set; } = null!;
-    public ICollection<ProductTagEntity> Products { get; set; } = new HashSet<ProductTagEntity>();
+    public ICollection<ProductTagEntity> ProductTags { get; set; } = new HashSet<ProductTagEntity>();
+
+
 }

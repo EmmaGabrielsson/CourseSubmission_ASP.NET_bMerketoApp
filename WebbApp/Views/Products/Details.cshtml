@@ -70,9 +70,9 @@
         </p>
         <div class="button-container">
             <div class="quantity-container">
-                <button title="decrease amount" onclick="ChangeProductQuantityValue(@Model.ArticleNumber-decrease)" id="@Model.ArticleNumber-decrease" class="btn-outline-white" type="button">-</button>
-                <input id="@Model.ArticleNumber-quantity" value="1" type="number" min="1" max="@Model.StockQuantity" />
-                <button title="increase amount" onclick="ChangeProductQuantityValue(@Model.ArticleNumber-increase)" id="@Model.ArticleNumber-increase" class="btn-outline-white" type="button">+</button>
+                <button onclick="ChangeProductQuantityValue('@Model.ArticleNumber', @Model.StockQuantity)" id="@Model.ArticleNumber-decrement" class="btn-outline-white" type="button">-</button>
+                <input readonly id="@Model.ArticleNumber-quantity" value="1" type="number" min="1" max="@Model.StockQuantity" />
+                <button onclick="ChangeProductQuantityValue('@Model.ArticleNumber', @Model.StockQuantity)" id="@Model.ArticleNumber-increment" class="btn-outline-white" type="button">+</button>
             </div>
             <button class="btn-theme add-to-cart">
                 Add to Cart 
@@ -112,7 +112,7 @@
                 </p>
             }
         </div>
-        @if (Model.Categories != null)
+        @if (Model.Categories.Any())
         {
             <p class="category">Catergory: 
                 @foreach (var category in Model.Categories)
@@ -128,7 +128,7 @@
                 }
             </p>            
         }
-        @if (Model.Tags != null)
+        @if (Model.Tags.Any())
         {
             <p class="category">
                 Tags:

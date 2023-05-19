@@ -133,12 +133,12 @@ namespace WebbApp.Migrations
                     b.Property<int>("TagId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("CollectionEntityId")
+                    b.Property<int?>("CollectionId")
                         .HasColumnType("int");
 
                     b.HasKey("ProductId", "TagId");
 
-                    b.HasIndex("CollectionEntityId");
+                    b.HasIndex("CollectionId");
 
                     b.HasIndex("TagId");
 
@@ -253,9 +253,9 @@ namespace WebbApp.Migrations
 
             modelBuilder.Entity("WebbApp.Models.Entities.ProductTagEntity", b =>
                 {
-                    b.HasOne("WebbApp.Models.Entities.CollectionEntity", null)
+                    b.HasOne("WebbApp.Models.Entities.CollectionEntity", "Collection")
                         .WithMany("ProductIds")
-                        .HasForeignKey("CollectionEntityId");
+                        .HasForeignKey("CollectionId");
 
                     b.HasOne("WebbApp.Models.Entities.ProductEntity", "Product")
                         .WithMany("Tags")
@@ -264,10 +264,12 @@ namespace WebbApp.Migrations
                         .IsRequired();
 
                     b.HasOne("WebbApp.Models.Entities.TagEntity", "Tag")
-                        .WithMany("Products")
+                        .WithMany("ProductTags")
                         .HasForeignKey("TagId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Collection");
 
                     b.Navigation("Product");
 
@@ -304,7 +306,7 @@ namespace WebbApp.Migrations
 
             modelBuilder.Entity("WebbApp.Models.Entities.TagEntity", b =>
                 {
-                    b.Navigation("Products");
+                    b.Navigation("ProductTags");
                 });
 #pragma warning restore 612, 618
         }

@@ -13,5 +13,9 @@ public class ProductTagEntity
     [ForeignKey(nameof(Tag))]
     public int TagId { get; set; }
     public TagEntity Tag { get; set; } = null!;
+
+    public int? CollectionId { get; set; }
+    public CollectionEntity? Collection { get; set; }
+
 }
 

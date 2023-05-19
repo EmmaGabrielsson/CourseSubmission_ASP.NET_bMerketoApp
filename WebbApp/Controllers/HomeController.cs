@@ -37,10 +37,10 @@ public class HomeController : Controller
         if(bestCollection != null)
             ViewBag.BestCollection = bestCollection;
 
-        var onSaleItems = await _productService.GetAllOnSaleItemsAsync();
-        Random random = new();
-        GridCollectionItemViewModel randomItem = onSaleItems[random.Next(onSaleItems.Count)];
-        ViewBag.RandomItem = randomItem;
+
+        var onSaleItems = await _productService.GetAllOnSaleItemsAsync();        
+        ViewBag.OnSaleItemFirst = onSaleItems.FirstOrDefault();
+        ViewBag.OnSaleItemLast = onSaleItems.LastOrDefault();
 
         var topSaleItemsList = await _productService.GetAllTopSaleProductsAsync();
         ViewBag.TopSaleItemsList = topSaleItemsList;

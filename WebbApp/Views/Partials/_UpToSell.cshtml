@@ -2,10 +2,10 @@
     <div class="container">
         <div class="collection-grid">
             <div class="item-1">
-            @if (ViewBag.RandomItem != null)
+            @if (ViewBag.OnSaleItemFirst != null)
             {
             <div class="grid">
-                <partial name="/Views/Partials/_GridCollectionItem.cshtml" model="@ViewBag.RandomItem" />
+                <partial name="/Views/Partials/_GridCollectionItem.cshtml" model="@ViewBag.OnSaleItemFirst" />
             </div>
             }                
             </div>
@@ -23,9 +23,9 @@
                 <!-- collection-content end -->
             </div>
             <div class="item-2">
-            @if (ViewBag.RandomItem != null)
+            @if (ViewBag.OnSaleItemLast != null)
             {
-                <partial name="/Views/Partials/_GridCollectionItem.cshtml" model="@ViewBag.RandomItem" />
+                <partial name="/Views/Partials/_GridCollectionItem.cshtml" model="@ViewBag.OnSaleItemLast" />
             }                
             </div>
         </div>

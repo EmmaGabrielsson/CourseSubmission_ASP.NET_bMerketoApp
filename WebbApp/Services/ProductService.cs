@@ -71,18 +71,22 @@ public class ProductService
         }
         catch { return false; }
     }
-    public async Task<List<ProductEntity>> GetAllOnSaleItemsAsync()
+    public async Task<List<GridCollectionItemViewModel>> GetAllOnSaleItemsAsync()
     {
         List<StockEntity> onSaleProducts = (List<StockEntity>)await _stockRepo.GetAllDataAsync(x => x.OnSale == true);
-        var list = new List<ProductEntity>();
-
-        foreach (var item in onSaleProducts)
+        var list = new List<GridCollectionItemViewModel>();
+        if (onSaleProducts != null)
         {
-            var product = await _productRepo.GetDataAsync(x => x.ArticleNumber == item.ArticleNumber);
-            list.Add(product);
-        }
+            foreach (var item in onSaleProducts)
+            {
+                var product = await _productRepo.GetDataAsync(x => x.ArticleNumber == item.ArticleNumber);
+                list.Add(product);
+            }
 
-        return list;
+            return list;
+
+        }
+        return null!;
     }
     public async Task<ShowcaseEntity> GetLatestShowcaseAsync()
     {
@@ -204,15 +208,19 @@ public class ProductService
 
                 if (featured != null)
                 {
-                    var productIds = await _productTagRepo.GetAllDataAsync(x => x.TagId == featured.Id);
+                    IEnumerable<ProductTagEntity> productIds = await _productTagRepo.GetAllDataAsync(x => x.TagId == featured.Id);
 
-                    foreach(var item in productIds)
+                    if( productIds != null)
                     {
-                        var product = await _productRepo.GetDataAsync(x => x.ArticleNumber == item.ProductId);
-                        if(product != null)
-                            collection.GridItems!.Add(product);
+                        foreach(var item in productIds)
+                        {
+                            var product = await _productRepo.GetDataAsync(x => x.ArticleNumber == item.ProductId);
+                            if(product != null)
+                                collection.GridItems!.Add(product);
+                        }
+
                     }
-                    return collection!;
+                        return collection;
                 }
             }
             return null!;

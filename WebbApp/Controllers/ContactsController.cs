@@ -29,7 +29,7 @@ namespace WebbApp.Controllers
 
             if (ModelState.IsValid)
             {
-                var contactFormSubmitted = await _contactRepo.GetIdentityAsync(x => x.Equals(model));
+                var contactFormSubmitted = await _contactRepo.GetIdentityAsync(x => x.Name == model.Name && x.Email == model.Email && x.PhoneNumber == model.PhoneNumber && x.Message == model.Message);
                 if (contactFormSubmitted == null)
                 {
                     await _contactRepo.AddIdentityAsync(model);

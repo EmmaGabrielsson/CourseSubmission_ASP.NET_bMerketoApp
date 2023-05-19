@@ -140,14 +140,29 @@ function ViewDescription() {
 }
 
 
-function ChangeProductQuantityValue(id) {
-    let increase = document.getElementById(`${id}`)
-    let decrease = document.qetElemetById(`${id}`)
-    let quantityInput = document.querySelector(`#${id}-quantity`)
-    console.log(increase)
+function ChangeProductQuantityValue(id, maxValue) {
+    let increment = document.getElementById(`${id}-increment`);
+    let decrement = document.getElementById(`${id}-decrement`);
+    let quantityInput = document.getElementById(`${id}-quantity`);
 
-    if (EventTarget.target == increase) {
+    if (!increment.hasAttribute("data-clicked")) {
+        increment.addEventListener("click", function () {
+            if (parseInt(quantityInput.value) < maxValue) {
+                quantityInput.value = parseInt(quantityInput.value) + 1;
+            }
+        });
+
+        increment.setAttribute("data-clicked", true);
     }
-    else if (EventTarget.element == decrease) {
+
+    if (!decrement.hasAttribute("data-clicked")) {
+        decrement.addEventListener("click", function () {
+            if (parseInt(quantityInput.value) > 1) {
+                quantityInput.value = parseInt(quantityInput.value) - 1;
+            }
+        });
+
+        decrement.setAttribute("data-clicked", true);
     }
 }
+
