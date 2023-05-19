@@ -29,21 +29,12 @@ namespace WebbApp.Controllers
 
             if (ModelState.IsValid)
             {
-                ContactFormEntity contactForm = new()
-                {
-                    Name = model.Name,
-                    Email = model.Email,
-                    Message = model.Message,
-                    CompanyName = model.Company,
-                    PhoneNumber = model.PhoneNumber,
-                };
-
-                var contactFormSubmitted = await _contactRepo.GetIdentityAsync(x => x.Name == contactForm.Name && x.Email == contactForm.Email && x.Message == contactForm.Message && x.CompanyName == contactForm.CompanyName && x.PhoneNumber == contactForm.PhoneNumber);
+                var contactFormSubmitted = await _contactRepo.GetIdentityAsync(x => x.Equals(model));
                 if (contactFormSubmitted == null)
                 {
-                    await _contactRepo.AddIdentityAsync(contactForm);
+                    await _contactRepo.AddIdentityAsync(model);
                     ModelState.AddModelError ("", "Thank you for contacting us, we get back to you as soon as possible!");
-                    return View(model);
+                    return View();
                 }
                 ModelState.AddModelError("", "You have already sent this contact-form to us");
             }

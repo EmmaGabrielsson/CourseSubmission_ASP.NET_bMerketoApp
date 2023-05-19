@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using WebbApp.Models.Entities;
 
 namespace WebbApp.Models.ViewModels;
 
@@ -29,4 +30,16 @@ public class ContactFormViewModel
     [Required(ErrorMessage = "Message is required")]
     public string Message { get; set; } = null!;
 
+
+    public static implicit operator ContactFormEntity(ContactFormViewModel model)
+    {
+        return new ContactFormEntity
+        {
+            Name = model.Name,
+            Email = model.Email,
+            Message = model.Message,
+            CompanyName = model.Company,
+            PhoneNumber = model.PhoneNumber,
+        };
+    }
 }

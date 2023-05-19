@@ -55,7 +55,7 @@ public class HomeController : Controller
 
         if (ModelState.IsValid)
         {
-            if (await _subscribeRepo.GetDataAsync(x => x.Email == model.Email) != null)
+            if (await _subscribeRepo.GetIdentityAsync(x => x.Email == model.Email) != null)
             {
                 ModelState.AddModelError("", "You are already a subsciber for our newsletter.");
                 return View(model);
@@ -64,7 +64,7 @@ public class HomeController : Controller
             {
                 Email = model.Email
             };
-            if (await _subscribeRepo.AddDataAsync(subscriber) != null)
+            if (await _subscribeRepo.AddIdentityAsync(subscriber) != null)
             {
                 ModelState.AddModelError("", "Welcome! You are now a subscriber for our newsletter");
                 return View(model);
