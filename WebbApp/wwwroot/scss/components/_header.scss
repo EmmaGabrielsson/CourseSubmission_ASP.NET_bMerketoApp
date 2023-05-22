@@ -152,6 +152,20 @@ header {
         }
     }
 
+    .total-quantity {
+        background-color: $color-theme-1;
+        position: relative;
+        font-size: 12px;
+        top: -1rem;
+        right: 1.9rem;
+        padding: 2px 5px;
+
+        @include lg {
+            right: 0.5rem;
+            padding: 0.7px 5px;
+        }
+    }
+
     .toggle {
         grid-area: toggle;
         position: relative;

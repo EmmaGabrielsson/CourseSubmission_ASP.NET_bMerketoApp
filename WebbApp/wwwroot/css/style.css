@@ -443,6 +443,20 @@ header .menu-icons .link:hover {
     color: #FA3150;
   }
 }
+header .total-quantity {
+  background-color: #FA3150;
+  position: relative;
+  font-size: 12px;
+  top: -1rem;
+  right: 1.9rem;
+  padding: 2px 5px;
+}
+@media (min-width: 992px) {
+  header .total-quantity {
+    right: 0.5rem;
+    padding: 0.7px 5px;
+  }
+}
 header .toggle {
   grid-area: toggle;
   position: relative;

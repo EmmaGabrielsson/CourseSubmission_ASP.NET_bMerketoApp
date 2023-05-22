@@ -1,8 +1,11 @@
-﻿@{
+﻿@inject OrderService _orderService
+@{
     string displayFullName = "";
     var user = userManager.Users.FirstOrDefault(x => x.UserName == User.Identity!.Name);
     if (user != null)
-        displayFullName = $"{user.FirstName} {user.LastName}";        
+        displayFullName = $"{user.FirstName} {user.LastName}";
+
+    var order = await _orderService.GetOrderAsync();
 }
 
 <header>
@@ -35,6 +38,10 @@
                 <a class="link" asp-controller="account" asp-action="login">Login</a>               
             }
             <a class="link" asp-controller="products" asp-action="cart"><i class="fa-solid fa-cart-shopping"></i></a>
+            @if (order != null && order.OrderRows.Any())
+            {
+               <span class="bg-danger total-quantity rounded-circle text-light">@order.TotalQuantity</span>
+            }
         </nav>
         <div class="toggle">
             <button class="btn-toggle btn-outline-white" data-option="toggle" data-target="#menu">

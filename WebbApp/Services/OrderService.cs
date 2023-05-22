@@ -22,13 +22,13 @@ public class OrderService
     }
     #endregion
 
-    public async Task<IEnumerable<OrderRow>> GetOrderRowsAsync(Expression<Func<OrderRowEntity, bool>> expression)
+    public async Task<IEnumerable<OrderRowEntity>> GetOrderRowsAsync(Expression<Func<OrderRowEntity, bool>> expression)
     {
         try
         {
             var rows = await _orderRowRepo.GetAllDataAsync(expression);
             if (rows != null)
-                return (IEnumerable<OrderRow>)rows;
+                return rows;
 
         }catch (Exception ex) { Debug.WriteLine(ex.Message); }
         return null!;

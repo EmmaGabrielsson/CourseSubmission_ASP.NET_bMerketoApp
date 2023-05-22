@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebbApp.Models.Dtos;
+using WebbApp.Models.Entities;
 using WebbApp.Models.ViewModels;
 using WebbApp.Repositories;
 using WebbApp.Services;
@@ -136,10 +137,11 @@ public class ProductsController : Controller
             Order order = await _orderService.GetOrderAsync();
             if (order != null)
             {
-                var rows = await _orderService.GetOrderRowsAsync(x => x.OrderId == order.Id);
-                order.OrderRows = (ICollection<OrderRow>?)rows;
                 return View(order);
+                //var rows = await _orderService.GetOrderRowsAsync(x => x.OrderId == order.Id);
+                //order.OrderRows = (ICollection<OrderRowEntity>)rows;
             }
+            
         return View(order);
     }
 }

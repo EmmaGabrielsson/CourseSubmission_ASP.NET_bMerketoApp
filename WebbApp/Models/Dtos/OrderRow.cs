@@ -9,6 +9,7 @@ public class OrderRow
     public int? Quantity { get; set; }
     public decimal? ProductPrice { get; set; }
     public string? ProductName { get; set; }
+    public Order? Order { get; set; }
 
     public static implicit operator OrderRow (OrderRowEntity entity)
     {
@@ -17,7 +18,8 @@ public class OrderRow
             OrderId = entity.OrderId,
             ProductArticleNumber = entity.ProductArticleNumber,
             Quantity = entity.Quantity,
-            ProductPrice = entity.ProductPrice
+            ProductPrice = entity.ProductPrice,
+            Order = entity.Order
         };
     }
 }

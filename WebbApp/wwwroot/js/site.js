@@ -15,9 +15,6 @@ for (let element of validationElements) {
             case 'email':
                 emailValidator(e.target)
                 break;
-            case 'checkbox':
-                checkboxValidator(e.target)
-                break;
             case 'number':
                 numberValidator(e.target)
                 break;
@@ -39,9 +36,9 @@ function passwordValidator(target) {
     const passwordRegex = /^(?=.*[A-Za-zÅÄÖåäö])(?=.*\d)[A-Za-zÅÄÖåäö\d@$!%*#?&]{8,}$/;
 
     if (!passwordRegex.test(target.value))
-        document.querySelector(`[data-valmsg-for="${target.id}"]`).innerHTML = `${target.id} is invalid`
+        document.querySelector(`[data-valmsg-for="${target.id}"]`).innerHTML = `Password is invalid`
     else 
-        document.querySelector(`[data-valmsg-for="${target.id}"]`).innerHTML = `Great ${target.id}!`
+        document.querySelector(`[data-valmsg-for="${target.id}"]`).innerHTML = ``
      
 }
 
@@ -49,14 +46,7 @@ function emailValidator(target) {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
     if (!emailRegex.test(target.value))
-        document.querySelector(`[data-valmsg-for="${target.id}"]`).innerHTML = `${target.id} is invalid`
-    else 
-        document.querySelector(`[data-valmsg-for="${target.id}"]`).innerHTML = `Valid ${target.id}!`
-}
-
-function checkboxValidator(target) {
-    if (!target.checked)
-        document.querySelector(`[data-valmsg-for="${target.id}"]`).innerHTML = `${target.id} must be checked`
+        document.querySelector(`[data-valmsg-for="${target.id}"]`).innerHTML = `E-mail is invalid`
     else 
         document.querySelector(`[data-valmsg-for="${target.id}"]`).innerHTML = ``
 }
@@ -75,7 +65,7 @@ function fileValidator(target) {
     const fileExtension = fileInput.name.split(".").pop();
 
     if (!fileExtensions.includes(fileExtension))
-        document.querySelector(`[data-valmsg-for="${target.id}"]`).innerHTML = `${target.id} must be a valid image file: "jpg", "jpeg", "png" or "gif"`
+        document.querySelector(`[data-valmsg-for="${target.id}"]`).innerHTML = `Must be a valid image file: "jpg", "jpeg", "png" or "gif"`
     else 
         document.querySelector(`[data-valmsg-for="${target.id}"]`).innerHTML = ``
 }
