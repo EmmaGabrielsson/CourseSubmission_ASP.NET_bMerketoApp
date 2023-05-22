@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 using System.Linq.Expressions;
 using WebbApp.Contexts;
 
@@ -25,7 +26,8 @@ namespace WebbApp.Repositories
                 await _dataContext.SaveChangesAsync();
                 return entity;
             }
-            catch { return null!; }
+            catch (Exception ex) { Debug.WriteLine(ex.Message); }
+            return null!;
         }
         public virtual async Task<Entity> GetDataAsync(Expression<Func<Entity, bool>> expression)
         {
@@ -33,14 +35,16 @@ namespace WebbApp.Repositories
                 var entity = await _dataContext.Set<Entity>().FirstOrDefaultAsync(expression);
                 return entity!;
             }
-            catch { return null!; }
+            catch (Exception ex) { Debug.WriteLine(ex.Message); }
+            return null!;
         }
         public virtual async Task<IEnumerable<Entity>> GetAllDataAsync()
         {
             try { 
                 return await _dataContext.Set<Entity>().ToListAsync();
             }
-            catch { return null!; }
+            catch (Exception ex) { Debug.WriteLine(ex.Message); }
+            return null!;
 
         }
         public virtual async Task<IEnumerable<Entity>> GetAllDataAsync(Expression<Func<Entity, bool>> expression)
@@ -48,7 +52,8 @@ namespace WebbApp.Repositories
             try { 
                 return await _dataContext.Set<Entity>().Where(expression).ToListAsync();
             }
-            catch { return null!; }
+            catch (Exception ex) { Debug.WriteLine(ex.Message); }
+            return null!;
         }
         public virtual async Task<Entity> UpdateDataAsync(Entity entity)
         {
@@ -57,15 +62,19 @@ namespace WebbApp.Repositories
                 await _dataContext.SaveChangesAsync();
                 return entity;
             }
-            catch { return null!; }
+            catch (Exception ex) { Debug.WriteLine(ex.Message); }
+            return null!;
         }
         public virtual async Task<bool> RemoveDataAsync(Entity entity)
         {
-            try {
+            try
+            {
                 _dataContext.Set<Entity>().Remove(entity);
                 await _dataContext.SaveChangesAsync();
                 return true;
-            } catch { return false; }
+            }
+            catch (Exception ex) { Debug.WriteLine(ex.Message); }
+            return false!;
         }
 
         #endregion
@@ -78,7 +87,8 @@ namespace WebbApp.Repositories
                 await _identityContext.SaveChangesAsync();
                 return entity;
             }
-            catch { return null!; }
+            catch (Exception ex) { Debug.WriteLine(ex.Message); }
+            return null!;
         }
         public virtual async Task<Entity> GetIdentityAsync(Expression<Func<Entity, bool>> expression)
         {
@@ -86,21 +96,24 @@ namespace WebbApp.Repositories
                 var entity = await _identityContext.Set<Entity>().FirstOrDefaultAsync(expression);
                 return entity!;
             }
-            catch { return null!; }
+            catch (Exception ex) { Debug.WriteLine(ex.Message); }
+            return null!;
         }
         public virtual async Task<IEnumerable<Entity>> GetAllIdentityAsync()
         {
             try {
                 return await _identityContext.Set<Entity>().ToListAsync();
             }
-            catch { return null!; }
+            catch (Exception ex) { Debug.WriteLine(ex.Message); }
+            return null!;
         }
         public virtual async Task<IEnumerable<Entity>> GetAllIdentityAsync(Expression<Func<Entity, bool>> expression)
         {
             try {
                 return await _identityContext.Set<Entity>().Where(expression).ToListAsync();
             }
-            catch { return null!; }         
+            catch (Exception ex) { Debug.WriteLine(ex.Message); }
+            return null!;
         }
         public virtual async Task<Entity> UpdateIdentityAsync(Entity entity)
         {
@@ -109,7 +122,8 @@ namespace WebbApp.Repositories
                 await _identityContext.SaveChangesAsync();
                 return entity;
             }
-            catch { return null!; }
+            catch (Exception ex) { Debug.WriteLine(ex.Message); }
+            return null!;
         }
         public virtual async Task<bool> RemoveIdentityAsync(Entity entity)
         {
@@ -118,8 +132,9 @@ namespace WebbApp.Repositories
                 _identityContext.Set<Entity>().Remove(entity);
                 await _identityContext.SaveChangesAsync();
                 return true;
-
-            } catch { return false; }
+            }
+            catch (Exception ex) { Debug.WriteLine(ex.Message); }
+            return false;
         }
 
         #endregion

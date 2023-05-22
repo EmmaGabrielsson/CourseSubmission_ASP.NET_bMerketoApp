@@ -841,6 +841,9 @@ footer .container {
 .details-container .product-details .button-container .category {
   margin-bottom: 4rem;
 }
+.details-container .art-input {
+  display: none;
+}
 .details-container .more-details-container {
   grid-area: more-details-container;
   width: 100%;

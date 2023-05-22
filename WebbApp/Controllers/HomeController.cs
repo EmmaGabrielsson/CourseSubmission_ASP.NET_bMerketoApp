@@ -42,8 +42,8 @@ public class HomeController : Controller
         ViewBag.OnSaleItemFirst = onSaleItems.FirstOrDefault();
         ViewBag.OnSaleItemLast = onSaleItems.LastOrDefault();
 
-        var topSaleItemsList = await _productService.GetAllTopSaleProductsAsync();
-        ViewBag.TopSaleItemsList = topSaleItemsList;
+        var topSaleItemsList = await _productService.GetTopSaleCollectionAsync();
+        ViewBag.TopSaleCollection = topSaleItemsList;
 
         return View();
     }

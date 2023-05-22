@@ -31,7 +31,7 @@ public class AdminController : Controller
 
         if (ModelState.IsValid)
         {
-            var update = await _userService.UpdateUserRoleAsync(model);
+            var update = await _userService.ChangeUserRoleAsync(model);
             if (update)
                 return RedirectToAction("index", "admin");
 

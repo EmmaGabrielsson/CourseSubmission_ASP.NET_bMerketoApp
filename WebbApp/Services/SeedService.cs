@@ -40,7 +40,7 @@ public class SeedService
             });
             await _context.SaveChangesAsync();
         }
-
+        
         if (!await _context.Tags.AnyAsync())
         {
             await _context.AddAsync(new TagEntity { TagName = "new" });
@@ -50,7 +50,7 @@ public class SeedService
             await _context.AddAsync(new TagEntity { TagName = "outgoing" });
             await _context.SaveChangesAsync();
         }
-
+        
         if (!await _context.Categories.AnyAsync())
         {
             await _context.AddAsync(new CategoryEntity { CategoryName = "all" });
@@ -127,7 +127,7 @@ public class SeedService
                 await _context.AddAsync(new ProductEntity { ArticleNumber = "f-96174", ProductName = "Apple watch collection", ImageUrl = "270x295.svg", Ingress = "Discover the Apple Watch Collection – a fusion of innovation and style. Stay connected, track your fitness, stream music, make payments, and more, all from your wrist. Personalize your watch with a variety of bands and enjoy a stunning Retina display. Seamlessly integrated with your iPhone, the Apple Watch Collection is the ultimate accessory for convenience and fashion-forward individuals. Elevate your wrist today.", Description = "Discover the Apple Watch Collection—a range of smartwatches that blend technology and style flawlessly. From the flagship Series 7 with its advanced features, to the fashion-forward Apple Watch Hermès and the sporty Apple Watch Nike, there's a perfect fit for everyone. Seamlessly integrated with your iPhone, these watches keep you connected, organized, and empowered. With a wide selection of interchangeable bands and customizable features, personalize your Apple Watch to reflect your unique style and personality. Elevate your daily life with the Apple Watch Collection." });
                 await _context.AddAsync(new ProductEntity { ArticleNumber = "f-06174", ProductName = "Apple watch collection", ImageUrl = "270x295.svg", Ingress = "Discover the Apple Watch Collection – a fusion of innovation and style. Stay connected, track your fitness, stream music, make payments, and more, all from your wrist. Personalize your watch with a variety of bands and enjoy a stunning Retina display. Seamlessly integrated with your iPhone, the Apple Watch Collection is the ultimate accessory for convenience and fashion-forward individuals. Elevate your wrist today.", Description = "Discover the Apple Watch Collection—a range of smartwatches that blend technology and style flawlessly. From the flagship Series 7 with its advanced features, to the fashion-forward Apple Watch Hermès and the sporty Apple Watch Nike, there's a perfect fit for everyone. Seamlessly integrated with your iPhone, these watches keep you connected, organized, and empowered. With a wide selection of interchangeable bands and customizable features, personalize your Apple Watch to reflect your unique style and personality. Elevate your daily life with the Apple Watch Collection." });
                 await _context.SaveChangesAsync();
-
+                
                 var featuredTag = await _context.Tags.FirstOrDefaultAsync(x => x.TagName == "featured");
 
                 await _context.AddAsync(new ProductTagEntity { TagId = featuredTag!.Id, ProductId = "f-25695" });
@@ -145,8 +145,15 @@ public class SeedService
                     Title = "best collection",
                     ProductIds = await _context.ProductTags.Where(x => x.TagId == featuredTag!.Id).ToListAsync()
                 });
-            }
+                await _context.AddAsync(new CollectionEntity
+                {
+                    Title = "top selling products in this week",
+                    ProductIds = await _context.ProductTags.Where(x => x.TagId == popularTag!.Id).ToListAsync()
+                });
+                await _context.SaveChangesAsync();
 
+            }
+            
             if (!await _context.Stocks.AnyAsync())
             {
                 await _context.AddAsync(new StockEntity { ArticleNumber = "f-25695", Price = 30, OnSale = false, Quantity = 0, StandardCurrency = "USD" });
@@ -168,7 +175,7 @@ public class SeedService
                 await _context.AddAsync(new StockEntity { ArticleNumber = "96174", Price = 30, OnSale = false, Quantity = 125, StandardCurrency = "USD" });
                 await _context.SaveChangesAsync();
             }
-
+            
             if (!await _context.ProductReviews.AnyAsync())
             {
                 await _context.AddAsync(new ProductReviewEntity { ProductArticleNumber = "f-25695", Rating = 4, Comment = "Apple Watch Series 6: \n\"The Apple Watch Series 6 is a game-changer! The blood oxygen level monitoring, ECG feature, and always-on display are amazing. It seamlessly integrates with my iPhone and keeps me connected throughout the day.\" \n - Sarah" });

@@ -16,7 +16,15 @@
     
     @if (Model.Products.Any())
     {
-    <h4 class="d-flex px-4">Products in <span class="text-decoration-underline text-capitalize mx-2"> @Model.Category </span> category:</h4>
+        @if (Model.Category == "on sale")
+        {
+            <h4 class="d-flex px-4">Products <span class="text-decoration-underline text-capitalize mx-2 text-danger"> @Model.Category!</span></h4>
+
+        }
+        else
+        {
+            <h4 class="d-flex px-4">Products in <span class="text-decoration-underline text-capitalize mx-2"> @Model.Category </span> category:</h4>            
+        }
         <div class="grid mx-4" id="products-container">
 
             @foreach (var product in Model.Products)

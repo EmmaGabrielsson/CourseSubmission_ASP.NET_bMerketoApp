@@ -1,19 +1,18 @@
-﻿
-@if (ViewBag.TopSaleItemsList != null)
+﻿@if (ViewBag.TopSaleCollection != null)
 {
      <section class="top-selling">
         <div class="container-fluid">
-            <h1 class="collection-title">Top selling products in this week</h1>
+            <h1 class="collection-title text-capitalize">@ViewBag.TopSaleCollection.Title</h1>
             <div class="collection-grid">
-                @foreach (var item in ViewBag.TopSaleItemsList)
+                @foreach (var item in ViewBag.TopSaleCollection.GridItems)
                 {
                 <div class="collection-item">
                     <partial name="/Views/Partials/_GridCollectionItem.cshtml" model="item" />
                 </div>
                 }
             </div>
-            <div class="load-more">
-                <button class="btn-outline-white">LOAD MORE <i class="fa-solid fa-rotate-right"></i></button>
+            <div id="load-more-top-sale" class="load-more">
+                    <button class="btn-outline-white">LOAD MORE <i class="fa-solid fa-rotate-right"></i></button>
             </div>
         </div>    
     </section>

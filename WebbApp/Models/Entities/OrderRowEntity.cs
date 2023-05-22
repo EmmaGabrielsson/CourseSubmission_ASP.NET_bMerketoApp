@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace WebbApp.Models.Entities.Extra;
+namespace WebbApp.Models.Entities;
 
 [PrimaryKey(nameof(OrderId), nameof(ProductArticleNumber))]
 public class OrderRowEntity

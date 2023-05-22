@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using WebbApp.Models.Identities;
 using WebbApp.Models.ViewModels;
-using WebbApp.Repositories;
 using WebbApp.Services;
 
 namespace WebbApp.Controllers;
@@ -12,12 +14,12 @@ public class AccountController : Controller
 
     private readonly UserService _userService;
     private readonly AdressService _adressService;
-    private readonly UserRepo _userRepo;
-    public AccountController(UserService userService, AdressService adressService, UserRepo userRepo)
+    private readonly UserManager<AppUser> _userManager;
+    public AccountController(UserService userService, AdressService adressService, UserManager<AppUser> userManager)
     {
         _userService = userService;
         _adressService = adressService;
-        _userRepo = userRepo;
+        _userManager = userManager;
     }
     #endregion
 
@@ -27,13 +29,17 @@ public class AccountController : Controller
     {
         ViewData["Title"] = "My account";
 
-        var userInfo = await _userRepo.GetIdentityAsync(x => x.UserName == User.Identity!.Name);
-        var adresses = await _adressService.GetUserAdressAsync(userInfo);
+        var userInfo = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == User.Identity!.Name);
+        if(userInfo != null)
+        {
+            var adresses = await _adressService.GetUserAdressAsync(userInfo);
 
-        ProfileViewModel profileView = userInfo;
-        profileView.Adresses = adresses;
+            ProfileViewModel profileView = userInfo;
+            profileView.Adresses = adresses;
 
-        return View(profileView);
+            return View(profileView);
+        }
+        return View();
     }
     #endregion
 

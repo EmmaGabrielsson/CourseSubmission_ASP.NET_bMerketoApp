@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using System.Diagnostics;
 using WebbApp.Models.Entities;
 using WebbApp.Models.Identities;
 using WebbApp.Repositories;
@@ -38,30 +39,32 @@ public class AdressService
 
             return _foundAdressesList;
         }
-        catch { return null!; }
+        catch (Exception ex) { Debug.WriteLine(ex.Message); }
+        return null!;
     }
     public async Task<bool> AddAdressAsync(AppUser user, AdressEntity adress)
     {
         try
         {
             var findUser = await _userManager.FindByIdAsync(user.Id);
-            if(findUser != null)
+            if (findUser != null)
             {
-                var findAdress = await _adressRepo.GetIdentityAsync(x => x.StreetName == adress.StreetName & x.PostalCode == adress.PostalCode && x.City == adress.City );
-                if (findAdress != null){
+                var findAdress = await _adressRepo.GetIdentityAsync(x => x.StreetName == adress.StreetName & x.PostalCode == adress.PostalCode && x.City == adress.City);
+                if (findAdress != null)
+                {
                     UserAdressEntity newUserAdress = new()
                     {
                         UserId = findUser.Id,
                         AdressId = findAdress.Id
                     };
-                    
-                    if(await _userAdressRepo.AddIdentityAsync(newUserAdress) != null)
+
+                    if (await _userAdressRepo.AddIdentityAsync(newUserAdress) != null)
                         return true;
                 }
             }
-            return false;
-
-        }catch { return false; }
+        }
+        catch (Exception ex) { Debug.WriteLine(ex.Message); }
+        return false;
     }
     public async Task<AdressEntity> GetOrCreateAsync(AdressEntity entity)
     {
@@ -73,7 +76,9 @@ public class AdressService
 
             await _adressRepo.AddIdentityAsync(entity);
             return entity;
-        } catch { return null!; }
+        }
+        catch (Exception ex) { Debug.WriteLine(ex.Message); }
+        return null!;
     }
 
 }

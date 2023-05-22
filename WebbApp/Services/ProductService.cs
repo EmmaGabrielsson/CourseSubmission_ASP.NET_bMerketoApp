@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
+using WebbApp.Models.Dtos;
 using WebbApp.Models.Entities;
 using WebbApp.Models.ViewModels;
 using WebbApp.Repositories;
@@ -112,23 +113,6 @@ public class ProductService
             return newList;
         } catch { return null!; }
     }
-    public async Task<IEnumerable<GridCollectionItemViewModel>> GetAllTopSaleProductsAsync()
-    {
-        try
-        {
-            var topSaleProducts = new List<GridCollectionItemViewModel>();
-            var popularTag = await _tagRepo.GetDataAsync(x => x.TagName == "popular");
-            var topSaleIds = await _productTagRepo.GetAllDataAsync(x => x.TagId == popularTag.Id);
-            foreach (var id in topSaleIds)
-            {
-                var product = await _productRepo.GetDataAsync(x => x.ArticleNumber == id.ProductId);
-                if(product != null)
-                    topSaleProducts.Add(product);
-            }
-            return topSaleProducts!;
-
-        }catch { return null!; }
-    }
     public async Task<IEnumerable<GridCollectionItemViewModel>> GetAllCategoryProductsAsync(int categoryId)
     {
         try
@@ -225,6 +209,39 @@ public class ProductService
             }
             return null!;
         } catch { return null!; }
+    }
+    public async Task<GridCollectionViewModel> GetTopSaleCollectionAsync()
+    {
+        try
+        {
+            var topSaleCollection = await _collectionRepo.GetDataAsync(x => x.Title == "top selling products in this week");
+            var collection = new GridCollectionViewModel();
+            if (topSaleCollection != null)
+            {
+                collection.Title = topSaleCollection.Title!;
+                var popular = await _tagRepo.GetDataAsync(x => x.TagName == "popular");
+
+                if (popular != null)
+                {
+                    IEnumerable<ProductTagEntity> productIds = await _productTagRepo.GetAllDataAsync(x => x.TagId == popular.Id);
+
+                    if (productIds != null)
+                    {
+                        foreach (var item in productIds)
+                        {
+                            var product = await _productRepo.GetDataAsync(x => x.ArticleNumber == item.ProductId);
+                            if (product != null)
+                                collection.GridItems!.Add(product);
+                        }
+
+                    }
+                    return collection;
+                }
+            }
+            return null!;
+        }
+        catch { return null!; }
+
     }
     public async Task<SearchViewModel> GetAllSearchedAsync(SearchViewModel searchModel)
     {

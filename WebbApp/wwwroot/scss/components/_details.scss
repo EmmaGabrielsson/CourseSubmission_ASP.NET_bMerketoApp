@@ -91,11 +91,16 @@
         }
     }
 
+    .art-input {
+       display: none;
+     }
+
     .more-details-container {
         grid-area: more-details-container;
         width: 100%;
 
         .btn-container {
+            
             button {
                 width: 100%;
                 border: 1px solid $color-dark-1;

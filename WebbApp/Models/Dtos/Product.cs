@@ -14,7 +14,7 @@ public class Product
     public bool? OnSale { get; set; }
     public int? StockQuantity { get; set; }
     public string? StandardCurrency { get; set; }
-
+    public int ProductQuantity { get; set; } = 1;
     public List<TagEntity> Tags { get; set; } = new List<TagEntity>();
     public List<CategoryEntity> Categories { get; set; } = new List<CategoryEntity>();
     public List<ProductReviewEntity> Reviews { get; set; } = new List<ProductReviewEntity>();

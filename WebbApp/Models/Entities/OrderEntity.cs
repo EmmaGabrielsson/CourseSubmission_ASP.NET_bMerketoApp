@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace WebbApp.Models.Entities.Extra;
+namespace WebbApp.Models.Entities;
 
 public class OrderEntity
 {
@@ -10,6 +10,6 @@ public class OrderEntity
 
     [Column(TypeName = "money")]
     public decimal TotalPrice { get; set; }
-    public ICollection<OrderRowEntity> Products { get; set; } = new HashSet<OrderRowEntity>();
+    public ICollection<OrderRowEntity> OrderRows { get; set; } = new HashSet<OrderRowEntity>();
 
 }

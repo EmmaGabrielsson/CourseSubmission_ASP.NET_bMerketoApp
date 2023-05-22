@@ -1,6 +1,6 @@
 ﻿@{
     string displayFullName = "";
-    var user = await userRepo.GetIdentityAsync(x => x.UserName == User.Identity!.Name); 
+    var user = userManager.Users.FirstOrDefault(x => x.UserName == User.Identity!.Name);
     if (user != null)
         displayFullName = $"{user.FirstName} {user.LastName}";        
 }

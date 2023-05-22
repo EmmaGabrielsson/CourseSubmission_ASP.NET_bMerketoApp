@@ -1,3 +1,4 @@
+
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using WebbApp.Contexts;
@@ -12,6 +13,14 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("SqlDataDb")));
 builder.Services.AddDbContext<IdentityContext>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("SqlIdentityDb")));
 
+//identities
+builder.Services.AddIdentity<AppUser, IdentityRole>(x =>
+{
+    x.SignIn.RequireConfirmedAccount = false;
+    x.Password.RequiredLength = 8;
+    x.User.RequireUniqueEmail = true;
+}).AddEntityFrameworkStores<IdentityContext>();
+
 //repositories
 builder.Services.AddScoped<ContactFormRepo>();
 builder.Services.AddScoped<CategoryRepo>();
@@ -25,8 +34,9 @@ builder.Services.AddScoped<ShowcaseRepo>();
 builder.Services.AddScoped<SubscribeRepo>();
 builder.Services.AddScoped<UserAdressRepo>();
 builder.Services.AddScoped<AdressRepo>();
-builder.Services.AddScoped<UserRepo>();
 builder.Services.AddScoped<CollectionRepo>();
+builder.Services.AddScoped<OrderRepo>();
+builder.Services.AddScoped<OrderRowRepo>();
 
 //services
 builder.Services.AddScoped<SeedService>();
@@ -34,17 +44,18 @@ builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<ProductService>();
 builder.Services.AddScoped<AdressService>();
 
-//identities
-builder.Services.AddIdentity<AppUser, IdentityRole>(x =>
-{
-    x.SignIn.RequireConfirmedAccount = false;
-    x.Password.RequiredLength = 8;
-    x.User.RequireUniqueEmail = true;
-}).AddEntityFrameworkStores<IdentityContext>();
+//sessions
+builder.Services.AddSession(options =>
+    {
+        options.IdleTimeout = TimeSpan.FromHours(5);
+        options.Cookie.HttpOnly = true;
+        options.Cookie.IsEssential = true;
+    });
 
 
 var app = builder.Build();
 app.UseHsts();
+app.UseSession();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();

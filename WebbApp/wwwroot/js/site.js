@@ -165,4 +165,3 @@ function ChangeProductQuantityValue(id, maxValue) {
         decrement.setAttribute("data-clicked", true);
     }
 }
-
