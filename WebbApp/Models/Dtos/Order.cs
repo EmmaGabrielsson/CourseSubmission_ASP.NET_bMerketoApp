@@ -1,5 +1,4 @@
 ﻿using WebbApp.Models.Entities;
-using WebbApp.Models.ViewModels;
 
 namespace WebbApp.Models.Dtos;
 
@@ -8,7 +7,7 @@ public class Order
     public Guid? Id { get; set; }
     public int? TotalQuantity { get; set; }
     public decimal? TotalPrice { get; set; }
-    public ICollection<OrderRowViewModel>? OrderRows { get; set; } = new List<OrderRowViewModel>();
+    public ICollection<OrderRow>? OrderRows { get; set; } = new List<OrderRow>();
 
     public static implicit operator Order(OrderEntity entity)
     {
@@ -17,7 +16,7 @@ public class Order
             Id = entity.Id,
             TotalQuantity = entity.TotalQuantity,
             TotalPrice = entity.TotalPrice,
-            OrderRows = (ICollection<OrderRowViewModel>)entity.OrderRows
+            OrderRows = (ICollection<OrderRow>)entity.OrderRows
         };
     }
 }

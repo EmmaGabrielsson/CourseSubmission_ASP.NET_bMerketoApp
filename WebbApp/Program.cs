@@ -43,6 +43,7 @@ builder.Services.AddScoped<SeedService>();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<ProductService>();
 builder.Services.AddScoped<AdressService>();
+builder.Services.AddScoped<OrderService>();
 
 //sessions
 builder.Services.AddSession(options =>

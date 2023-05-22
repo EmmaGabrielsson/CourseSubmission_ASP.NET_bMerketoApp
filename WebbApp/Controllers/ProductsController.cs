@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebbApp.Models.Dtos;
-using WebbApp.Models.Entities;
 using WebbApp.Models.ViewModels;
 using WebbApp.Repositories;
 using WebbApp.Services;
@@ -13,18 +12,19 @@ public class ProductsController : Controller
     private readonly ProductService _productService;
     private readonly CategoryRepo _categoryRepo;
     private readonly StockRepo _stockRepo;
-    private readonly OrderRepo _orderRepo;
-    private readonly OrderRowRepo _orderRowRepo;
-    private readonly IHttpContextAccessor _httpContextAccessor;
-    public ProductsController(ProductService productService, CategoryRepo categoryRepo, StockRepo stockRepo, OrderRepo orderRepo, OrderRowRepo orderRowRepo, IHttpContextAccessor httpContextAccessor)
+    private readonly OrderService _orderService;
+
+    public ProductsController(ProductService productService, CategoryRepo categoryRepo, StockRepo stockRepo, OrderService orderService)
     {
         _productService = productService;
         _categoryRepo = categoryRepo;
         _stockRepo = stockRepo;
-        _orderRepo = orderRepo;
-        _orderRowRepo = orderRowRepo;
-        _httpContextAccessor = httpContextAccessor;
+        _orderService = orderService;
     }
+
+    //private readonly OrderRepo _orderRepo;
+    //private readonly OrderRowRepo _orderRowRepo;
+    //private readonly IHttpContextAccessor _httpContextAccessor;
     #endregion
     public async Task<IActionResult> Index()
     {
@@ -92,6 +92,8 @@ public class ProductsController : Controller
             product.StandardCurrency = productStock.StandardCurrency;
             product.StockQuantity = productStock.Quantity;
         }
+        if (product.StockQuantity == 0)
+            product.ProductQuantity = 0;
 
         product.Reviews = await _productService.GetReviewsAsync(product.ArticleNumber!);
         product.Categories = await _productService.GetProductCategoriesListAsync(product.ArticleNumber!);
@@ -120,84 +122,24 @@ public class ProductsController : Controller
         updatedProduct.Tags = await _productService.GetProductTagsListAsync(updatedProduct.ArticleNumber!);
         updatedProduct.ProductQuantity = product.ProductQuantity;
 
-        // Check if the order ID exists in the session
-        string orderId = _httpContextAccessor.HttpContext!.Session.GetString("OrderId")!;
-        if (orderId == null)
-        {
-            orderId = Guid.NewGuid().ToString();
-            _httpContextAccessor.HttpContext.Session.SetString("OrderId", orderId);
-        }
-        OrderEntity order = await _orderRepo.GetDataAsync(x => x.Id == Guid.Parse(orderId));
-        OrderRowEntity orderRow = await _orderRowRepo.GetDataAsync(x => x.OrderId == Guid.Parse(orderId) && x.ProductArticleNumber == updatedProduct.ArticleNumber);
-        
-        if (order != null)
-        {
-            order.TotalQuantity += updatedProduct.ProductQuantity;
-            order.TotalPrice += (decimal)(updatedProduct.Price * updatedProduct.ProductQuantity)!;
-            await _orderRepo.UpdateDataAsync(order);
-        }
-        else
-        {
-            order = new OrderEntity
-            {
-                Id = Guid.Parse(orderId),
-                TotalQuantity = updatedProduct.ProductQuantity,
-                TotalPrice = (decimal)(updatedProduct.Price * updatedProduct.ProductQuantity)!
-            };
-            await _orderRepo.AddDataAsync(order);
-        }
-        
-        if (orderRow != null)
-        {
-            orderRow.Quantity = product.ProductQuantity;
-            await _orderRowRepo.UpdateDataAsync(orderRow);
-        }
-        else
-        {
-            orderRow = new OrderRowEntity
-            {
-                OrderId = Guid.Parse(orderId),
-                ProductArticleNumber = updatedProduct.ArticleNumber!,
-                ProductPrice = (decimal)updatedProduct.Price!,
-                Quantity = product.ProductQuantity
-            };
-            await _orderRowRepo.AddDataAsync(orderRow);
-        }
+        var order = await _orderService.GetOrCreateOrderAndAddRowsAsync(updatedProduct);
 
-        return RedirectToAction("cart");
+        if(order != null)
+            return RedirectToAction("cart");
 
-        //return View(updatedProduct);
+        return View(updatedProduct);
     }
 
     public async Task<IActionResult> Cart()
     {
             ViewData["Title"] = "Your Cart";
-            string orderId = _httpContextAccessor.HttpContext!.Session.GetString("OrderId")!;
-            /*    
-            if (orderId == null)
-            {
-                orderId = Guid.NewGuid().ToString();
-                _httpContextAccessor.HttpContext.Session.SetString("OrderId", orderId);
-            }
-            */
-            Order order = await _orderRepo.GetDataAsync(x => x.Id == Guid.Parse(orderId));
+            Order order = await _orderService.GetOrderAsync();
             if (order != null)
             {
-                order.OrderRows = (ICollection<OrderRowViewModel>?)await _orderRowRepo.GetAllDataAsync(x => x.OrderId == order.Id);
+                var rows = await _orderService.GetOrderRowsAsync(x => x.OrderId == order.Id);
+                order.OrderRows = (ICollection<OrderRow>?)rows;
                 return View(order);
-            /*
-                var orderView = new Order
-                {
-                    Id = order.Id,
-                    TotalPrice = order.TotalPrice,
-                    TotalQuantity = order.TotalQuantity,
-                    OrderRows = (ICollection<OrderRowViewModel>)await _orderRowRepo.GetAllDataAsync(x => x.OrderId == order.Id)
-                };
-            */
             }
-        else
-        {
-            return View(order);
-        }
+        return View(order);
     }
 }

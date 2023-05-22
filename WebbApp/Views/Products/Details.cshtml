@@ -80,10 +80,21 @@
                 <input readonly id="@Model.ArticleNumber-quantity" asp-for="ProductQuantity" value="@Model.ProductQuantity" type="number" min="1" max="@Model.StockQuantity" />
                 <button onclick="ChangeProductQuantityValue('@Model.ArticleNumber', @Model.StockQuantity)" id="@Model.ArticleNumber-increment" class="btn-outline-white" type="button">+</button>
             </div>
-            <button type="submit" id="@Model.ArticleNumber-add" class="btn-theme add-to-cart">
-                Add to Cart 
-                <i class="add-cart fa-regular fa-cart-plus"></i>
-            </button>
+            @if (Model.StockQuantity == 0)
+            {
+                <button disabled class="btn-theme border bg-secondary add-to-cart pointer-disabled">
+                    Add to Cart
+                    <i class="add-cart fa-regular fa-cart-plus"></i>
+                </button>
+
+            }
+            else
+            {
+                <button type="submit" id="@Model.ArticleNumber-add" class="btn-theme add-to-cart">
+                    Add to Cart 
+                    <i class="add-cart fa-regular fa-cart-plus"></i>
+                </button>                
+            }
         </form>
         <div>
             @if (Model.StockQuantity < 1)
