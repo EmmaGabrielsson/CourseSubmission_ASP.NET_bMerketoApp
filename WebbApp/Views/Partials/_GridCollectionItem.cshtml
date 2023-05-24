@@ -4,7 +4,7 @@
 }
 
 <a asp-controller="products" asp-action="details" asp-route-id="@Model.Id" class="collection-item">
-    <img style="height:270; width:270;" src="~/images/products/@Model.ImageUrl" alt="@Model.Title">
+    <img src="~/images/products/@Model.ImageUrl" alt="@Model.Title">
 </a>
     <div class="body">
         <div class="title text-start">@Model.Title</div>
