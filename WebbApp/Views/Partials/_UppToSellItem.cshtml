@@ -4,15 +4,15 @@
 }
 
 <a asp-controller="products" asp-action="details" asp-route-id="@Model.Id" class="collection-item">
-    <img style="height:270; width:270;" src="~/images/products/@Model.ImageUrl" alt="@Model.Title">
+    <img src="~/images/products/@Model.ImageUrl" alt="@Model.Title">
 </a>
-    <div class="body">
-        <div class="title text-start">@Model.Title</div>
-        <div class="info">
-        <div class="price">
+<div class="body">
+    <div class="title bg-light p-4 fw-bold">@Model.Title</div>
+    <div class="info bg-light">
+        <div class="price d-flex justify-content-between px-4">
             @if (stock.Discount > decimal.Zero)
             {
-                 <div class="d-flex">
+                <div class="d-flex">
                     <p class="text-secondary fw-light me-3 small text-decoration-line-through">
                         $@(((decimal)stock.Price!).ToString(stock.Price % 1 == 0 ? "F0" : "F2"))
                     </p>
@@ -25,15 +25,18 @@
             {
                 <p class="fw-bold">
                     $@(((decimal)stock.Price).ToString(stock.Price % 1 == 0 ? "F0" : "F2"))
-                </p>                
+                </p>
             }
-        </div>
-            @if (stock.Quantity != 0)
-            {
+        @if (stock.Quantity != 0)
+        {
             <a><i class="add-cart fa-regular fa-cart-plus"></i></a>
-            } else
-            {
-            <a disabled title="out of stock"><i class="add-cart fa-regular fa-cart-plus disabled text-danger"></i></a>
-            }
+        }
+        else
+        {
+            <a disabled title="out of stock">
+                <i class="add-cart fa-regular fa-cart-plus disabled text-danger"></i>
+            </a>
+        }
         </div>
     </div>
+</div>

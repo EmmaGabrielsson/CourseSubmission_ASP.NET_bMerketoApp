@@ -607,6 +607,7 @@ footer .container {
 .showcase img {
   width: 100%;
   height: auto;
+  margin-top: 40px;
 }
 
 .grid-collection {

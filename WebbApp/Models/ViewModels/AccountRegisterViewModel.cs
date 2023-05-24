@@ -24,7 +24,7 @@ public class AccountRegisterViewModel
     [Required(ErrorMessage = "You need to enter a password ↑")]
     [Display(Name = "Password*")]
     [DataType(DataType.Password)]
-    [RegularExpression(@"^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[^a-zA-Z0-9]).{8,}$", ErrorMessage = "You need to enter a valid password with atleast 8 characters and both uppercase and lowercase letters.")]
+    [RegularExpression(@"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]{8,}$", ErrorMessage = "You need to enter a valid password with atleast 8 characters and both uppercase and lowercase letters.")]
     public string Password { get; set; } = null!;
 
     [Required(ErrorMessage = "You need to confirm password ↑")]

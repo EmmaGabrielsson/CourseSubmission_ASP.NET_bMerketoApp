@@ -7,7 +7,7 @@ public class Order
     public Guid? Id { get; set; }
     public int? TotalQuantity { get; set; }
     public decimal? TotalPrice { get; set; }
-    public ICollection<OrderRow>? OrderRows { get; set; } = new List<OrderRow>();
+    public IEnumerable<OrderRow>? OrderRows { get; set; } = new List<OrderRow>();
 
     public static implicit operator Order(OrderEntity entity)
     {
@@ -16,7 +16,6 @@ public class Order
             Id = entity.Id,
             TotalQuantity = entity.TotalQuantity,
             TotalPrice = entity.TotalPrice,
-            OrderRows = (ICollection<OrderRow>)entity.OrderRows
         };
     }
 }

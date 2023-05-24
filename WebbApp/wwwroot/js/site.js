@@ -33,7 +33,7 @@ function textValidator(target, minLength) {
 }
 
 function passwordValidator(target) {
-    const passwordRegex = /^(?=.*[A-Za-zÅÄÖåäö])(?=.*\d)[A-Za-zÅÄÖåäö\d@$!%*#?&]{8,}$/;
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]{8,}$/;
 
     if (!passwordRegex.test(target.value))
         document.querySelector(`[data-valmsg-for="${target.id}"]`).innerHTML = `Password is invalid`

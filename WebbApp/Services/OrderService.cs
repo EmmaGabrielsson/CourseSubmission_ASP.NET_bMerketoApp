@@ -1,6 +1,4 @@
 ﻿using System.Diagnostics;
-using System.Linq.Expressions;
-using WebbApp.Migrations;
 using WebbApp.Models.Dtos;
 using WebbApp.Models.Entities;
 using WebbApp.Repositories;
@@ -12,43 +10,52 @@ public class OrderService
     #region Constructors & Private Fields 
     private readonly OrderRepo _orderRepo;
     private readonly OrderRowRepo _orderRowRepo;
+    private readonly ProductService _productService;
     private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly StockRepo _stockRepo;
 
-    public OrderService(OrderRepo orderRepo, OrderRowRepo orderRowRepo, IHttpContextAccessor httpContextAccessor)
+    public OrderService(OrderRepo orderRepo, OrderRowRepo orderRowRepo, IHttpContextAccessor httpContextAccessor, ProductService productService, StockRepo stockRepo)
     {
         _orderRepo = orderRepo;
         _orderRowRepo = orderRowRepo;
         _httpContextAccessor = httpContextAccessor;
+        _productService = productService;
+        _stockRepo = stockRepo;
     }
     #endregion
 
-    public async Task<IEnumerable<OrderRowEntity>> GetOrderRowsAsync(Expression<Func<OrderRowEntity, bool>> expression)
+    public async Task<IEnumerable<OrderRow>> GetOrderRowsAsync(string orderId)
     {
         try
         {
-            var rows = await _orderRowRepo.GetAllDataAsync(expression);
+            var rows = await _orderRowRepo.GetAllDataAsync(x => x.OrderId == Guid.Parse(orderId));
             if (rows != null)
-                return rows;
+            {
+                var rowList = new List<OrderRow>();
+                foreach (var row in rows)
+                {
+                    var newRow = new OrderRow
+                    {
+                        OrderId = row.OrderId,
+                        ProductArticleNumber = row.ProductArticleNumber,
+                        ProductName = (await _productService.GetAsync(x => x.ArticleNumber == row.ProductArticleNumber)).ProductName,
+                        Quantity = row.Quantity,
+                        ProductPrice = row.ProductPrice,
+                        StockQuantity = (await _stockRepo.GetDataAsync(x => x.ProductArticleNumber == row.ProductArticleNumber)).Quantity,
+                        ImageUrl = (await _productService.GetAsync(x => x.ArticleNumber == row.ProductArticleNumber)).ImageUrl,
+                        Discount = row.Discount,
+                    };
+                    if(row != null)
+                        rowList.Add(newRow);
+                }
+
+            return rowList;
+            }
 
         }catch (Exception ex) { Debug.WriteLine(ex.Message); }
         return null!;
     }
-    public async Task<OrderEntity> GetOrderAsync()
-    {
-        try
-        {
-            string orderId = _httpContextAccessor.HttpContext!.Session.GetString("OrderId")!;
-            if (!string.IsNullOrEmpty(orderId))
-            {
-                var order = await _orderRepo.GetDataAsync(x => x.Id == Guid.Parse(orderId));
-                if (order != null)
-                    return order;
-            }
-        }
-        catch (Exception ex) { Debug.WriteLine(ex.Message); }
-        return null!;
-    }
-    public async Task<OrderEntity> GetOrCreateOrderAndAddRowsAsync(Product addProduct)
+    public async Task<Order> GetOrCreateOrderAsync()
     {
         try
         {
@@ -62,35 +69,49 @@ public class OrderService
 
             OrderEntity order = await _orderRepo.GetDataAsync(x => x.Id == Guid.Parse(orderId));
 
-            if (order != null)
-            {
-                order.TotalQuantity += addProduct.ProductQuantity;
-                order.TotalPrice += (decimal)(addProduct.Price * addProduct.ProductQuantity)!;
-                await _orderRepo.UpdateDataAsync(order);
-            }
-            else
-            {
+            int totalQty = 0;
+            decimal totalPrice = 0;
+
+            if (order == null) 
+            { 
                 order = new OrderEntity
                 {
                     Id = Guid.Parse(orderId),
-                    TotalQuantity = addProduct.ProductQuantity,
-                    TotalPrice = (decimal)(addProduct.Price * addProduct.ProductQuantity)!
+                    TotalQuantity = totalQty,
+                    TotalPrice = totalPrice,
                 };
                 await _orderRepo.AddDataAsync(order);
             }
-            if (await AddOrderRowAsync(orderId, addProduct))
-                return order;
+            else
+            {
+                if(order.OrderRows.Any())
+                {
+                    foreach (var item in (await _orderRowRepo.GetAllDataAsync(x => x.OrderId == Guid.Parse(orderId))))
+                    {
+                        if(item != null)
+                        {
+                            totalQty += item.Quantity;
+                            totalPrice += item.ProductPrice * item.Quantity;
+                        }
+                    }
+
+                }
+                order.TotalPrice = totalPrice;
+                order.TotalQuantity = totalQty;
+                await _orderRepo.UpdateDataAsync(order);
+            }
+            return order;
 
         } catch (Exception ex) { Debug.WriteLine(ex.Message); }
         return null!;
 
     }
 
-    public async Task<bool> AddOrderRowAsync(string orderId, Product addProduct)
+    public async Task<bool> AddOrderRowAsync(Guid orderId, Product addProduct)
     {
         try
         {
-            OrderRowEntity orderRow = await _orderRowRepo.GetDataAsync(x => x.OrderId == Guid.Parse(orderId) && x.ProductArticleNumber == addProduct.ArticleNumber);
+            OrderRowEntity orderRow = await _orderRowRepo.GetDataAsync(x => x.OrderId == orderId && x.ProductArticleNumber == addProduct.ArticleNumber);
 
             if (orderRow != null)
             {
@@ -101,10 +122,11 @@ public class OrderService
             {
                 orderRow = new OrderRowEntity
                 {
-                    OrderId = Guid.Parse(orderId),
+                    OrderId = orderId,
                     ProductArticleNumber = addProduct.ArticleNumber!,
                     ProductPrice = (decimal)addProduct.Price!,
-                    Quantity = addProduct.ProductQuantity
+                    Quantity = addProduct.ProductQuantity,
+                    Discount = (decimal)addProduct.Discount!
                 };
                 await _orderRowRepo.AddDataAsync(orderRow);
             }
@@ -115,5 +137,34 @@ public class OrderService
         return false;
     }
 
+    public async Task<bool> AddOrderRowAsync(Guid orderId, string articleNumber)
+    {
+        try
+        {
+            OrderRowEntity orderRow = await _orderRowRepo.GetDataAsync(x => x.OrderId == orderId && x.ProductArticleNumber == articleNumber);
+
+            if (orderRow != null)
+            {
+                await _orderRowRepo.UpdateDataAsync(orderRow);
+            }
+            else
+            {
+                var findStock = await _stockRepo.GetDataAsync(x => x.ProductArticleNumber == articleNumber);
+                orderRow = new OrderRowEntity
+                {
+                    OrderId = orderId,
+                    ProductArticleNumber = articleNumber!,
+                    ProductPrice = findStock.Price,
+                    Quantity = 1
+                };
+                await _orderRowRepo.AddDataAsync(orderRow);
+            }
+
+            return true;
+        }
+        catch (Exception ex) { Debug.WriteLine(ex.Message); }
+
+        return false;
+    }
 
 }

@@ -13,6 +13,9 @@ public class OrderRowEntity
 
     [Column(TypeName = "money")]
     public decimal ProductPrice { get; set; }
+
+    [Column(TypeName = "money")]
+    public decimal Discount { get; set; } = decimal.Zero;
     public OrderEntity Order { get; set; } = null!;
 
 }

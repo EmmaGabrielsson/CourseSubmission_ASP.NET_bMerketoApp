@@ -66,13 +66,34 @@
                 </p>
             </div>
         }
-        <p class="product-price">
-            @if(Model.StandardCurrency == "USD")
+        <div class=" product-price d-flex justify-content-center justify-content-lg-start">
+            @if(Model.Discount > decimal.Zero)
             {
-                <span>$</span>
+                <p class="text-secondary fw-light me-4 small text-decoration-line-through">
+                @if (Model.StandardCurrency == "USD")
+                {
+                    <span>$</span>
+                }
+                @(((decimal)Model.Price!).ToString(Model.Price % 1 == 0 ? "F0" : "F2"))
+                </p>
+                <p class="fw-bold small">
+                    @if (Model.StandardCurrency == "USD")
+                    {
+                    <span>$</span>
+                    }
+                    @string.Format("{0:F" + (Model.Price % 1 == 0 ? "0" : "2") + "}", (decimal)Model.Price! * Model.Discount)
+                </p>
             }
-            @(((decimal)Model.Price!).ToString(Model.Price % 1 == 0 ? "F0" : "F2"))
-        </p>
+            else{
+                <p>
+                @if(Model.StandardCurrency == "USD")
+                {
+                    <span>$</span>
+                }
+                @(((decimal)Model.Price!).ToString(Model.Price % 1 == 0 ? "F0" : "F2"))
+                </p>
+            }
+        </div>
         <form class="button-container" metod="post" asp-action="details" novalidate>
             <input class="art-input" asp-for="ArticleNumber" value="@Model.ArticleNumber" />
             <div class="quantity-container">

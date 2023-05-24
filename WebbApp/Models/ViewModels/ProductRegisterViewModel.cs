@@ -21,9 +21,11 @@ public class ProductRegisterViewModel
     [Display(Name = "Vendor Name")]
     public string? VendorName { get; set; }
 
-    [Display(Name = "Currency*")]
-    public string Currency { get; set; } = null!;
+    [Display(Name = "Currency")]
+    public string? Currency { get; set; }
 
+    [Display(Name = "Discount (enter %/100 ex. discount = 0,9) 10%")]
+    public decimal? Discount { get; set; }
 
     [Display(Name = "Product Image*")]
     [DataType(DataType.Upload)]
@@ -60,11 +62,12 @@ public class ProductRegisterViewModel
     {
         var entity = new StockEntity
         {
-            ArticleNumber = model.ArticleNumber,
+            ProductArticleNumber = model.ArticleNumber,
             Price = model.Price,
             OnSale = model.OnSale,
             Quantity = model.Quantity,
-            StandardCurrency = model.Currency
+            StandardCurrency = model.Currency ?? "USD",
+            Discount = model.Discount ?? decimal.Zero
         };
 
         return entity;

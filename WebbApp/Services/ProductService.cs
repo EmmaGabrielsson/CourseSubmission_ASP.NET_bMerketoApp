@@ -80,7 +80,7 @@ public class ProductService
         {
             foreach (var item in onSaleProducts)
             {
-                var product = await _productRepo.GetDataAsync(x => x.ArticleNumber == item.ArticleNumber);
+                var product = await _productRepo.GetDataAsync(x => x.ArticleNumber == item.ProductArticleNumber);
                 list.Add(product);
             }
 

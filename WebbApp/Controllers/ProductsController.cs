@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebbApp.Models.Dtos;
-using WebbApp.Models.Entities;
 using WebbApp.Models.ViewModels;
 using WebbApp.Repositories;
 using WebbApp.Services;
@@ -23,9 +22,6 @@ public class ProductsController : Controller
         _orderService = orderService;
     }
 
-    //private readonly OrderRepo _orderRepo;
-    //private readonly OrderRowRepo _orderRowRepo;
-    //private readonly IHttpContextAccessor _httpContextAccessor;
     #endregion
     public async Task<IActionResult> Index()
     {
@@ -57,6 +53,9 @@ public class ProductsController : Controller
             Products = products
         };
 
+        if (viewModel.Category == "all")
+            viewModel.Products = await _productService.GetAllAsync();
+
         return View(viewModel);
     }
     public IActionResult Search()
@@ -84,7 +83,7 @@ public class ProductsController : Controller
         ViewData["Title"] = "Details";
 
         Product product = await _productService.GetAsync(x => x.ArticleNumber == id);
-        var productStock = await _stockRepo.GetDataAsync(x => x.ArticleNumber == product.ArticleNumber);
+        var productStock = await _stockRepo.GetDataAsync(x => x.ProductArticleNumber == product.ArticleNumber);
 
         if (productStock != null)
         {
@@ -92,6 +91,7 @@ public class ProductsController : Controller
             product.Price = productStock.Price;
             product.StandardCurrency = productStock.StandardCurrency;
             product.StockQuantity = productStock.Quantity;
+            product.Discount = productStock.Discount;
         }
         if (product.StockQuantity == 0)
             product.ProductQuantity = 0;
@@ -108,7 +108,7 @@ public class ProductsController : Controller
     {
         ViewData["Title"] = "Details";
         Product updatedProduct = await _productService.GetAsync(x => x.ArticleNumber == product.ArticleNumber);
-        var productStock = await _stockRepo.GetDataAsync(x => x.ArticleNumber == updatedProduct.ArticleNumber);
+        var productStock = await _stockRepo.GetDataAsync(x => x.ProductArticleNumber == updatedProduct.ArticleNumber);
 
         if (productStock != null)
         {
@@ -116,6 +116,7 @@ public class ProductsController : Controller
             updatedProduct.Price = productStock.Price;
             updatedProduct.StandardCurrency = productStock.StandardCurrency;
             updatedProduct.StockQuantity = productStock.Quantity;
+            updatedProduct.Discount = productStock.Discount;
         }
 
         updatedProduct.Reviews = await _productService.GetReviewsAsync(updatedProduct.ArticleNumber!);
@@ -123,10 +124,13 @@ public class ProductsController : Controller
         updatedProduct.Tags = await _productService.GetProductTagsListAsync(updatedProduct.ArticleNumber!);
         updatedProduct.ProductQuantity = product.ProductQuantity;
 
-        var order = await _orderService.GetOrCreateOrderAndAddRowsAsync(updatedProduct);
+        var order = await _orderService.GetOrCreateOrderAsync();
 
-        if(order != null)
-            return RedirectToAction("cart");
+        if (order != null)
+        {
+            await _orderService.AddOrderRowAsync((Guid)order.Id!, updatedProduct);
+            return RedirectToAction("cart", "products");
+        }
 
         return View(updatedProduct);
     }
@@ -134,12 +138,17 @@ public class ProductsController : Controller
     public async Task<IActionResult> Cart()
     {
             ViewData["Title"] = "Your Cart";
-            Order order = await _orderService.GetOrderAsync();
+            var order = await _orderService.GetOrCreateOrderAsync();
             if (order != null)
             {
+                var rows = (IEnumerable<OrderRow>?)await _orderService.GetOrderRowsAsync(order.Id.ToString()!);
+
+                if (rows == null)
+                    order.OrderRows = new List<OrderRow>();
+                else 
+                    order.OrderRows = rows;
+          
                 return View(order);
-                //var rows = await _orderService.GetOrderRowsAsync(x => x.OrderId == order.Id);
-                //order.OrderRows = (ICollection<OrderRowEntity>)rows;
             }
             
         return View(order);

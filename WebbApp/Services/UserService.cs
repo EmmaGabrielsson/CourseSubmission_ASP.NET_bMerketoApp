@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Security.Claims;
 using WebbApp.Models.Identities;
 using WebbApp.Models.ViewModels;
-using WebbApp.Repositories;
 
 namespace WebbApp.Services;
 
@@ -144,18 +143,6 @@ public class UserService
         catch (Exception ex) { Debug.WriteLine(ex.Message); }
         return null!;
     }
-    /*
-    public async Task<bool> ChangePasswordAsync(AppUser user, string newPassword)
-    {
-        var currentPassword = user.PasswordHash!;
-        var result = await _userManager.ChangePasswordAsync(user, currentPassword, newPassword);
-
-        if (result.Succeeded)
-            return true;
-
-        return false;
-    }
-    */
 }
 
 

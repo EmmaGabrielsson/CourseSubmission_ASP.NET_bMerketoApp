@@ -37,9 +37,11 @@
             <div class="mb-3">
                 <label asp-for="Currency" class="form-label"></label>
                 <input asp-for="Currency" class="form-control" />
-                <small><span asp-validation-for="Currency" class="text-danger"></span></small>
             </div>
-
+            <div class="mb-3">
+                <label asp-for="Discount" class="form-label"></label>
+                <input asp-for="Discount" class="form-control" />
+            </div>
             <div class="mb-3 form-check form-check-inline">
                 <input class="form-check-input me-2" asp-for="OnSale" type="checkbox" />
                 <label class="form-check-label" asp-for="OnSale">On Sale</label>

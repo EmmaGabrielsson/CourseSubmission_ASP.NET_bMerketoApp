@@ -52,6 +52,25 @@ public class HomeController : Controller
     public async Task<IActionResult> Index(EmailViewModel model)
     {
         ViewData["Title"] = "Home";
+        await _seedService.CreateInitializedDataAsync();
+
+        var latestShowcase = await _productService.GetLatestShowcaseAsync();
+        ViewBag.LatestShowcase = latestShowcase;
+
+        var categories = await _categoryRepo.GetAllDataAsync();
+        ViewBag.Categories = categories;
+
+        var bestCollection = await _productService.GetBestCollectionAsync();
+        if (bestCollection != null)
+            ViewBag.BestCollection = bestCollection;
+
+
+        var onSaleItems = await _productService.GetAllOnSaleItemsAsync();
+        ViewBag.OnSaleItemFirst = onSaleItems.FirstOrDefault();
+        ViewBag.OnSaleItemLast = onSaleItems.LastOrDefault();
+
+        var topSaleItemsList = await _productService.GetTopSaleCollectionAsync();
+        ViewBag.TopSaleCollection = topSaleItemsList;
 
         if (ModelState.IsValid)
         {

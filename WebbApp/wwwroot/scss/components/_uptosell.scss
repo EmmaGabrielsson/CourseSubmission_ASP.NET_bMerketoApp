@@ -1,35 +1,41 @@
 .up-to-sell {
     background-color: $color-theme-2;
     padding: 40px 20px;
-  
+
     .collection-grid {
         display: grid;
         grid-template-columns: repeat(1, 1fr);
-        grid-template-areas:    "content"
-                                "item-1" 
-                                "item-2";
+        grid-template-areas: "content" "item-1" "item-2";
         gap: 40px;
 
         @include md {
             grid-template-columns: repeat(2, 1fr);
-            grid-template-areas:    "content content"
-                                    "item-1 item-2";
-        }
-        @include lg {
-            grid-template-columns: repeat(3, 1fr);
-            grid-template-areas:    "item-1 content item-2";
+            grid-template-areas: "content content" "item-1 item-2";
         }
 
-        .item-1 { grid-area: item-1; }
-        .discover { grid-area: content; }
-        .item-2 { grid-area: item-2; }
+        @include lg {
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-areas: "item-1 content item-2";
+        }
+
+        .item-1 {
+            grid-area: item-1;
+        }
+
+        .discover {
+            grid-area: content;
+        }
+
+        .item-2 {
+            grid-area: item-2;
+        }
 
         .collection-content {
             display: flex;
             align-items: center;
             justify-content: center;
             height: 100%;
-            
+
             .container {
                 text-align: center;
                 padding: 30px 20px;
@@ -53,18 +59,21 @@
                 font-size: 18px;
                 font-weight: $font-weight-bold;
             }
+
             .title {
                 font-family: $font-playfair;
                 font-weight: $font-weight-bold;
                 font-size: 48px;
                 color: $color-dark-2;
             }
+
             .ingress {
                 font-family: $font-poppins;
                 color: $color-dark-2;
                 font-size: 24px;
                 font-weight: $font-weight-bold;
             }
+
             .text {
                 margin-top: 20px;
                 font-family: $font-roboto;
@@ -72,6 +81,7 @@
                 font-size: 16px;
                 font-weight: $font-weight-regular;
             }
+
             .link {
                 display: block;
                 margin-top: 10px;
@@ -82,11 +92,9 @@
                 }
 
                 @include xl {
-                    margin-top:50px;
+                    margin-top: 50px;
                 }
             }
         }
-
     }
 }
-

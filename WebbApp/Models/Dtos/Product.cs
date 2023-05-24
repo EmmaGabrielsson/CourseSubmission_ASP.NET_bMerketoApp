@@ -12,6 +12,7 @@ public class Product
     public string? ImageUrl { get; set; }
     public decimal? Price { get; set; }
     public bool? OnSale { get; set; }
+    public decimal? Discount { get; set; }
     public int? StockQuantity { get; set; }
     public string? StandardCurrency { get; set; }
     public int ProductQuantity { get; set; } = 1;
