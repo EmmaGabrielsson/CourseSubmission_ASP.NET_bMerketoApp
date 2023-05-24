@@ -43,8 +43,8 @@
 </section>
 
 <section class="details-container">
-    <div class="image-container d-flex justify-content-center">
-        <img src="~/images/products/@Model.ImageUrl" alt="@Model.ProductName"/>            
+    <div class="image-container d-flex justify-content-center ">
+        <img class="shadow" src="~/images/products/@Model.ImageUrl" alt="@Model.ProductName"/>            
     </div>
     <div class="product-details">
         <h4 class="title">@Model.ProductName</h4>
@@ -66,7 +66,7 @@
                 </p>
             </div>
         }
-        <div class=" product-price d-flex justify-content-center justify-content-lg-start">
+        <div class="product-price d-flex justify-content-center justify-content-lg-start">
             @if(Model.Discount > decimal.Zero)
             {
                 <p class="text-secondary fw-light me-4 small text-decoration-line-through">

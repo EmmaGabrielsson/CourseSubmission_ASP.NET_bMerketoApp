@@ -108,10 +108,15 @@ html, body {
   background-color: #FFFFFF;
   text-decoration: none;
   display: block;
+  overflow: hidden;
 }
 .collection-item img {
   width: 100%;
   height: auto;
+}
+.collection-item img:hover {
+  transform: scale(1.15);
+  transition: 1s ease-in-out;
 }
 .collection-item .body {
   color: #292929;
@@ -918,7 +923,7 @@ footer .container {
 }
 @media (min-width: 1200px) {
   .top-selling .collection-grid {
-    grid-template-columns: repeat(7, 1fr);
+    grid-template-columns: repeat(6, 1fr);
   }
 }
 .top-selling .collection-grid .collection-item .body .title {
@@ -1270,6 +1275,10 @@ footer .container {
   }
 }
 
+.cart .product-qty {
+  width: 70px;
+}
+
 .validation-summary-errors {
   display: flex;
   justify-content: center;
@@ -1279,4 +1288,25 @@ footer .container {
   list-style: none;
   padding: 0;
   margin: 0;
+}
+
+.arrow-animation {
+  position: relative;
+  display: inline-block;
+  animation: blink 3s infinite;
+}
+
+@keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  75% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+  }
 }

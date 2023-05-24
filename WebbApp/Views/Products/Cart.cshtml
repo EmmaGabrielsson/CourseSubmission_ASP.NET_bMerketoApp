@@ -14,26 +14,27 @@
                 {
 
                         <div class="d-flex align-items-center justify-content-between border p-3 m-2 ">
-                            <div class="m-2 d-flex align-items-center">
-                                <img class="me-3" height="60px" src="~/images/products/@item.ImageUrl" alt="@item.ProductName" />
+                            <div class="m-2 d-md-flex align-items-center">
+                                <img class="me-3 p-1 border" height="60px" src="~/images/products/@item.ImageUrl" alt="@item.ProductName" />
                                 <div>
                                     <a class="text-dark" asp-controller="products" asp-action="details" asp-route-id="@item.ProductArticleNumber" ><p class="m-0">@item.ProductName </p></a>
-                                <p class="m-0">art.nr: @item.ProductArticleNumber</p>
+                                    <p class="m-0 d-none d-md-block small">art.nr: @item.ProductArticleNumber</p>
                                 </div>
                             </div>
-                            <div class="d-flex px-2 align-items-center">
+                            <div class="d-flex flex-wrap px-2 align-items-center justify-content-end">
                                 <div class="d-lg-flex p-2 ">
-                                    <input class="input-control" asp-for="@item.Quantity" value="@item.Quantity" type="number" min="1" max="@item.StockQuantity" />
+                                    <input class="input-control product-qty" asp-for="@item.Quantity" value="@item.Quantity" type="number" min="1" max="@item.StockQuantity" />
                                 </div>
                                 @if (item.Discount > decimal.Zero)
                                 {
-                                    <p class="text-secondary fw-light me-3 small text-decoration-line-through">
+                                <div>
+                                    <p class="text-secondary fw-light m-2 small text-decoration-line-through">
                                         $@(((decimal)item.ProductPrice!).ToString(item.ProductPrice % 1 == 0 ? "F0" : "F2"))
                                     </p>
-                                    <p class="fw-bold small">
-                                        Discount Price:
+                                    <p class="fw-bold small m-2">
                                         $@string.Format("{0:F" + (item.ProductPrice % 1 == 0 ? "0" : "2") + "}", (decimal)item.ProductPrice! * item.Discount)
                                     </p>
+                                </div>
                                 }
                                 else
                                 {
@@ -41,7 +42,7 @@
                                     $@string.Format("{0:F" + (item.ProductPrice % 1 == 0 ? "0" : "2") + "}", (decimal)item.ProductPrice! * item.Quantity)
                                 </p>
                                 }
-                                <a asp-action="cart" asp-controller="products" type="button" class="btn btn-secondary p-2 ms-4 my-2" title="remove"><i class="fa-regular fa-trash"></i></a>
+                                <a asp-action="cart" asp-controller="products" type="button" class="btn btn-secondary p-2 ms-4 my-2 d-flex" title="remove"><i class="fa-regular fa-trash"></i></a>
                             </div>
                         </div>
                 }

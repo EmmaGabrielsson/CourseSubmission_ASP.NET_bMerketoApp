@@ -84,7 +84,7 @@ public class OrderService
             }
             else
             {
-                if(order.OrderRows.Any())
+                if((await _orderRowRepo.GetAllDataAsync(x => x.OrderId == Guid.Parse(orderId))) != null)
                 {
                     foreach (var item in (await _orderRowRepo.GetAllDataAsync(x => x.OrderId == Guid.Parse(orderId))))
                     {
@@ -106,7 +106,6 @@ public class OrderService
         return null!;
 
     }
-
     public async Task<bool> AddOrderRowAsync(Guid orderId, Product addProduct)
     {
         try
@@ -136,7 +135,6 @@ public class OrderService
 
         return false;
     }
-
     public async Task<bool> AddOrderRowAsync(Guid orderId, string articleNumber)
     {
         try

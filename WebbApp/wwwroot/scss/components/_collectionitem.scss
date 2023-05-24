@@ -2,10 +2,16 @@
     background-color: $color-white;
     text-decoration: none;
     display: block;
+    overflow: hidden;
 
     img {
         width: 100%;
         height: auto;
+
+        &:hover {
+            transform: scale(1.15);
+            transition: 1s ease-in-out;
+        }
     }
 
     .body {
@@ -41,14 +47,12 @@
                 padding: 2px;
                 font-size: 24px;
                 color: $color-dark-2;
-    
+
                 &:hover {
                     color: $color-dark-4;
                 }
             }
         }
-
-
     }
 
     &:hover {

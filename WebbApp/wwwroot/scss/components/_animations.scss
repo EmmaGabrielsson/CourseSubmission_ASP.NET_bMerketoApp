@@ -1,0 +1,21 @@
+.arrow-animation {
+    position: relative;
+    display: inline-block;
+    animation: blink 3s infinite;
+}
+
+@keyframes blink {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
+    75% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
