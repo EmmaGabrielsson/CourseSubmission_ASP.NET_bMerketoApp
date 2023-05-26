@@ -40,7 +40,7 @@ To run the project, follow these steps:
 
 1. Clone the repository to your local machine.
 2. Install the required dependencies listed above.
-3. Set up a local SQL Server database or update the connection string in the project's configuration files to point to your desired database.
+3. Set up a local SQL Server database or update the connection strings in the project's configuration files to point to your desired databases. Here are two files used for two databases, one to handle products and one to handle users with identity.
 4. Build the project to restore NuGet packages and compile the code.
 5. Run the project using the "Run" or "Debug" option in your preferred development environment.
 6. Access the application in your web browser using the provided URL or localhost address.
