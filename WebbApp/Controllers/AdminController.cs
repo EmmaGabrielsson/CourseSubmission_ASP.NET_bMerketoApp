@@ -18,6 +18,8 @@ public class AdminController : Controller
         _productService = productService;
     }
     #endregion
+
+    #region UserList and RoleChange (https://domain.com/admin)
     public IActionResult Index()
     {
         ViewData["Title"] = "Admin - Dashboard";
@@ -41,6 +43,9 @@ public class AdminController : Controller
         return View(model);
     }
 
+    #endregion
+
+    #region AddProducts (https://domain.com/admin/products)
     public async Task<IActionResult> Products()
     {
         ViewData["Title"] = "Admin - Add Products";
@@ -83,4 +88,5 @@ public class AdminController : Controller
         return View(model);
     }
 
+    #endregion
 }

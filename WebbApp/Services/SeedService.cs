@@ -18,6 +18,8 @@ public class SeedService
     }
     #endregion
 
+
+    // inserts data in neccesary roletable in database when used
     public async Task InitializeRoles()
     {
         if (!await _roleManager.RoleExistsAsync("admin"))
@@ -26,6 +28,9 @@ public class SeedService
         if (!await _roleManager.RoleExistsAsync("user"))
             await _roleManager.CreateAsync(new IdentityRole("user"));
     }
+
+
+    // inserts data in collection table in database when used
     public async Task CreateInitializedDataAsync()
     {
         if (!await _context.Collections.AnyAsync())

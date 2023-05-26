@@ -8,22 +8,26 @@ namespace WebbApp.Services;
 public class OrderService
 {
     #region Constructors & Private Fields 
+
     private readonly OrderRepo _orderRepo;
     private readonly OrderRowRepo _orderRowRepo;
     private readonly ProductService _productService;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly StockRepo _stockRepo;
 
-    public OrderService(OrderRepo orderRepo, OrderRowRepo orderRowRepo, IHttpContextAccessor httpContextAccessor, ProductService productService, StockRepo stockRepo)
+    public OrderService(OrderRepo orderRepo, OrderRowRepo orderRowRepo, ProductService productService, IHttpContextAccessor httpContextAccessor, StockRepo stockRepo)
     {
         _orderRepo = orderRepo;
         _orderRowRepo = orderRowRepo;
-        _httpContextAccessor = httpContextAccessor;
         _productService = productService;
+        _httpContextAccessor = httpContextAccessor;
         _stockRepo = stockRepo;
     }
+
     #endregion
 
+
+    // gets order rows for the current order
     public async Task<IEnumerable<OrderRow>> GetOrderRowsAsync(string orderId)
     {
         try
@@ -31,6 +35,7 @@ public class OrderService
             var rows = await _orderRowRepo.GetAllDataAsync(x => x.OrderId == Guid.Parse(orderId));
             if (rows != null)
             {
+                // converts the original list to a order row list
                 var rowList = new List<OrderRow>();
                 foreach (var row in rows)
                 {
@@ -55,11 +60,14 @@ public class OrderService
         }catch (Exception ex) { Debug.WriteLine(ex.Message); }
         return null!;
     }
+
+
+    // gets or creates the order
     public async Task<Order> GetOrCreateOrderAsync()
     {
         try
         {
-            // Check if the order ID exists in the session, if not create orderId
+            // Check if the order ID exists in the session, if not create orderId. Session is just a temporarily solution
             string orderId = _httpContextAccessor.HttpContext!.Session.GetString("OrderId")!;
             if (orderId == null)
             {
@@ -83,7 +91,7 @@ public class OrderService
                 await _orderRepo.AddDataAsync(order);
             }
             else
-            {
+            {   // Check if order has rows and then update its totalprice and totalquantity
                 if((await _orderRowRepo.GetAllDataAsync(x => x.OrderId == Guid.Parse(orderId))) != null)
                 {
                     foreach (var item in (await _orderRowRepo.GetAllDataAsync(x => x.OrderId == Guid.Parse(orderId))))
@@ -94,7 +102,6 @@ public class OrderService
                             totalPrice += item.ProductPrice * item.Quantity;
                         }
                     }
-
                 }
                 order.TotalPrice = totalPrice;
                 order.TotalQuantity = totalQty;
@@ -106,10 +113,13 @@ public class OrderService
         return null!;
 
     }
+
+
+    // adds or updates orderrows in in order for cart and db
     public async Task<bool> AddOrderRowAsync(Guid orderId, Product addProduct)
     {
         try
-        {
+        {    
             OrderRowEntity orderRow = await _orderRowRepo.GetDataAsync(x => x.OrderId == orderId && x.ProductArticleNumber == addProduct.ArticleNumber);
 
             if (orderRow != null)
@@ -135,34 +145,5 @@ public class OrderService
 
         return false;
     }
-    public async Task<bool> AddOrderRowAsync(Guid orderId, string articleNumber)
-    {
-        try
-        {
-            OrderRowEntity orderRow = await _orderRowRepo.GetDataAsync(x => x.OrderId == orderId && x.ProductArticleNumber == articleNumber);
-
-            if (orderRow != null)
-            {
-                await _orderRowRepo.UpdateDataAsync(orderRow);
-            }
-            else
-            {
-                var findStock = await _stockRepo.GetDataAsync(x => x.ProductArticleNumber == articleNumber);
-                orderRow = new OrderRowEntity
-                {
-                    OrderId = orderId,
-                    ProductArticleNumber = articleNumber!,
-                    ProductPrice = findStock.Price,
-                    Quantity = 1
-                };
-                await _orderRowRepo.AddDataAsync(orderRow);
-            }
-
-            return true;
-        }
-        catch (Exception ex) { Debug.WriteLine(ex.Message); }
-
-        return false;
-    }
-
+  
 }

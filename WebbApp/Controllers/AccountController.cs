@@ -118,6 +118,7 @@ public class AccountController : Controller
         ViewData["Title"] = "New Password";
         return View();
     }
+    
     /*
     [HttpPost]
     [AllowAnonymous]
@@ -128,20 +129,13 @@ public class AccountController : Controller
 
         if (ModelState.IsValid)
         {
-            var user = await _userService.GetAsync(x => x.Email == model.Email);
-            if (user != null)
-                return RedirectToAction("Login", "Account");
-
-            ModelState.AddModelError("", "You have entered an incorrect email");
-        }
-        if (ModelState.IsValid)
-        {
             // Send an email with this link
-            var user = await _userService.GetAsync(x => x.Email == model.Email);
-            var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id}, protocol: Request.Url.Scheme);
-            await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
+            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Email == model.Email);
+            if (user != null)
+            {
 
-            return RedirectToAction("ForgotPasswordConfirmation", "Account");
+                return RedirectToAction("ForgotPasswordConfirmation", "Account");
+            }
         }
         return View(model);
     }

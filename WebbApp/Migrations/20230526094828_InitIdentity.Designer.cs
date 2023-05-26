@@ -9,11 +9,11 @@ using WebbApp.Contexts;
 
 #nullable disable
 
-namespace WebbApp.Migrations.Identity
+namespace WebbApp.Migrations
 {
     [DbContext(typeof(IdentityContext))]
-    [Migration("20230516101247_IdentityTables")]
-    partial class IdentityTables
+    [Migration("20230526094828_InitIdentity")]
+    partial class InitIdentity
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

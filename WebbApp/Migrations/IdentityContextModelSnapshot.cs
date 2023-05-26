@@ -8,7 +8,7 @@ using WebbApp.Contexts;
 
 #nullable disable
 
-namespace WebbApp.Migrations.Identity
+namespace WebbApp.Migrations
 {
     [DbContext(typeof(IdentityContext))]
     partial class IdentityContextModelSnapshot : ModelSnapshot

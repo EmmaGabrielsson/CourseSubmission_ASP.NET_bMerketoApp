@@ -23,7 +23,7 @@
                             </div>
                             <div class="d-flex flex-wrap px-2 align-items-center justify-content-end">
                                 <div class="d-lg-flex p-2 ">
-                                    <input class="input-control product-qty" asp-for="@item.Quantity" value="@item.Quantity" type="number" min="1" max="@item.StockQuantity" />
+                                    <input readonly title="function not implemented" class="input-control product-qty" asp-for="@item.Quantity" value="@item.Quantity" type="number" min="1" max="@item.StockQuantity" />
                                 </div>
                                 @if (item.Discount > decimal.Zero)
                                 {
@@ -42,7 +42,7 @@
                                     $@string.Format("{0:F" + (item.ProductPrice % 1 == 0 ? "0" : "2") + "}", (decimal)item.ProductPrice! * item.Quantity)
                                 </p>
                                 }
-                                <a asp-action="cart" asp-controller="products" type="button" class="btn btn-secondary p-2 ms-4 my-2 d-flex" title="remove"><i class="fa-regular fa-trash"></i></a>
+                                <a class="btn btn-secondary p-2 ms-4 my-2 d-flex disabled" title="remove"><i class="fa-regular fa-trash"></i></a>
                             </div>
                         </div>
                 }

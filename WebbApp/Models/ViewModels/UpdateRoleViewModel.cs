@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
-using WebbApp.Models.Entities;
 
 namespace WebbApp.Models.ViewModels;
 

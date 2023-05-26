@@ -1,4 +1,3 @@
-
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using WebbApp.Contexts;
@@ -52,6 +51,7 @@ builder.Services.AddSession(options =>
         options.Cookie.HttpOnly = true;
         options.Cookie.IsEssential = true;
     });
+
 
 
 var app = builder.Build();

@@ -23,6 +23,8 @@ public class ProductsController : Controller
     }
 
     #endregion
+
+    #region All Products (https://domain.com/products)
     public async Task<IActionResult> Index()
     {
         ViewData["Title"] = "All Products";
@@ -30,7 +32,9 @@ public class ProductsController : Controller
 
         return View();
     }
+    #endregion
 
+    #region Products of Category (https://domain.com/products/category)
     public async Task<IActionResult> Category(int id)
     {
         ViewData["Title"] = "Category";
@@ -58,6 +62,10 @@ public class ProductsController : Controller
 
         return View(viewModel);
     }
+
+    #endregion
+
+    #region Searched Products (https://domain.com/products/search)
     public IActionResult Search()
     {
         ViewData["Title"] = "Search for products";
@@ -78,6 +86,9 @@ public class ProductsController : Controller
         return View(searchModel);
     }
 
+    #endregion
+
+    #region Product Detailpage (https://domain.com/products/details/articlenumber)
     public async Task<IActionResult> Details(string id)
     {
         ViewData["Title"] = "Details";
@@ -134,7 +145,9 @@ public class ProductsController : Controller
 
         return View(updatedProduct);
     }
+    #endregion
 
+    #region Cart (https://domain.com/products/cart)
     public async Task<IActionResult> Cart()
     {
             ViewData["Title"] = "Your Cart";
@@ -153,4 +166,6 @@ public class ProductsController : Controller
             
         return View(order);
     }
+    #endregion
+
 }

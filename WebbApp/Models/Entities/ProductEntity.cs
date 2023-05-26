@@ -12,7 +12,6 @@ public class ProductEntity
     public string ProductName { get; set; } = null!;
     public string? Ingress { get; set; }
     public string? Description { get; set; }
-    public string? VendorName { get; set; }
     public string ImageUrl { get; set; } = null!;
 
 

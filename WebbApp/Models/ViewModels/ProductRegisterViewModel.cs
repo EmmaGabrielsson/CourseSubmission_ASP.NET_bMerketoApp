@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Server.Kestrel.Core;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using WebbApp.Models.Entities;
 
 namespace WebbApp.Models.ViewModels;
@@ -18,13 +17,10 @@ public class ProductRegisterViewModel
     [Display(Name = "Description")]
     public string? Description { get; set; }
 
-    [Display(Name = "Vendor Name")]
-    public string? VendorName { get; set; }
-
     [Display(Name = "Currency")]
     public string? Currency { get; set; }
 
-    [Display(Name = "Discount (enter %/100 ex. discount = 0,9) 10%")]
+    [Display(Name = "Discount (enter 10% like 0,9)")]
     public decimal? Discount { get; set; }
 
     [Display(Name = "Product Image*")]
@@ -35,7 +31,6 @@ public class ProductRegisterViewModel
     public decimal Price { get; set; }
 
     [Display(Name = "Stock Quantity*")]
-    [Required(ErrorMessage = "The Quantity value is invalid.")]
     public int Quantity { get; set; }
 
 
@@ -50,7 +45,6 @@ public class ProductRegisterViewModel
             ArticleNumber = model.ArticleNumber,
             ProductName = model.ProductName,
             Ingress = model.Ingress,
-            VendorName = model.VendorName,
             Description = model.Description,
             ImageUrl = $"{Guid.NewGuid()}_{model.Image.FileName}",
         };

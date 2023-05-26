@@ -114,9 +114,11 @@ html, body {
   width: 100%;
   height: auto;
 }
-.collection-item img:hover {
-  transform: scale(1.15);
-  transition: 1s ease-in-out;
+@media (min-width: 992px) {
+  .collection-item img:hover {
+    transform: scale(1.15);
+    transition: 1s ease-in-out;
+  }
 }
 .collection-item .body {
   color: #292929;
@@ -1270,6 +1272,85 @@ footer .container {
 }
 @media (min-width: 992px) {
   .password-form form button {
+    display: flex;
+    justify-self: flex-start;
+  }
+}
+
+.product-form {
+  padding: 10px 0 60px 0;
+}
+@media (min-width: 992px) {
+  .product-form {
+    padding-bottom: 75px;
+  }
+}
+.product-form .container {
+  margin-top: 50px;
+  border: 0px solid #E1E1E1;
+  padding: 30px;
+}
+@media (min-width: 768px) {
+  .product-form .container {
+    box-shadow: 0 0.5rem 1rem #E1E1E1;
+  }
+}
+.product-form .container .title {
+  margin-bottom: 40px;
+}
+.product-form form {
+  display: grid;
+  column-gap: 20px;
+  row-gap: 10px;
+  grid-template-columns: 1fr;
+  grid-template-areas: "articlenumber" "product-name" "product-price" "stock-quantity" "product-currency" "onsale" "product-discount" "product-image" "ingress" "product-description" "category-tag" "button";
+}
+@media (min-width: 992px) {
+  .product-form form {
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-areas: "articlenumber product-name product-name" "product-price stock-quantity product-currency" "onsale product-discount product-discount" "product-image product-image product-image" "ingress ingress ingress" "product-description product-description product-description" "category-tag category-tag category-tag" "button button button";
+  }
+}
+.product-form form .articlenumber {
+  grid-area: articlenumber;
+}
+.product-form form .product-name {
+  grid-area: product-name;
+}
+.product-form form .product-price {
+  grid-area: product-price;
+}
+.product-form form .product-currency {
+  grid-area: product-currency;
+}
+.product-form form .product-discount {
+  grid-area: product-discount;
+}
+.product-form form .onsale {
+  grid-area: onsale;
+  display: flex;
+  align-items: center;
+}
+.product-form form .stock-quantity {
+  grid-area: stock-quantity;
+}
+.product-form form .product-image {
+  grid-area: product-image;
+}
+.product-form form .ingress {
+  grid-area: ingress;
+}
+.product-form form .product-description {
+  grid-area: product-description;
+}
+.product-form form .category-tag {
+  grid-area: category-tag;
+}
+.product-form form button {
+  grid-area: button;
+}
+@media (min-width: 992px) {
+  .product-form form button {
     display: flex;
     justify-self: flex-start;
   }

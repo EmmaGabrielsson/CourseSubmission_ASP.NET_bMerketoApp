@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using WebbApp.Models.Entities;
 using WebbApp.Models.ViewModels;
 using WebbApp.Repositories;
 
@@ -16,6 +15,8 @@ namespace WebbApp.Controllers
             _contactRepo = contactRepo;
         }
         #endregion
+
+        #region Contact Us Form (https://domain.com/contacts)
         public IActionResult Index()
         {
             ViewData["Title"] = "Contact Us";
@@ -41,6 +42,6 @@ namespace WebbApp.Controllers
 
             return View(model);
         }
-
+        #endregion
     }
 }

@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
-using WebbApp.Models.Dtos;
 using WebbApp.Models.Entities;
 using WebbApp.Models.ViewModels;
 using WebbApp.Repositories;

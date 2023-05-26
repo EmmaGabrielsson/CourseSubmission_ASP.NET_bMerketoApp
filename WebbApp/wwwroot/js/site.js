@@ -53,7 +53,7 @@ function emailValidator(target) {
 
 function numberValidator(target) {
     if (isNaN(target.value) || target.value === "" || target.value < 0)
-        document.querySelector(`[data-valmsg-for="${target.id}"]`).innerHTML = `${target.id} is invalid`
+        document.querySelector(`[data-valmsg-for="${target.id}"]`).innerHTML = `value is invalid`
     else
         document.querySelector(`[data-valmsg-for="${target.id}"]`).innerHTML = ``
 }

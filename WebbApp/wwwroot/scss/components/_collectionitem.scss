@@ -8,9 +8,11 @@
         width: 100%;
         height: auto;
 
-        &:hover {
-            transform: scale(1.15);
-            transition: 1s ease-in-out;
+        @include lg{
+            &:hover {
+                transform: scale(1.15);
+                transition: 1s ease-in-out;
+            }
         }
     }
 

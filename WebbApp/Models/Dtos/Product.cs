@@ -8,7 +8,6 @@ public class Product
     public string? ProductName { get; set; }
     public string? Ingress { get; set; }
     public string? Description { get; set; }
-    public string? VendorName { get; set; }
     public string? ImageUrl { get; set; }
     public decimal? Price { get; set; }
     public bool? OnSale { get; set; }
@@ -28,7 +27,6 @@ public class Product
             ArticleNumber = entity.ArticleNumber,
             ProductName = entity.ProductName,
             Ingress = entity.Ingress,
-            VendorName = entity.VendorName,
             Description = entity.Description,
             ImageUrl = entity.ImageUrl,
         };

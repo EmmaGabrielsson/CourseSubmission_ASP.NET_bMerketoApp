@@ -9,11 +9,11 @@ using WebbApp.Contexts;
 
 #nullable disable
 
-namespace WebbApp.Migrations
+namespace WebbApp.Migrations.Data
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230524105307_Init")]
-    partial class Init
+    [Migration("20230526094930_InitProductData")]
+    partial class InitProductData
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -270,11 +270,6 @@ namespace WebbApp.Migrations
                         },
                         new
                         {
-                            ProductId = "35685",
-                            CategoryId = 9
-                        },
-                        new
-                        {
                             ProductId = "BE-75214",
                             CategoryId = 10
                         },
@@ -297,6 +292,16 @@ namespace WebbApp.Migrations
                         {
                             ProductId = "SH-96315",
                             CategoryId = 10
+                        },
+                        new
+                        {
+                            ProductId = "135685",
+                            CategoryId = 9
+                        },
+                        new
+                        {
+                            ProductId = "356899",
+                            CategoryId = 9
                         });
                 });
 
@@ -319,9 +324,6 @@ namespace WebbApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<string>("VendorName")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("ArticleNumber");
 
                     b.ToTable("Products");
@@ -329,8 +331,15 @@ namespace WebbApp.Migrations
                     b.HasData(
                         new
                         {
-                            ArticleNumber = "35685",
-                            ImageUrl = "270x295.svg",
+                            ArticleNumber = "135685",
+                            ImageUrl = "pexels-beautyColl.jpg",
+                            Ingress = "Discover our exquisite beauty collection, where elegance meets innovation. Unleash your radiance with our curated selection of high-quality products that elevate your skincare and makeup routine. From luxurious serums to captivating cosmetics, each item is designed to enhance your natural beauty. Explore our range and embark on a transformative journey to reveal your inner glow. Indulge in our carefully crafted collection and experience the power of self-care. Shop now and embrace the beauty that lies within you.",
+                            ProductName = "Beauty set for summer"
+                        },
+                        new
+                        {
+                            ArticleNumber = "356899",
+                            ImageUrl = "pexels-beauty.jpg",
                             Ingress = "Discover our exquisite beauty collection, where elegance meets innovation. Unleash your radiance with our curated selection of high-quality products that elevate your skincare and makeup routine. From luxurious serums to captivating cosmetics, each item is designed to enhance your natural beauty. Explore our range and embark on a transformative journey to reveal your inner glow. Indulge in our carefully crafted collection and experience the power of self-care. Shop now and embrace the beauty that lies within you.",
                             ProductName = "Beauty collection"
                         },
@@ -467,7 +476,7 @@ namespace WebbApp.Migrations
                         {
                             ArticleNumber = "SH-89514",
                             Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque rutrum mattis ante, eu cursus turpis volutpat vitae. Nullam consectetur pellentesque nibh, eu aliquet mauris bibendum in. Phasellus id diam nisl. Mauris sollicitudin, tortor sed rutrum tincidunt, turpis ligula pellentesque lorem, eu pulvinar mauris purus eu nisl. Sed non enim felis. Nullam non varius ipsum. Aliquam at tristique ex. Pellentesque pulvinar finibus tristique. Morbi a dui id lorem tincidunt aliquam ac vel erat.",
-                            ImageUrl = "pexels-nikeshoes.jpg",
+                            ImageUrl = "pexels-nikeshoe.jpg",
                             Ingress = "Elevate your footwear game with Nike Shoes. Combining style and performance, these shoes offer a perfect blend of fashion and function. From running to training, Nike Shoes provide unparalleled comfort and support for all your active pursuits. With a wide selection of designs and colors, you can find the perfect pair to express your personal style. Step into the world of Nike Shoes and experience the ultimate combination of style and performance.",
                             ProductName = "Nike Shoes: Style and Performance"
                         },
@@ -551,7 +560,7 @@ namespace WebbApp.Migrations
                         {
                             Id = new Guid("2b5e1f16-5c18-4f76-8f13-34e4055cfc99"),
                             Comment = "The Apple Watch Series 6 is a game-changer! The blood oxygen level monitoring, ECG feature, and always-on display are amazing. It seamlessly integrates with my iPhone and keeps me connected throughout the day.\" \n - Sarah",
-                            Created = new DateTime(2023, 5, 24, 12, 53, 7, 468, DateTimeKind.Local).AddTicks(625),
+                            Created = new DateTime(2023, 5, 26, 11, 49, 30, 586, DateTimeKind.Local).AddTicks(3284),
                             ProductArticleNumber = "GC-58966",
                             Rating = 4
                         },
@@ -559,7 +568,7 @@ namespace WebbApp.Migrations
                         {
                             Id = new Guid("e826087d-9f5a-4dab-a1c2-97d8de8a04e2"),
                             Comment = "The Apple Watch Series 6 is a fantastic smartwatch. The larger display, faster performance, and improved heart rate monitoring are remarkable. It looks stylish, and the battery life easily gets me through the day.\" \n - Mark",
-                            Created = new DateTime(2023, 5, 24, 12, 53, 7, 468, DateTimeKind.Local).AddTicks(644),
+                            Created = new DateTime(2023, 5, 26, 11, 49, 30, 586, DateTimeKind.Local).AddTicks(3310),
                             ProductArticleNumber = "GC-58966",
                             Rating = 5
                         },
@@ -567,7 +576,7 @@ namespace WebbApp.Migrations
                         {
                             Id = new Guid("76b369f8-7c02-47ca-9d7b-61f983b8f5e5"),
                             Comment = "I love my Apple Watch Series 6! The always-on display is a game-changer, and the ECG function gives me peace of mind. The build quality and design are top-notch. It's become an indispensable part of my daily routine.\" \n - Emily",
-                            Created = new DateTime(2023, 5, 24, 12, 53, 7, 468, DateTimeKind.Local).AddTicks(648),
+                            Created = new DateTime(2023, 5, 26, 11, 49, 30, 586, DateTimeKind.Local).AddTicks(3314),
                             ProductArticleNumber = "GC-58966",
                             Rating = 5
                         },
@@ -575,7 +584,7 @@ namespace WebbApp.Migrations
                         {
                             Id = new Guid("c5af6803-4e94-4e0e-b7a2-1be02f77920e"),
                             Comment = "The Apple Watch Series 6 is a fantastic smartwatch. The larger display, faster performance, and improved heart rate monitoring are remarkable. It looks stylish, and the battery life easily gets me through the day.\" \n - Jason",
-                            Created = new DateTime(2023, 5, 24, 12, 53, 7, 468, DateTimeKind.Local).AddTicks(650),
+                            Created = new DateTime(2023, 5, 26, 11, 49, 30, 586, DateTimeKind.Local).AddTicks(3317),
                             ProductArticleNumber = "FE-23456",
                             Rating = 5
                         },
@@ -583,7 +592,7 @@ namespace WebbApp.Migrations
                         {
                             Id = new Guid("9d352e0b-8ad0-4767-98cb-b87f871f7380"),
                             Comment = "The Apple Watch Collection is a game-changer! The sleek design and premium materials make it a stylish accessory that complements any outfit. The functionality is outstanding, with a wide range of features like heart rate monitoring, activity tracking, and notifications. The watch face is customizable, allowing me to personalize it to my liking. The battery life is impressive, lasting me through a full day of use. Overall, I highly recommend the Apple Watch Collection to anyone looking for a versatile and reliable smartwatch.\n - Michelle",
-                            Created = new DateTime(2023, 5, 24, 12, 53, 7, 468, DateTimeKind.Local).AddTicks(653),
+                            Created = new DateTime(2023, 5, 26, 11, 49, 30, 586, DateTimeKind.Local).AddTicks(3320),
                             ProductArticleNumber = "FE-23456",
                             Rating = 4
                         },
@@ -591,7 +600,7 @@ namespace WebbApp.Migrations
                         {
                             Id = new Guid("f7a2b4c9-5f96-4be0-8768-8029a2dbbdd2"),
                             Comment = "The Apple Watch Collection offers an excellent blend of style and functionality. The variety of watch faces and interchangeable bands allow me to customize it to suit my preferences and occasions. The integration with my iPhone is seamless, enabling me to receive notifications, answer calls, and even use Siri directly from my wrist. The watch's performance is snappy, and the display is vibrant and easy to read. However, I would appreciate more third-party app support and improved battery life for longer usage without frequent charging. Overall, the Apple Watch Collection is a solid smartwatch choice for Apple ecosystem users. \n - Jim",
-                            Created = new DateTime(2023, 5, 24, 12, 53, 7, 468, DateTimeKind.Local).AddTicks(656),
+                            Created = new DateTime(2023, 5, 26, 11, 49, 30, 586, DateTimeKind.Local).AddTicks(3323),
                             ProductArticleNumber = "FE-34567",
                             Rating = 4
                         },
@@ -599,7 +608,7 @@ namespace WebbApp.Migrations
                         {
                             Id = new Guid("13e21e76-bff3-4e20-a2b8-13e8c6c452b3"),
                             Comment = "The Apple Watch Collection is a game-changer! The sleek design and premium materials make it a stylish accessory that complements any outfit. The functionality is outstanding, with a wide range of features like heart rate monitoring, activity tracking, and notifications. The watch face is customizable, allowing me to personalize it to my liking. The battery life is impressive, lasting me through a full day of use. Overall, I highly recommend the Apple Watch Collection to anyone looking for a versatile and reliable smartwatch.\n - Linn",
-                            Created = new DateTime(2023, 5, 24, 12, 53, 7, 468, DateTimeKind.Local).AddTicks(659),
+                            Created = new DateTime(2023, 5, 26, 11, 49, 30, 586, DateTimeKind.Local).AddTicks(3326),
                             ProductArticleNumber = "FE-34567",
                             Rating = 5
                         },
@@ -607,15 +616,15 @@ namespace WebbApp.Migrations
                         {
                             Id = new Guid("8eaa720c-1d2b-42cc-b8b9-11de0b37c708"),
                             Comment = "The Apple Watch Collection is a fantastic fitness companion. The built-in workout tracking features are accurate and comprehensive, helping me monitor my progress and set new fitness goals. The watch's heart rate monitor is incredibly useful during workouts, ensuring that I stay in my target heart rate zone. The GPS functionality allows me to track my outdoor runs accurately. The only downside is that the battery life could be better, especially during extended workouts. Nonetheless, I consider the Apple Watch Collection an essential tool for fitness enthusiasts.\n - Leah",
-                            Created = new DateTime(2023, 5, 24, 12, 53, 7, 468, DateTimeKind.Local).AddTicks(661),
+                            Created = new DateTime(2023, 5, 26, 11, 49, 30, 586, DateTimeKind.Local).AddTicks(3330),
                             ProductArticleNumber = "FE-34567",
                             Rating = 4
                         },
                         new
                         {
                             Id = new Guid("d00f5cbf-ded4-4aa9-b19a-6363de249c85"),
-                            Comment = "Love this dress! The yellow color is vibrant and perfect for summer. It's comfortable, flattering, and the ruffled hem adds a fun touch. Received lots of compliments. Highly recommended! - Leah",
-                            Created = new DateTime(2023, 5, 24, 12, 53, 7, 468, DateTimeKind.Local).AddTicks(664),
+                            Comment = "Love this dress! The yellow color is vibrant and perfect for summer. It's comfortable and flattering with a fun touch. Received lots of compliments. Highly recommended! - Leah",
+                            Created = new DateTime(2023, 5, 26, 11, 49, 30, 586, DateTimeKind.Local).AddTicks(3337),
                             ProductArticleNumber = "DR-22896",
                             Rating = 5
                         },
@@ -623,7 +632,7 @@ namespace WebbApp.Migrations
                         {
                             Id = new Guid("a6373522-648a-4cbb-b6ea-4a5fba0ae001"),
                             Comment = "Stunning white dress! Elegant, versatile, and comfortable. Perfect for any occasion. Highly recommended! - Linn",
-                            Created = new DateTime(2023, 5, 24, 12, 53, 7, 468, DateTimeKind.Local).AddTicks(667),
+                            Created = new DateTime(2023, 5, 26, 11, 49, 30, 586, DateTimeKind.Local).AddTicks(3339),
                             ProductArticleNumber = "DR-45875",
                             Rating = 5
                         },
@@ -631,7 +640,7 @@ namespace WebbApp.Migrations
                         {
                             Id = new Guid("63885324-214a-4a41-a8d9-209209a303e2"),
                             Comment = "This backpack is a reliable companion! It provides sufficient storage for all my essentials, and its sturdy construction ensures durability. While I found the design to be simple, it serves its purpose well. - Tim",
-                            Created = new DateTime(2023, 5, 24, 12, 53, 7, 468, DateTimeKind.Local).AddTicks(670),
+                            Created = new DateTime(2023, 5, 26, 11, 49, 30, 586, DateTimeKind.Local).AddTicks(3343),
                             ProductArticleNumber = "B-67898",
                             Rating = 3
                         },
@@ -639,7 +648,7 @@ namespace WebbApp.Migrations
                         {
                             Id = new Guid("0f7e5a7c-2e8b-4d7e-9b4a-f3f1eae8435a"),
                             Comment = "This backpack is a must-have! It offers ample storage space, durability, and a stylish design that suits any adventure",
-                            Created = new DateTime(2023, 5, 24, 12, 53, 7, 468, DateTimeKind.Local).AddTicks(671),
+                            Created = new DateTime(2023, 5, 26, 11, 49, 30, 586, DateTimeKind.Local).AddTicks(3346),
                             ProductArticleNumber = "B-45678",
                             Rating = 4
                         },
@@ -647,7 +656,7 @@ namespace WebbApp.Migrations
                         {
                             Id = new Guid("48dc2404-39d3-4d9a-ae22-18c01c871e18"),
                             Comment = "This table lamp is a true gem! Its modern design and soft glow create a cozy ambiance in any room. The quality craftsmanship is evident, and it adds a stylish touch to my decor. - Laura",
-                            Created = new DateTime(2023, 5, 24, 12, 53, 7, 468, DateTimeKind.Local).AddTicks(674),
+                            Created = new DateTime(2023, 5, 26, 11, 49, 30, 586, DateTimeKind.Local).AddTicks(3348),
                             ProductArticleNumber = "LA-12856",
                             Rating = 5
                         },
@@ -655,7 +664,7 @@ namespace WebbApp.Migrations
                         {
                             Id = new Guid("b45fc2df-853c-4d53-8ef0-ade4a64b536e"),
                             Comment = "These shoes are amazing! Comfortable, stylish, and perfect for any occasion. Highly recommended! - Jake",
-                            Created = new DateTime(2023, 5, 24, 12, 53, 7, 468, DateTimeKind.Local).AddTicks(677),
+                            Created = new DateTime(2023, 5, 26, 11, 49, 30, 586, DateTimeKind.Local).AddTicks(3351),
                             ProductArticleNumber = "SH-77124",
                             Rating = 5
                         },
@@ -663,7 +672,7 @@ namespace WebbApp.Migrations
                         {
                             Id = new Guid("9aeeea0d-4f26-4167-8b3a-43236701feda"),
                             Comment = "These shoes exceeded my expectations! With their comfortable fit and stylish design, they're a great choice for any occasion. - Jim",
-                            Created = new DateTime(2023, 5, 24, 12, 53, 7, 468, DateTimeKind.Local).AddTicks(679),
+                            Created = new DateTime(2023, 5, 26, 11, 49, 30, 586, DateTimeKind.Local).AddTicks(3375),
                             ProductArticleNumber = "SH-77124",
                             Rating = 4
                         },
@@ -671,7 +680,7 @@ namespace WebbApp.Migrations
                         {
                             Id = new Guid("d7e169c1-3f3f-4cb1-8975-942fa593f2d1"),
                             Comment = "I think this mirror is simply stunning! Its sleek design and impeccable craftsmanship add a touch of elegance to any space. - Laura",
-                            Created = new DateTime(2023, 5, 24, 12, 53, 7, 468, DateTimeKind.Local).AddTicks(681),
+                            Created = new DateTime(2023, 5, 26, 11, 49, 30, 586, DateTimeKind.Local).AddTicks(3378),
                             ProductArticleNumber = "DE-15963",
                             Rating = 4
                         },
@@ -679,7 +688,7 @@ namespace WebbApp.Migrations
                         {
                             Id = new Guid("356b83b2-8a44-4e62-a1db-48f7a62e3518"),
                             Comment = "This running shoe is a game-changer! The cushioning and support provided are exceptional, making my runs comfortable and enjoyable. - Nicki",
-                            Created = new DateTime(2023, 5, 24, 12, 53, 7, 468, DateTimeKind.Local).AddTicks(683),
+                            Created = new DateTime(2023, 5, 26, 11, 49, 30, 586, DateTimeKind.Local).AddTicks(3380),
                             ProductArticleNumber = "SH-96315",
                             Rating = 4
                         },
@@ -687,7 +696,7 @@ namespace WebbApp.Migrations
                         {
                             Id = new Guid("e853b69c-7a3e-4a97-9a4e-8157e9b44c47"),
                             Comment = "These shoes are amazing! Highly recommended! - Sara",
-                            Created = new DateTime(2023, 5, 24, 12, 53, 7, 468, DateTimeKind.Local).AddTicks(686),
+                            Created = new DateTime(2023, 5, 26, 11, 49, 30, 586, DateTimeKind.Local).AddTicks(3382),
                             ProductArticleNumber = "BE-89214",
                             Rating = 5
                         },
@@ -695,7 +704,7 @@ namespace WebbApp.Migrations
                         {
                             Id = new Guid("9c49744f-7ef7-4c1e-9a46-6b81b19fc7c5"),
                             Comment = "These beach slippers are a summer essential! They offer a comfortable fit, great traction, and are perfect for sandy beaches and poolside lounging. I rate them 3/5 for their decent comfort and practicality. - Cindy",
-                            Created = new DateTime(2023, 5, 24, 12, 53, 7, 468, DateTimeKind.Local).AddTicks(688),
+                            Created = new DateTime(2023, 5, 26, 11, 49, 30, 586, DateTimeKind.Local).AddTicks(3384),
                             ProductArticleNumber = "SH-99875",
                             Rating = 3
                         });
@@ -735,11 +744,6 @@ namespace WebbApp.Migrations
                         {
                             ProductId = "GC-58966",
                             TagId = 1
-                        },
-                        new
-                        {
-                            ProductId = "GC-58966",
-                            TagId = 2
                         },
                         new
                         {
@@ -803,11 +807,6 @@ namespace WebbApp.Migrations
                         },
                         new
                         {
-                            ProductId = "FE-34567",
-                            TagId = 2
-                        },
-                        new
-                        {
                             ProductId = "DE-52365",
                             TagId = 5
                         },
@@ -824,6 +823,16 @@ namespace WebbApp.Migrations
                         new
                         {
                             ProductId = "BE-89214",
+                            TagId = 2
+                        },
+                        new
+                        {
+                            ProductId = "IN-89652",
+                            TagId = 2
+                        },
+                        new
+                        {
+                            ProductId = "DR-22896",
                             TagId = 2
                         });
                 });
@@ -862,8 +871,8 @@ namespace WebbApp.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedDate = new DateTime(2023, 5, 24, 12, 53, 7, 468, DateTimeKind.Local).AddTicks(275),
-                            ImageUrl = "625x647.svg",
+                            CreatedDate = new DateTime(2023, 5, 26, 11, 49, 30, 586, DateTimeKind.Local).AddTicks(2905),
+                            ImageUrl = "pexels-goldchair.jpg",
                             Ingress = "WELCOME TO BMERKETO SHOP",
                             LinkText = "SHOP NOW",
                             LinkUrl = "/products",
@@ -899,7 +908,16 @@ namespace WebbApp.Migrations
                     b.HasData(
                         new
                         {
-                            ProductArticleNumber = "35685",
+                            ProductArticleNumber = "135685",
+                            Discount = 0m,
+                            OnSale = false,
+                            Price = 30m,
+                            Quantity = 0,
+                            StandardCurrency = "USD"
+                        },
+                        new
+                        {
+                            ProductArticleNumber = "356899",
                             Discount = 0m,
                             OnSale = false,
                             Price = 30m,
